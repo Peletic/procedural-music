@@ -7,7 +7,7 @@ export class Pitch  {
 
     constructor(public value: number) {
         this.tone = NUMBER_TONE_LOOKUP[((this.value) % 12) as NumRange<0, 11>]
-        this.octave = parseInt((this.value / 12).toFixed()) - 1 as unknown as Octave
+        this.octave = parseInt((this.value / 12).toFixed()) - 2 as unknown as Octave
     }
 
     public static of(val : number | Tone | ToneOctave) {
@@ -18,6 +18,3 @@ export class Pitch  {
         }
     }
 }
-
-console.log(`${Pitch.of(60).tone} and ${Pitch.of(60).octave}`)
-console.log(`${Pitch.of("E5").value}`)
