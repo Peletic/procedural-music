@@ -1,11 +1,11 @@
 import {Pitch} from "../../src/units/pitch";
 
 export default function pitchTest() {
-    const a = new Pitch(44)
-    const b = Pitch.of(`${a.tone}${a.octave}`)
-    const c = Pitch.of(b.value)
-    console.log(`${a.value}; ${b.value}; ${c.value}`)
-    console.log(`${a.tone}${a.octave}`)
-    console.log(`${b.tone}${b.octave}`)
-    console.assert(a.value === b.value && b.value === c.value)
+    for (let i = 22; i < 120; i++) {
+        const a = new Pitch(i)
+        const b = Pitch.of(`${a.tone}${a.octave}`)
+        const c = Pitch.of(b.value)
+        console.log(`${i} |  ${a.tone}${a.octave} == ${b.tone}${b.octave} == ${c.tone}${c.octave}`)
+        console.assert(a.value === b.value && b.value === c.value)
+    }
 }

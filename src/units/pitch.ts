@@ -7,14 +7,16 @@ export class Pitch  {
 
     constructor(public value: number) {
         this.tone = NUMBER_TONE_LOOKUP[((this.value) % 12) as NumRange<0, 11>]
-        this.octave = parseInt((this.value / 12).toFixed()) - 2 as unknown as Octave
+        this.octave = Math.trunc(((value)/12)) - 1 as unknown as Octave
     }
 
     public static of(val : number | Tone | ToneOctave) {
         if (typeof val == "number") {
             return new Pitch(val)
         } else {
-            return new Pitch(TONE_NUMBER_LOOKUP[val.toString().replace(/(0|[1-9]|1[01])/g, "") as Semitone] + ((parseInt(val.toString().replace(/\D/g, "")) + 1) * 12))
+            return new Pitch(
+                TONE_NUMBER_LOOKUP[val.toString().replace(/(0|[1-9]|1[01])/g, "") as Semitone]
+                + (parseInt(val.toString().replace(/\D/g, "")) * 12 + 12))
         }
     }
 }
