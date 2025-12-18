@@ -1,11 +1,19 @@
-// our level 0 is /4 which means that 1, 0 is a quarter note, 1 -2 is a whole note
-
-import {NumRange} from "../helpers/types";
+// length out of 2^n-1
+// allowed for dotted notes by 1.5
+import {JoinedNumberCombinations, NumRange} from "../helpers/types";
 
 export class Beat {
-    constructor(length, level) {
-
+    constructor(length : BeatLength , level : BeatLevel) {
+        const duration = length === 1 ? 1 : 3
+        const denominator = length === 1 ? Math.pow(2, level-1) : Math.pow(2, level)
     }
 }
 
-export type BeatLevel = NumRange<-2, 4>
+export type BeatLevel = NumRange<1, 6>
+export type BeatLength = 1 | 1.5
+export type NoteDuration = JoinedNumberCombinations<"/", BeatLength, BeatLevel>
+
+const test : {[p in NoteDuration]: number}= {
+
+}
+console.log(test)

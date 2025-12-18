@@ -1,6 +1,9 @@
 export type Permutations<T extends string, U extends string = T> =
     T extends any ? (T | `${T}${Permutations<Exclude<U, T>>}`) : never;
 
+export type JoinedNumberCombinations<J extends string, T extends number, U extends number> =
+    T extends any ? (`${T}${J}${U}` | `${Exclude<`${T}${J}${U}`, JoinedNumberCombinations<J, Exclude<T, T>, U>>}`) : never;
+
 type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
     ? Acc[number]
     : Enumerate<N, [...Acc, Acc['length']]>
