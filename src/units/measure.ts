@@ -8,16 +8,16 @@ export interface IMeasureElement {
 export class Position {
     public position: ElementPosition
 
-    constructor(public nth: NumRange<0, 64>, public level: BeatLevel) {
+    constructor(public nth: NumRange<1, 64>, public level: BeatLevel) {
         this.position = `${nth}::${level}`
     }
 
     public static of(position: ElementPosition): Position {
-        return new this(parseInt(position.split("::")[0]) as unknown as NumRange<0, 64>, parseInt(position.split("::")[1]) as unknown as BeatLevel)
+        return new this(parseInt(position.split("::")[0]) as unknown as NumRange<1, 64>, parseInt(position.split("::")[1]) as unknown as BeatLevel)
     }
 }
 
-export type ElementPosition = JoinedNumberCombinations<"::", NumRange<0, 64>, BeatLevel>
+export type ElementPosition = JoinedNumberCombinations<"::", NumRange<1, 64>, BeatLevel>
 
 export class Measure {
     public static from(...elements: [{ element: IMeasureElement, position: Position }]): Measure {
@@ -37,12 +37,6 @@ export class Measure {
     }
 
     private collection: { [pos in ElementPosition]: IMeasureElement[] } = {
-        "0::1": [],
-        "0::2": [],
-        "0::3": [],
-        "0::4": [],
-        "0::5": [],
-        "0::6": [],
         "1::1": [],
         "1::2": [],
         "1::3": [],

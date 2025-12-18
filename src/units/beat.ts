@@ -13,6 +13,10 @@ export class Beat {
         this.dotted = duration[0].endsWith(".5")
         this.name = BEAT_NAMES[duration]
     }
+
+    public toString() : string {
+        return this.name
+    }
 }
 
 export type BeatLevel = NumRange<1, 6>
