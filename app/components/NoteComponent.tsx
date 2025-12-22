@@ -21,15 +21,16 @@ export default function NoteComponent({note, pos} : {note: Note, pos: ElementPos
 
     const scale = Math.pow(2, note.duration.denominator-1)
     const idx = Position.of(pos).nth
+    const baseOffset = 0.65
 
     const offsetScalar = 12/scale;
-    const offset = (idx-1) * offsetScalar
+    const offset = (idx-1) * offsetScalar + baseOffset
 
 
     const number = (NUMBER_WHOLE_STEP[Pitch.of(note.note).tone.toString().substring(0, 1) as WholeStep]) + (parseInt(Pitch.of(note.note).octave) * 7) - 28
-    const svgName = `${number < 8 ? "upwards" : "downwards"}-${note.duration.name}.svg`
+    const svgName = `${number < 7 ? "upwards" : "downwards"}-${note.duration.name}.svg`
     console.log(number)
-    const topMargin = F_BASE_VERTICAL_OFFSET_MAP[note.duration.name] - number*VERTICAL_OFFSET_INTERVAL[note.duration.name] + (number < 8 ? 0 : DOWNWARDS_OFFSET[note.duration.name])
+    const topMargin = F_BASE_VERTICAL_OFFSET_MAP[note.duration.name] - number*VERTICAL_OFFSET_INTERVAL[note.duration.name] + (number < 7 ? 0 : DOWNWARDS_OFFSET[note.duration.name])
     // @ts-ignore
     return (<>
         <img src={`/${svgName}`} height={"3em"} style={

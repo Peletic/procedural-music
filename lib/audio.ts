@@ -10,6 +10,7 @@ export function establishAudioContext() {
 export const instruments: Player[] = []
 
 export async function instantiateInstrument(name : InstrumentName) {
-    instruments.push(await Soundfont.instrument(new AudioContext(), name))
+    instruments.push(await Soundfont.instrument(audioContext, name))
+    console.log("Created " + name)
     return
 }

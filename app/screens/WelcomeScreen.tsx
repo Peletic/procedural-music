@@ -1,10 +1,11 @@
 import {LargeHeading} from "@/app/components/Heading";
-import {establishAudioContext} from "@/lib/audio";
+import {establishAudioContext, instantiateInstrument} from "@/lib/audio";
 import {Dispatch, SetStateAction} from "react";
 
 export default function WelcomeScreen({setState} : {setState :  Dispatch<SetStateAction<number>>}) {
     const onBeginClick = () => {
         establishAudioContext()
+        instantiateInstrument("acoustic_grand_piano")
         setState(1)
     }
     return (<div className={"flex flex-col gap-20"}>
