@@ -8,8 +8,8 @@ export default function Heading() {
 
 export function LargeHeading() {
     return (<>
-        <div className={"bg-purple-600 text-4xl p-1 rounded-sm"}>
-            Procedural Music Generation Playground
+        <div className={"text-6xl p-1 rounded-sm text-center"}>
+            Procedural Music<br/>Generation Playground
         </div>
     </>)
 }
