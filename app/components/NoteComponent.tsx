@@ -21,7 +21,7 @@ export default function NoteComponent({note, pos} : {note: Note, pos: ElementPos
 
     const scale = Math.pow(2, note.duration.denominator-1)
     const idx = Position.of(pos).nth
-    const baseOffset = 0.65
+    const baseOffset = 0.75
 
     const offsetScalar = 12/scale;
     const offset = (idx-1) * offsetScalar + baseOffset

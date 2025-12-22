@@ -4,6 +4,7 @@ import {Note} from "@/src/units/note";
 import {Beat} from "@/src/units/beat";
 import Stave from "@/src/units/stave";
 import TestPlayAudio from "@/app/components/TestPlayAudio";
+import SheetComponent from "@/app/components/SheetComponent";
 
 export default function PlaygroundScreen() {
     const stave = new Stave(120);
@@ -34,15 +35,14 @@ export default function PlaygroundScreen() {
     testMeasureThree.put(new Note("G5", new Beat("1/3")), Position.of("4::3"))
     stave.put(testMeasureThree)
 
+    stave.put(testMeasure)
 
 
     return (<>
-        <div className={"bg-white text-black w-[50em] h-[120em] flex flex-row content-center justify-center align-middle pt-7 mt-4"}>
+        <div className={"text-black w-[50em] h-[120em] flex flex-row content-center justify-between align-middle pt-7 mt-4"}>
             <TestPlayAudio stave={stave}/>
             <br/>
-            {
-                stave.measures.map((measure, index) => <MeasureComponent value={measure} key={`${measure}:${index}`}/>)
-            }
+            <SheetComponent stave={stave}/>
         </div>
     </>)
 }
