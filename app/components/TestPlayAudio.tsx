@@ -12,7 +12,10 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
 
     const play = async (array: any, instruments: Player[]) => {
         for (let el of array as Note[]) {
-            instruments[0].play(el.note, 0, {duration: tr * 16})
+            instruments[0].play(el.note, 0, {duration: tr * (64/el.duration.denominator) / 1000, release: tr * (64/el.duration.denominator) / 1000, decay: tr * (64/el.duration.denominator) / 1000 })
+            console.log(`duration: ${tr * (64/el.duration.denominator)}`)
+            console.log(tr)
+            console.log(el.duration.denominator)
         }
 
     }
@@ -37,7 +40,7 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
         }
 
         const res = []
-        if (i % 64 == 0) res.push(...measures[n].at(Position.of(`${i / 32}::1` as ElementPosition)))
+        if (i % 64 == 0) res.push(...measures[n].at(Position.of(`${i / 64}::1` as ElementPosition)))
         if (i % 32 == 0) res.push(...measures[n].at(Position.of(`${i / 32}::2` as ElementPosition)))
         if (i % 16 == 0) res.push(...measures[n].at(Position.of(`${i / 16}::3` as ElementPosition)))
         if (i % 8 == 0) res.push(...measures[n].at(Position.of(`${i / 8}::4` as ElementPosition)))
