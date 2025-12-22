@@ -13,6 +13,16 @@ export type Semitone = WholeStep | HalfStep
 export type Tone = Semitone | RedundantHalfStep
 export type ToneOctave = "A0" | "A#0" | "Bb0" | "B0" | Permutations<Tone, Octave> | "C8"
 
+export const NUMBER_WHOLE_STEP : {[p in WholeStep]: number} = {
+    C: 0,
+    D: 1,
+    E: 2,
+    F: 3,
+    G: 4,
+    A: 5,
+    B: 6
+}
+
 export const NUMBER_TONE_LOOKUP: { [p in NumRange<0, 11>]: Semitone } = {
     0: "C",
     1: "C#",

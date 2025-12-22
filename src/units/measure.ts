@@ -36,7 +36,7 @@ export class Measure {
         return this.collection[position.position]
     }
 
-    private collection: { [pos in ElementPosition]: IMeasureElement[] } = {
+    public collection: { [pos in ElementPosition]: IMeasureElement[] } = {
         "1::1": [],
         "1::2": [],
         "1::3": [],
