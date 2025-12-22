@@ -13,9 +13,6 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
     const play = async (array: any, instruments: Player[]) => {
         for (let el of array as Note[]) {
             instruments[0].play(el.note, 0, {duration: (((tr*4) / Math.pow(2, el.duration.denominator-1)) / 1000), release: (((tr*4) / Math.pow(2, el.duration.denominator-1)) / 1000)})
-            console.log(`duration: ${((tr / el.duration.denominator) / 1000)}`)
-            console.log(tr)
-            console.log(el.duration.denominator)
         }
 
     }

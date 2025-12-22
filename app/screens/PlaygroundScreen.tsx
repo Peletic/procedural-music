@@ -21,8 +21,8 @@ export default function PlaygroundScreen() {
     const testMeasureTwo = new Measure();
 
     testMeasureTwo.put(new Note("G4", new Beat("1/3")), Position.of("1::3"))
-    //testMeasureTwo.put(new Note("A4", new Beat("1/1")), Position.of("2::3"))
-    //testMeasureTwo.put(new Note("B4", new Beat("1/1")), Position.of("3::3"))
+    testMeasureTwo.put(new Note("A4", new Beat("1/1")), Position.of("2::3"))
+    testMeasureTwo.put(new Note("B4", new Beat("1/1")), Position.of("3::3"))
     testMeasureTwo.put(new Note("C5", new Beat("1/3")), Position.of("4::3"))
     stave.put(testMeasureTwo)
     
