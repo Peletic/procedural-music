@@ -1,8 +1,7 @@
 import {Note} from "@/src/units/note";
 import {ElementPosition, Position} from "@/src/units/measure";
-import {BEAT_NAMES} from "@/src/units/beat";
 import {Pitch} from "@/src/units/pitch";
-import {NUMBER_WHOLE_STEP, Semitone, TONE_NUMBER_LOOKUP, WholeStep} from "@/src/units/tone";
+import {NUMBER_WHOLE_STEP, WholeStep} from "@/src/units/tone";
 
 const F_BASE_VERTICAL_OFFSET_MAP : {[p : string]: number} = {
     "quarter_note": 1.4

@@ -4,7 +4,6 @@ import {instruments} from "@/lib/audio";
 import Stave from "@/src/units/stave";
 import {SetStateAction, useEffect, useState} from "react";
 import {Player} from "soundfont-player";
-import {clearInterval} from "node:timers";
 
 export default function TestPlayAudio({stave}: { stave: Stave }) {
     const [interrupted, setInterrupted] = useState(0)

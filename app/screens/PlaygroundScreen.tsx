@@ -1,4 +1,3 @@
-import MeasureComponent from "@/app/components/MeasureComponent";
 import {Measure, Position} from "@/src/units/measure";
 import {Note} from "@/src/units/note";
 import {Beat} from "@/src/units/beat";
