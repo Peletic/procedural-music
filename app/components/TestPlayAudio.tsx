@@ -10,9 +10,8 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
     const [interrupted, setInterrupted] = useState(0)
     const [interval, setSaveInterval] = useState<NodeJS.Timeout>()
     const tr = (60 / stave.bpm * 1000) / 16;
-    console.log(`Tr: ${tr}`)
+
     const play = async (array: any, instruments: Player[]) => {
-        //console.log(...array)
         for (let el of array as Note[]) {
             instruments[0].play(el.note, 0, {duration: tr * 16})
         }
