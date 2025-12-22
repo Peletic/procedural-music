@@ -5,17 +5,20 @@ import {NUMBER_WHOLE_STEP, WholeStep} from "@/src/units/tone";
 
 const F_BASE_VERTICAL_OFFSET_MAP : {[p : string]: number} = {
     "quarter_note": 1.4,
-    "half_note": 1.2
+    "half_note": 1.2,
+    "whole_note": 3.35
 }
 
 const VERTICAL_OFFSET_INTERVAL : {[p : string]: number} = {
     "quarter_note": 0.36,
-    "half_note": 0.36
+    "half_note": 0.36,
+    "whole_note": 0.36
 }
 
 const DOWNWARDS_OFFSET : {[p : string]: number} = {
     "quarter_note": 1.9,
-    "half_note": 1.9
+    "half_note": 1.9,
+    "whole_note": 0
 }
 
 export default function NoteComponent({note, pos} : {note: Note, pos: ElementPosition}) {
@@ -33,13 +36,19 @@ export default function NoteComponent({note, pos} : {note: Note, pos: ElementPos
     const svgName = `${number < 7 ? "upwards" : "downwards"}-${note.duration.name}.svg`
     console.log(number)
     const topMargin = F_BASE_VERTICAL_OFFSET_MAP[note.duration.name] - number*VERTICAL_OFFSET_INTERVAL[note.duration.name] + (number < 7 ? 0 : DOWNWARDS_OFFSET[note.duration.name])
+
+    const addt : {[p : string] : any} = {}
+    if(note.duration.denominator == 1) {
+        addt.height = "0.65em"
+    }
     // @ts-ignore
     return (<>
-        <img src={`/${svgName}`} height={"3em"} style={
+        <img src={`/${svgName}`} style={
             {
                 marginLeft: `${offset}em`,
                 marginTop: `${topMargin}em`,
                 position: "absolute",
+                ...addt
             }
         }/>
     </>)
