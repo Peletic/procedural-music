@@ -7,9 +7,10 @@ import SheetComponent from "@/app/components/SheetComponent";
 import BPMInputField from "@/app/components/BPMInputField";
 import {useState} from "react";
 import DarkModeToggle from "@/app/components/DarkModeToggle";
+import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/algorithm";
 
 export default function PlaygroundScreen() {
-    const initStave = new Stave(120);
+    /*const initStave = new Stave(120);
 
     const testMeasure = new Measure();
 
@@ -53,9 +54,9 @@ export default function PlaygroundScreen() {
     testMeasureFive.put(new Note("D4", new Beat("1/4")), Position.of("2::3"))
     testMeasureFive.put(new Note("E4", new Beat("1/4")), Position.of("3::3"))
     testMeasureFive.put(new Note("F#4", new Beat("1/4")), Position.of("4::3"))
-    initStave.put(testMeasureFive)
+    initStave.put(testMeasureFive)*/
 
-    const [stave, setStave] = useState(initStave)
+    const [stave, setStave] = useState(new MusicGenerator().generate(4, 120, new DefaultMusicGeneratorArgs()))
 
     return (<>
         <div

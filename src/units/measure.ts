@@ -20,7 +20,7 @@ export class Position {
 export type ElementPosition = JoinedNumberCombinations<"::", NumRange<1, 64>, BeatLevel>
 
 export class Measure {
-    public static from(...elements: [{ element: IMeasureElement, position: Position }]): Measure {
+    public static from(elements: { element: IMeasureElement, position: Position }[]): Measure {
         const measure = new Measure();
         for (let element of elements) {
             measure.put(element.element, element.position)

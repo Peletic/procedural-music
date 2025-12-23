@@ -17,7 +17,7 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
 
     }
 
-    let i = 1
+    let i = 64
     let n = 0;
     const begin = (instruments: Player[], interrupted: number, setInterrupted: {
         (value: SetStateAction<number>): void;
@@ -37,12 +37,12 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
         }
 
         const res = []
-        if (i % 64 == 0) res.push(...measures[n].at(Position.of(`${i / 64}::1` as ElementPosition)))
-        if (i % 32 == 0) res.push(...measures[n].at(Position.of(`${i / 32}::2` as ElementPosition)))
-        if (i % 16 == 0) res.push(...measures[n].at(Position.of(`${i / 16}::3` as ElementPosition)))
-        if (i % 8 == 0) res.push(...measures[n].at(Position.of(`${i / 8}::4` as ElementPosition)))
-        if (i % 4 == 0) res.push(...measures[n].at(Position.of(`${i / 4}::5` as ElementPosition)))
-        if (i % 2 == 0) res.push(...measures[n].at(Position.of(`${i / 2}::6` as ElementPosition)))
+        if (i % 64 == 0) res.push(...measures[n].at(Position.of(`${(i) / 64}::1` as ElementPosition)))
+        if (i % 32 == 0) res.push(...measures[n].at(Position.of(`${(i) / 32}::2` as ElementPosition)))
+        if (i % 16 == 0) res.push(...measures[n].at(Position.of(`${(i) / 16}::3` as ElementPosition)))
+        if (i % 8 == 0) res.push(...measures[n].at(Position.of(`${(i) / 8}::4` as ElementPosition)))
+        if (i % 4 == 0) res.push(...measures[n].at(Position.of(`${(i) / 4}::5` as ElementPosition)))
+        if (i % 2 == 0) res.push(...measures[n].at(Position.of(`${(i) / 2}::6` as ElementPosition)))
 
         if (res.length >= 1) play(res, instruments)
 
