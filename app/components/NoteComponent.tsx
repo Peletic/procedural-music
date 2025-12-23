@@ -4,7 +4,10 @@ import {NUMBER_WHOLE_STEP, WholeStep} from "@/src/units/tone";
 
 const F_BASE_VERTICAL_OFFSET_MAP: { [p: string]: number } = {
     "quarter_note": 1.4,
-    "half_note": 1.2,
+    "half_note": 1.4,
+    "eighth_note": 1.4,
+    "sixteenth_note": 1.2,
+    "thirty_second_note": 1.4,
     "whole_note": 3.35,
     "sharp": 2.85,
     "flat": 2.7
@@ -14,6 +17,9 @@ const VERTICAL_OFFSET_INTERVAL: { [p: string]: number } = {
     "quarter_note": 0.36,
     "half_note": 0.36,
     "whole_note": 0.36,
+    "eighth_note": 0.36,
+    "sixteenth_note": 0.345,
+    "thirty_second_note": 0.36,
     "sharp": 0.36,
     "flat": 0.36
 }
@@ -21,6 +27,9 @@ const VERTICAL_OFFSET_INTERVAL: { [p: string]: number } = {
 const DOWNWARDS_OFFSET: { [p: string]: number } = {
     "quarter_note": 1.9,
     "half_note": 1.9,
+    "eighth_note": 1.9,
+    "sixteenth_note": 1.95,
+    "twenty_second_note": 1.9,
     "whole_note": 0
 }
 
