@@ -4,9 +4,11 @@ import {Beat} from "@/src/units/beat";
 import Stave from "@/src/units/stave";
 import TestPlayAudio from "@/app/components/TestPlayAudio";
 import SheetComponent from "@/app/components/SheetComponent";
+import BPMInputField from "@/app/components/BPMInputField";
+import {useState} from "react";
 
 export default function PlaygroundScreen() {
-    const stave = new Stave(120);
+    const initStave = new Stave(120);
 
     const testMeasure = new Measure();
 
@@ -16,7 +18,7 @@ export default function PlaygroundScreen() {
     testMeasure.put(new Note("D4", new Beat("1/3")), Position.of("2::3"))
     testMeasure.put(new Note("E4", new Beat("1/3")), Position.of("3::3"))
     testMeasure.put(new Note("F#4", new Beat("1/3")), Position.of("4::3"))
-    stave.put(testMeasure)
+    initStave.put(testMeasure)
 
     const testMeasureTwo = new Measure();
 
@@ -24,7 +26,7 @@ export default function PlaygroundScreen() {
     testMeasureTwo.put(new Note("Ab4", new Beat("1/1")), Position.of("2::3"))
     testMeasureTwo.put(new Note("Bb4", new Beat("1/1")), Position.of("3::3"))
     testMeasureTwo.put(new Note("C5", new Beat("1/3")), Position.of("4::3"))
-    stave.put(testMeasureTwo)
+    initStave.put(testMeasureTwo)
     
     const testMeasureThree = new Measure();
 
@@ -32,7 +34,7 @@ export default function PlaygroundScreen() {
     testMeasureThree.put(new Note("E5", new Beat("1/3")), Position.of("2::3"))
     testMeasureThree.put(new Note("F5", new Beat("1/3")), Position.of("3::3"))
     testMeasureThree.put(new Note("G5", new Beat("1/3")), Position.of("4::3"))
-    stave.put(testMeasureThree)
+    initStave.put(testMeasureThree)
 
     const testMeasureFour = new Measure();
 
@@ -40,7 +42,7 @@ export default function PlaygroundScreen() {
     testMeasureFour.put(new Note("E5", new Beat("1/5")), Position.of("2::3"))
     testMeasureFour.put(new Note("F5", new Beat("1/3")), Position.of("3::3"))
     testMeasureFour.put(new Note("G5", new Beat("1/3")), Position.of("4::3"))
-    stave.put(testMeasureFour)
+    initStave.put(testMeasureFour)
 
     const testMeasureFive = new Measure();
 
@@ -50,12 +52,16 @@ export default function PlaygroundScreen() {
     testMeasureFive.put(new Note("D4", new Beat("1/4")), Position.of("2::3"))
     testMeasureFive.put(new Note("E4", new Beat("1/4")), Position.of("3::3"))
     testMeasureFive.put(new Note("F#4", new Beat("1/4")), Position.of("4::3"))
-    stave.put(testMeasureFive)
+    initStave.put(testMeasureFive)
 
+    const [stave, setStave] = useState(initStave)
 
     return (<>
-        <div className={"text-black w-[50em] h-[120em] flex flex-row content-center justify-between align-middle pt-7 mt-4"}>
+        <div className={"text-black w-full h-[120em] flex flex-row content-center justify-between align-middle pt-7 mt-4 gap-12"}>
+            <div className={"flex flex-row flex-wrap max-w-[30em] align-middle gap-4"}>
             <TestPlayAudio stave={stave}/>
+            <BPMInputField stave={stave} setStave={setStave}/>
+            </div>
             <br/>
             <SheetComponent stave={stave}/>
         </div>
