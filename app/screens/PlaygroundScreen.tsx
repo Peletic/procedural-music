@@ -8,6 +8,7 @@ import BPMInputField from "@/app/components/BPMInputField";
 import {useState} from "react";
 import DarkModeToggle from "@/app/components/DarkModeToggle";
 import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/algorithm";
+import RegenerateButton from "@/app/components/RegenerateButton";
 
 export default function PlaygroundScreen() {
     /*const initStave = new Stave(120);
@@ -65,6 +66,7 @@ export default function PlaygroundScreen() {
                 <div className={"flex flex-row flex-wrap max-w-[30em] align-middle gap-4"}>
                     <TestPlayAudio stave={stave}/>
                     <BPMInputField stave={stave} setStave={setStave}/>
+                    <RegenerateButton setStave={setStave}/>
                 </div>
                 <div>
                     <DarkModeToggle/>

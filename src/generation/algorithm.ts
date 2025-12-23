@@ -24,19 +24,24 @@ export class MusicGenerator {
             if (idx <= numTetrad) {
                 return Object.entries(C_TETRADS)[idx]
             } else {
-                return Object.entries(C_TRIADS)[idx - numTetrad]
+                let newNum = idx - numTetrad
+                return Object.entries(C_TRIADS)[newNum]
             }
         }
 
         for (let i = 0; i < chordsInProgression; i++) {
             const chordIdx = random.randomInRange(1, numChords)
             const chord = getChord(chordIdx - 1)
+
+            console.log(chord)
             console.log(chordIdx)
             console.log(chord[1])
 
+            const rawChord = chord[1]
+
             const rootDelta = random.randomInRange(args.minProgressionRootDelta, args.maxProgressionRootDelta) * (random.randomInRange(1, 2) === 1 ? 1 : -1)
             progression.push({
-                applied: Chord.apply(baseRoot + rootDelta, chord[1]),
+                applied: Chord.apply(baseRoot + rootDelta, rawChord),
                 root: baseRoot + rootDelta,
                 baseChordName: chord[0]
             })
