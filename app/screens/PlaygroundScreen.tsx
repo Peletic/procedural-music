@@ -34,6 +34,14 @@ export default function PlaygroundScreen() {
     testMeasureThree.put(new Note("G5", new Beat("1/3")), Position.of("4::3"))
     stave.put(testMeasureThree)
 
+    const testMeasureFour = new Measure();
+
+    testMeasureFour.put(new Note("D5", new Beat("1/4")), Position.of("1::4"))
+    testMeasureFour.put(new Note("E5", new Beat("1/5")), Position.of("2::5"))
+    testMeasureFour.put(new Note("F5", new Beat("1/3")), Position.of("3::3"))
+    testMeasureFour.put(new Note("G5", new Beat("1/3")), Position.of("4::3"))
+    stave.put(testMeasureFour)
+
     stave.put(testMeasure)
 
 
