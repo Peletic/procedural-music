@@ -7,7 +7,7 @@ export default function Home() {
     const [pageState, setPageState] = useState(0)
     return (
         <div
-            className="flex min-h-screen items-center justify-center bg-blue-50 dark:bg-black text-black dark:text-purple-100">
+            className="flex min-h-screen items-center justify-center bg-background dark:bg-background text-black dark:text-purple-100">
             <main>
                 {pageState === 0 ?
                     <WelcomeScreen setState={setPageState}/>

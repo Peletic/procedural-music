@@ -50,7 +50,6 @@ export default function NoteComponent({note, pos}: { note: Note, pos: ElementPos
 
     const number = (NUMBER_WHOLE_STEP[note.note.toString().substring(0, 1) as WholeStep]) + (parseInt(note.note.toString().substring(note.note.toString().length - 1)) * 7) - 28
     const svgName = `${number < 7 ? "upwards" : "downwards"}-${note.duration.name}.svg`
-    console.log(number)
     const topMargin = F_BASE_VERTICAL_OFFSET_MAP[note.duration.name] - number * VERTICAL_OFFSET_INTERVAL[note.duration.name] + (number < 7 ? 0 : DOWNWARDS_OFFSET[note.duration.name])
 
     const addt: { [p: string]: any } = {}

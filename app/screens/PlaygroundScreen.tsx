@@ -6,6 +6,7 @@ import TestPlayAudio from "@/app/components/TestPlayAudio";
 import SheetComponent from "@/app/components/SheetComponent";
 import BPMInputField from "@/app/components/BPMInputField";
 import {useState} from "react";
+import DarkModeToggle from "@/app/components/DarkModeToggle";
 
 export default function PlaygroundScreen() {
     const initStave = new Stave(120);
@@ -27,7 +28,7 @@ export default function PlaygroundScreen() {
     testMeasureTwo.put(new Note("Bb4", new Beat("1/1")), Position.of("3::3"))
     testMeasureTwo.put(new Note("C5", new Beat("1/3")), Position.of("4::3"))
     initStave.put(testMeasureTwo)
-    
+
     const testMeasureThree = new Measure();
 
     testMeasureThree.put(new Note("D5", new Beat("1/3")), Position.of("1::3"))
@@ -57,10 +58,16 @@ export default function PlaygroundScreen() {
     const [stave, setStave] = useState(initStave)
 
     return (<>
-        <div className={"text-black w-full h-[120em] flex flex-row content-center justify-between align-middle pt-7 mt-4 gap-12"}>
-            <div className={"flex flex-row flex-wrap max-w-[30em] align-middle gap-4"}>
-            <TestPlayAudio stave={stave}/>
-            <BPMInputField stave={stave} setStave={setStave}/>
+        <div
+            className={"text-black w-full min-h-full flex flex-row content-center justify-between align-middle pt-7 mt-4 gap-12"}>
+            <div className={"flex flex-col justify-between"}>
+                <div className={"flex flex-row flex-wrap max-w-[30em] align-middle gap-4"}>
+                    <TestPlayAudio stave={stave}/>
+                    <BPMInputField stave={stave} setStave={setStave}/>
+                </div>
+                <div>
+                    <DarkModeToggle/>
+                </div>
             </div>
             <br/>
             <SheetComponent stave={stave}/>
