@@ -5,7 +5,6 @@ import {IMeasureElement, Measure, Position} from "@/src/units/measure";
 import {Note} from "@/src/units/note";
 import {Pitch} from "@/src/units/pitch";
 import {Beat} from "@/src/units/beat";
-import {measureMemory} from "node:vm";
 
 export class MusicGenerator {
 
@@ -15,6 +14,7 @@ export class MusicGenerator {
 
         const chordsInProgression = random.randomInRange(args.minChordsInProgression, args.maxChordsInProgression)
         const baseRoot = random.randomInRange(args.minRoot, args.maxRoot)
+        const startingRoot = random.randomInRange(args.minProgressionRootDelta, args.maxProgressionRootDelta) * (random.randomInRange(1, 2) === 1 ? 1 : -1) + baseRoot
         const progression = []
 
         const numChords = Object.entries(C_TETRADS).length + Object.entries(C_TRIADS).length
@@ -30,7 +30,24 @@ export class MusicGenerator {
             }
         }
 
-        for (let i = 0; i < chordsInProgression; i++) {
+        if (true) {
+            const chordIdx = random.randomInRange(1, numChords)
+            const chord = getChord(chordIdx - 1)
+
+            console.log(chord)
+            console.log(chordIdx)
+            console.log(chord[1])
+
+            const rawChord = chord[1]
+
+            progression.push({
+                applied: Chord.apply(startingRoot, rawChord),
+                root: startingRoot,
+                baseChordName: chord[0]
+            })
+        }
+
+        for (let i = 0; i < chordsInProgression - (args.loop ? 2 : 1); i++) {
             const chordIdx = random.randomInRange(1, numChords)
             const chord = getChord(chordIdx - 1)
 
@@ -44,6 +61,23 @@ export class MusicGenerator {
             progression.push({
                 applied: Chord.apply(baseRoot + rootDelta, rawChord),
                 root: baseRoot + rootDelta,
+                baseChordName: chord[0]
+            })
+        }
+
+        if (args.loop) {
+            const chordIdx = random.randomInRange(1, numChords)
+            const chord = getChord(chordIdx - 1)
+
+            console.log(chord)
+            console.log(chordIdx)
+            console.log(chord[1])
+
+            const rawChord = chord[1]
+
+            progression.push({
+                applied: Chord.apply(startingRoot, rawChord),
+                root: startingRoot,
                 baseChordName: chord[0]
             })
         }
@@ -71,16 +105,19 @@ export interface MusicGeneratorArgs {
     minRoot: number,
     maxRoot: number,
     minProgressionRootDelta: number,
-    maxProgressionRootDelta: number
+    maxProgressionRootDelta: number,
+    loop: boolean
 }
 
 export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
-    minChordsInProgression: number = 2
-    maxChordsInProgression: number = 5
+    minChordsInProgression: number = 3
+    maxChordsInProgression: number = 3
     minRoot: number = 50
     maxRoot: number = 70
     minProgressionRootDelta: number = 1
     maxProgressionRootDelta: number = 1
+    loop = true
+
 
 }
 
