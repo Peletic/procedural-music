@@ -59,7 +59,7 @@ export const C_TETRADS: { [name: string]: tetrad } = {
 
 export class Chord {
     public static apply(root: number, chord: triad | tetrad) {
-        return chord.map((el) => el + root)
+        return chord.map((el) => el + root - 1)
     }
 
     public static toNotes(root: number, chord: triad | tetrad, duration: NoteDuration) {
