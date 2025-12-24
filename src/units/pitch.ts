@@ -1,6 +1,5 @@
 import {NUMBER_TONE_LOOKUP, Octave, Semitone, Tone, TONE_NUMBER_LOOKUP, ToneOctave} from "./tone";
 import {NumRange} from "../helpers/types";
-import Interceptors from "undici-types/interceptors";
 
 
 export class Pitch {
@@ -14,13 +13,17 @@ export class Pitch {
         this.tone_octave = `${this.tone}${this.octave}`
     }
 
-    public static of(val: number | Tone | ToneOctave) {
+    public static of(val: number | Tone | ToneOctave | Pitch) {
         if (typeof val == "number") {
             return new Pitch(val)
         } else {
+            let value = val
+            if (val instanceof Pitch) {
+                value = val.tone_octave
+            }
             return new Pitch(
-                TONE_NUMBER_LOOKUP[val.toString().replace(/(0|[1-9]|1[01])/g, "") as Semitone]
-                + (parseInt(val.toString().replace(/\D/g, "")) * 12 + 12))
+                TONE_NUMBER_LOOKUP[value.toString().replace(/(0|[1-9]|1[01])/g, "") as Semitone]
+                + (parseInt(value.toString().replace(/\D/g, "")) * 12 + 12))
         }
     }
 
