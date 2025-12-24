@@ -15,25 +15,35 @@ export class Position {
     public static of(position: ElementPosition): Position {
         return new this(parseInt(position.split("::")[0]) as unknown as NumRange<1, 64>, parseInt(position.split("::")[1]) as unknown as BeatLevel)
     }
+
+    public valueOf() : ElementPosition {
+        return this.position
+    }
 }
 
 export type ElementPosition = JoinedNumberCombinations<"::", NumRange<1, 64>, BeatLevel>
 
 export class Measure {
-    public static from(elements: { element: IMeasureElement, position: Position }[]): Measure {
+    public static from(elements: { element: IMeasureElement, position: Position | ElementPosition }[]): Measure {
         const measure = new Measure();
+
+
+
         for (let element of elements) {
+
             measure.put(element.element, element.position)
         }
         return measure
     }
 
-    public put(element: IMeasureElement, position: Position) {
-        this.collection[position.position].push(element)
+    public put(element: IMeasureElement, position: Position | ElementPosition ) {
+        const pos = (position.valueOf ? position.valueOf() : position) as unknown as ElementPosition
+        this.collection[pos].push(element)
     }
 
-    public at(position: Position) {
-        return this.collection[position.position]
+    public at(position: Position | ElementPosition) {
+        const pos = (position.valueOf ? position.valueOf() : position) as unknown as ElementPosition
+        return this.collection[pos]
     }
 
     public collection: { [pos in ElementPosition]: IMeasureElement[] } = {

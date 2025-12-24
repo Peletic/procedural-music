@@ -6,9 +6,11 @@ export class Beat {
     public denominator : number
     public dotted : boolean
     public name : string
+    public numerator : number
 
-    constructor(duration : NoteDuration) {
+    constructor(public duration : NoteDuration) {
         let drSplit = duration.toString().split("/")
+        this.numerator = parseFloat(drSplit[0])
         this.denominator = parseInt(drSplit[1])
         this.dotted = duration[0].endsWith(".5")
         this.name = BEAT_NAMES[duration]
@@ -16,6 +18,16 @@ export class Beat {
 
     public toString() : string {
         return this.name
+    }
+
+    [Symbol.toPrimitive](hint: string) {
+        if (hint === "default") {
+            return this.duration
+        } else if (hint === "number") {
+            return this.numerator / this.denominator
+        } else if (hint === "string") {
+            return this.duration
+        }
     }
 }
 
