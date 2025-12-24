@@ -1,7 +1,7 @@
 import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/algorithm";
 import Stave from "@/src/units/stave";
 import {Dispatch, SetStateAction} from "react";
-import {C_TETRADS, Chord} from "@/src/units/chord";
+import {C_TETRADS, C_TRIADS, Chord} from "@/src/units/chord";
 import {IMeasureElement, Measure, Position} from "@/src/units/measure";
 import {Note} from "@/src/units/note";
 import {Pitch} from "@/src/units/pitch";
@@ -11,7 +11,7 @@ export default function FillChordsButton({setStave}: { setStave: Dispatch<SetSta
     return (<button onClick={(e) => {
         const stave = new Stave(120);
         const measures = []
-        for (const tetrad of Object.values(C_TETRADS)) {
+        for (const tetrad of Object.values(C_TRIADS)) {
             measures.push(Measure.from((
                 Chord.apply(60, tetrad).map((val) => {
                         return {

@@ -21,10 +21,11 @@ export class MusicGenerator {
         const getChord = (idx: number) => {
             const numTetrad = Object.entries(C_TETRADS).length
 
-            if (idx <= numTetrad) {
+            if (idx < numTetrad) {
                 return Object.entries(C_TETRADS)[idx]
             } else {
                 let newNum = idx - numTetrad
+                console.log(Object.entries(C_TRIADS) + " at idx " + newNum)
                 return Object.entries(C_TRIADS)[newNum]
             }
         }

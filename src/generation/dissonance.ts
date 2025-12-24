@@ -5,10 +5,11 @@ import {Pitch} from "@/src/units/pitch";
 // Arbitrary scale of dissonance
 export type Dissonance = NumRange<0, 10>
 
-export const DISSONANT_ZONE_RANGE = 0.167
+export const DISSONANT_ZONE_RANGE = 0.137
 export const DISSONANT_ZONE_D_START = 0.04
-export const LOWER_DISSONANT_ZONE = [(1 - DISSONANT_ZONE_RANGE - DISSONANT_ZONE_D_START), (1 - DISSONANT_ZONE_D_START)]
 export const UPPER_DISSONANT_ZONE = [(1 + DISSONANT_ZONE_D_START), (1 + DISSONANT_ZONE_D_START + DISSONANT_ZONE_RANGE)]
+
+console.log(`${UPPER_DISSONANT_ZONE}`)
 
 export const DISSONANCE_FALLOUT_ZONE = 0.5
 
@@ -21,45 +22,21 @@ export function measureDissonance(noteA: Note | Pitch, noteB: Note | Pitch): Dis
 
     const frequencyA = pitchToFrequency(Pitch.of(noteA))
     const frequencyB = pitchToFrequency(Pitch.of(noteB))
-    const ratio = frequencyA / frequencyB
-    console.log(`Ratio: ${ratio}`)
-    const lower = ratio < 1
+    let ratio = frequencyA / frequencyB
+    if (ratio < 1) ratio = Math.pow(ratio, -1)
+    //console.log(`Ratio: ${ratio} for ${frequencyA} / ${frequencyB} of ${Pitch.of(noteA).tone_octave}/${Pitch.of(noteB).tone_octave}`)
+
 
     let val = 0
 
-    if (lower) {
-        const isInLowerBounds = LOWER_DISSONANT_ZONE[0] <= ratio && ratio <= LOWER_DISSONANT_ZONE[1]
-        const isInFallout = (1 - DISSONANCE_FALLOUT_ZONE) < ratio && ratio < LOWER_DISSONANT_ZONE[1]
 
-        if (isInLowerBounds) {
-            val += 5
+    //console.log(`${UPPER_DISSONANT_ZONE[0] <= ratio} lower ${ratio <= UPPER_DISSONANT_ZONE[1]} upper`)
+    const isInUpperBounds = UPPER_DISSONANT_ZONE[0] <= ratio && ratio <= UPPER_DISSONANT_ZONE[1]
 
-            // might work on making it weightier depending on how close it is to the peak perceived
-            /*
-            const peakDissonance = 1 - DISSONANT_ZONE_D_START * 2
-
-            val += (ratio / peakDissonance*/
-        } /*else if (isInFallout && !isInLowerBounds) {
-            val += 1
-
-            const d = (1 - DISSONANCE_FALLOUT_ZONE) - ratio
-
-        }*/
-    } else if (!lower) {
-        const isInUpperBounds = UPPER_DISSONANT_ZONE[0] <= ratio && ratio <= UPPER_DISSONANT_ZONE[1]
-        const isInFallout = (1 + DISSONANCE_FALLOUT_ZONE) > ratio && ratio > UPPER_DISSONANT_ZONE
-
-        if (isInUpperBounds) {
-            val += 5
-
-        } /*else if (isInFallout && !isInUpperBounds) {
-            val += 1
-
-            const falloutScale = LOWER_DISSONANT_ZONE[0] - (1 - DISSONANCE_FALLOUT_ZONE)
-
-            val += Math.floor(3 * ((falloutScale / (ratio - (1 + DISSONANCE_FALLOUT_ZONE))) - 1))
-        }*/
+    if (isInUpperBounds) {
+        val += 5
     }
+
 
     return val as Dissonance
 }
@@ -70,24 +47,29 @@ export function pitchToFrequency(pitch: Pitch): number {
     const referencePitch = Pitch.of("A4").value
     const relativePitch = pitch.value - referencePitch
     return Math.pow(2, relativePitch / 12) * 440;
+
 }
 
-export function netDissonance(...pitches : Pitch[]) {
+export function netDissonance(...pitches: Pitch[]) {
     const num = pitches.length
     let sum = 0
 
     for (let x = 0; x < num; x++) {
-        for (let y = x + 1; y <= num; y++) {
+        for (let y = x + 1; y < num; y++) {
             let pair
-            if (y === num) {
-                pair = pitches[0]
-            } else {
-                pair = pitches[y]
-            }
 
+                pair = pitches[y]
+
+            console.log(`Pair: ${pitches[x]}x${pair} = ${measureDissonance(pitches[x], pair)}`)
             sum += measureDissonance(pitches[x], pair)
         }
     }
 
-    return sum/num
+    return sum / num
 }
+/*
+const cd = measureDissonance("C4", "D4")
+const cs = measureDissonance("C4", "D#4")
+const ce = measureDissonance("E4", "G4")
+
+console.log(`${cd} ${cs} ${ce}`)*/
