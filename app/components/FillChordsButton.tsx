@@ -22,6 +22,7 @@ export default function FillChordsButton({setStave}: { setStave: Dispatch<SetSta
                 )
             )))
         }
+        console.log(measures)
         measures.forEach(el => stave.put(el))
         setStave(stave)
     }}

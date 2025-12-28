@@ -16,13 +16,12 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
         console.log((array as Note[]).map((el) => Pitch.of(el.note)))
         console.log(netDissonance(...(array as Note[]).map((el) => Pitch.of(el.note))))
         for (let el of array as Note[]) {
-
             instruments[0].play(el.note, 0, {duration: (((tr*4) / Math.pow(2, el.duration.denominator-1)) / 1000), release: (((tr*4) / Math.pow(2, el.duration.denominator-1)) / 1000)})
         }
 
     }
 
-    let i = 64
+    let i = 1
     let n = 0;
     const begin = (instruments: Player[], interrupted: number, setInterrupted: {
         (value: SetStateAction<number>): void;
@@ -42,12 +41,12 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
         }
 
         const res = []
-        if (i % 64 == 0) res.push(...measures[n].at(Position.of(`${(i) / 64}::1` as ElementPosition)))
-        if (i % 32 == 0) res.push(...measures[n].at(Position.of(`${(i) / 32}::2` as ElementPosition)))
-        if (i % 16 == 0) res.push(...measures[n].at(Position.of(`${(i) / 16}::3` as ElementPosition)))
-        if (i % 8 == 0) res.push(...measures[n].at(Position.of(`${(i) / 8}::4` as ElementPosition)))
-        if (i % 4 == 0) res.push(...measures[n].at(Position.of(`${(i) / 4}::5` as ElementPosition)))
-        if (i % 2 == 0) res.push(...measures[n].at(Position.of(`${(i) / 2}::6` as ElementPosition)))
+        if ((i-1) % 64 == 0) res.push(...(measures[n].at(Position.of(`${(i + 63) / 64}::1` as ElementPosition))))
+        if ((i-1) % 32 == 0) res.push(...(measures[n].at(Position.of(`${(i + 31) / 32}::2` as ElementPosition))))
+        if ((i-1) % 16 == 0) res.push(...(measures[n].at(Position.of(`${(i + 15) / 16}::3` as ElementPosition))))
+        if ((i-1) % 8 == 0) res.push(...(measures[n].at(Position.of(`${(i + 7) / 8}::4` as ElementPosition))))
+        if ((i-1) % 4 == 0) res.push(...(measures[n].at(Position.of(`${(i + 3) / 4}::5` as ElementPosition))))
+        if ((i-1) % 2 == 0) res.push(...(measures[n].at(Position.of(`${(i + 1) / 2}::6` as ElementPosition))))
 
         if (res.length >= 1) play(res, instruments)
 

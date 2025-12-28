@@ -10,6 +10,7 @@ import DarkModeToggle from "@/app/components/DarkModeToggle";
 import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/algorithm";
 import RegenerateButton from "@/app/components/RegenerateButton";
 import FillChordsButton from "@/app/components/FillChordsButton";
+import ArpeggiateButton from "@/app/components/ArpeggiateButton";
 
 export default function PlaygroundScreen() {
     /*const initStave = new Stave(120);
@@ -69,6 +70,7 @@ export default function PlaygroundScreen() {
                     <BPMInputField stave={stave} setStave={setStave}/>
                     <RegenerateButton setStave={setStave}/>
                     <FillChordsButton setStave={setStave}/>
+                    <ArpeggiateButton setStave={setStave}/>
                 </div>
                 <div>
                     <DarkModeToggle/>

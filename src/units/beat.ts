@@ -33,7 +33,7 @@ export class Beat {
 
 export type BeatLevel = NumRange<1, 6>
 export type BeatLength = 1 | 1.5
-export type NoteDuration = JoinedNumberCombinations<"/", BeatLength, BeatLevel>
+export type  NoteDuration = JoinedNumberCombinations<"/", BeatLength, BeatLevel>
 
 export const FULL_BEAT_NAMES : {[p in JoinedNumberCombinations<"/", 1, BeatLevel>]: string}= {
     "1/1": "whole_note",

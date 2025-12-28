@@ -4,8 +4,8 @@ import {Beat, NoteDuration} from "@/src/units/beat";
 import {Note} from "@/src/units/note";
 import {Pitch} from "./pitch";
 
-export type triad = [number, number, number]
-export const C_TRIADS: { [name: string]: triad } = {
+export type Triad = [number, number, number]
+export const C_TRIADS: { [name: string]: Triad } = {
     "Cmaj": [1, 5, 8],
     "Cmin": [1, 4, 8],
     "Cdim": [1, 4, 7],
@@ -19,8 +19,8 @@ export const C_TRIADS: { [name: string]: triad } = {
     "Cminadd4no5": [1, 4, 6]
 }
 
-export type tetrad = [number, number, number, number]
-export const C_TETRADS: { [name: string]: tetrad } = {
+export type Tetrad = [number, number, number, number]
+export const C_TETRADS: { [name: string]: Tetrad } = {
     "Cmaj7": [1, 5, 8, 12],
     "C7": [1, 5, 8, 11],
     "C6": [1, 5, 8, 10],
@@ -58,11 +58,11 @@ export const C_TETRADS: { [name: string]: tetrad } = {
 }
 
 export class Chord {
-    public static apply(root: number, chord: triad | tetrad) {
+    public static apply(root: number, chord: Triad | Tetrad) {
         return chord.map((el) => el + root - 1)
     }
 
-    public static toNotes(root: number, chord: triad | tetrad, duration: NoteDuration) {
+    public static toNotes(root: number, chord: Triad | Tetrad, duration: NoteDuration) {
         const applied = Chord.apply(root, chord)
         return applied.map((val) => new Note(Pitch.of(val).tone_octave, new Beat(duration)))
     }

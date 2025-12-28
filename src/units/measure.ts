@@ -1,5 +1,6 @@
 import {Beat, BeatLevel} from "./beat";
 import {JoinedNumberCombinations, NumRange} from "../helpers/types";
+import {Note} from "../units/note"
 
 export interface IMeasureElement {
     duration: Beat
@@ -16,7 +17,7 @@ export class Position {
         return new this(parseInt(position.split("::")[0]) as unknown as NumRange<1, 64>, parseInt(position.split("::")[1]) as unknown as BeatLevel)
     }
 
-    public valueOf() : ElementPosition {
+    public valueOf(): ElementPosition {
         return this.position
     }
 }
@@ -26,9 +27,6 @@ export type ElementPosition = JoinedNumberCombinations<"::", NumRange<1, 64>, Be
 export class Measure {
     public static from(elements: { element: IMeasureElement, position: Position | ElementPosition }[]): Measure {
         const measure = new Measure();
-
-
-
         for (let element of elements) {
 
             measure.put(element.element, element.position)
@@ -36,14 +34,80 @@ export class Measure {
         return measure
     }
 
-    public put(element: IMeasureElement, position: Position | ElementPosition ) {
-        const pos = (position.valueOf ? position.valueOf() : position) as unknown as ElementPosition
+    public put(element: IMeasureElement, position: Position | ElementPosition) {
+        const pos = (position instanceof Position ? position.valueOf() : position) as unknown as ElementPosition
         this.collection[pos].push(element)
     }
 
     public at(position: Position | ElementPosition) {
         const pos = (position.valueOf ? position.valueOf() : position) as unknown as ElementPosition
         return this.collection[pos]
+    }
+
+    public static lastOccupiedPosition(measure : Measure) : Position {
+        return Position.of(Object.entries(measure.collection).filter(([idx, content]) => content.length > 0).sort(([idxA, contentA], [idxB, contentB]) => (idxB.split("::")[0] / Math.pow(2, idxB.split("::")[1] - 1)) - (idxA.split("::")[0] / Math.pow(2, idxA.split("::")[1] - 1)))[0][0])
+    }
+
+    public static join(measureA: Measure, measureB: Measure, startingPosition: ElementPosition) {
+        const transformedB: { element: Note, position: ElementPosition }[] = []
+        const startingLevel = Position.of(startingPosition).level
+        const startingN = Position.of(startingPosition).nth
+
+        for (let el of Object.entries(measureB.collection)) {
+
+            if (el[1].length == 0) continue
+
+            const diff = Math.pow(2, Position.of(startingPosition).level - 1) / Math.pow(2, Position.of(el[0] as ElementPosition).level - 1)
+            const elLevel = Position.of(el[0] as ElementPosition).level
+            const elN = Position.of(el[0] as ElementPosition).nth
+
+            let newPosition
+
+            if (startingLevel >= elLevel) {
+                newPosition = `${startingN + (elN * diff)}::${startingLevel}`
+            } else {
+
+                newPosition = `${(startingN * diff) + elN}::${elLevel}`
+            }
+            for (const a of el[1]) {
+                transformedB.push({element: a as Note, position: newPosition as ElementPosition})
+            }
+        }
+
+        const fit: { element: IMeasureElement, position: Position }[] = []
+        const overflow: { element: IMeasureElement, position: Position }[] = []
+
+        for (const item of transformedB) {
+
+            const base = parseInt(item.position.toString().split("::")[1])
+            const n = parseInt(item.position.toString().split("::")[0])
+
+            if (n > Math.pow(2, startingLevel - 1)) {
+                overflow.push({
+                    element: item.element,
+                    position: new Position((n - Math.pow(2, startingLevel - 1)) as NumRange<1, 64>, base as BeatLevel)
+                })
+            } else {
+                fit.push({element: item.element, position: Position.of(item.position)})
+            }
+        }
+
+        const newMeasureA = Measure.from(fit)
+        for (const el of Object.entries(measureA.collection)) {
+            if (el[1].length > 0) {
+                for (const a of el[1]) {
+                    newMeasureA.put(a, el[0] as ElementPosition)
+                }
+            }
+        }
+
+        const newMeasureB = Measure.from(overflow)
+
+        if (Object.entries(overflow).length > 0) {
+            return [newMeasureA, newMeasureB]
+        } else {
+            return [newMeasureA]
+        }
     }
 
     public collection: { [pos in ElementPosition]: IMeasureElement[] } = {
