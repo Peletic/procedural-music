@@ -1,69 +1,230 @@
-// huge thanks to https://docs.google.com/document/d/12UO2Vizm4o3paJ08Hgs541Wl6exMUg5Kfa-8G2B3oPQ/edit?tab=t.0
-
-import {Beat, NoteDuration} from "@/src/units/beat";
+import {NUMBER_TONE_LOOKUP, Octave, Tone, TONE_NUMBER_LOOKUP} from "@/src/units/tone";
+import {Pitch} from "@/src/units/pitch";
+import {NumRange} from "@/src/helpers/types";
 import {Note} from "@/src/units/note";
-import {Pitch} from "./pitch";
+import {Beat, NoteDuration} from "@/src/units/beat";
 
-export type Triad = [number, number, number]
-export const C_TRIADS: { [name: string]: Triad } = {
-    "Cmaj": [1, 5, 8],
-    "Cmin": [1, 4, 8],
-    "Cdim": [1, 4, 7],
-    "Csus4": [1, 6, 8],
-    "Csus#4": [1, 7, 8],
-    "Cmaj7no5": [1, 5, 12],
-    "C7no5": [1, 5, 11],
-    "C(#11)no5": [1, 5, 7],
-    "Cadd2no5": [1, 3, 5],
-    "Cminmaj7no5": [1, 4, 12],
-    "Cminadd4no5": [1, 4, 6]
-}
+abstract class Chord {
+    public root: Tone
+    public rootValue: number
 
-export type Tetrad = [number, number, number, number]
-export const C_TETRADS: { [name: string]: Tetrad } = {
-    "Cmaj7": [1, 5, 8, 12],
-    "C7": [1, 5, 8, 11],
-    "C6": [1, 5, 8, 10],
-    "Cadd#4": [1, 5, 7, 8],
-    "Cadd4": [1, 5, 6, 8],
-    "C(#9/b10)": [1, 4, 5, 8],
-    "Cadd2": [1, 3, 5, 8],
-    "C(b9)": [1, 2, 5, 8],
-    "Cminmaj7": [1, 4, 8, 12],
-    "Cmin7": [1, 4, 8, 11],
-    "Cmin6": [1, 4, 8, 10],
-    "Cminadd#4": [1, 4, 7, 8],
-    "Cminadd4": [1, 4, 6, 8],
-    "Cminadd2": [1, 3, 4, 8],
-    "Cminadd(b9)": [1, 2, 4, 8],
-    "Cdim7b5": [1, 4, 7, 12],
-    "Cdim7": [1, 4, 7, 10],
-    "Cdimadd4": [1, 4, 6, 7],
-    "Caugmaj7": [1, 5, 9, 12],
-    "Caug7": [1, 5, 9, 11],
-    "Cmaj7sus4": [1, 6, 8, 12],
-    "C7sus4": [1, 6, 8, 11],
-    "Csus4(#11/b12)": [1, 6, 7, 8],
-    "Cmaj7sus#4": [1, 7, 8, 12],
-    "C7sus#4": [1, 7, 8, 11],
-    "C6sus#4": [1, 7, 8, 10],
-    "Cmaj7(#11)no5": [1, 5, 7, 12],
-    "C7b5": [1, 5, 7, 11],
-    "Cmaj7(#9)no5": [1, 4, 5, 12],
-    "Cmaj7(9)no5": [1, 3, 5, 12],
-    "C7(9)no5": [1, 3, 5, 11],
-    "Cminmaj7(9)no5": [1, 3, 4, 12],
-    "Cmin7(9)no5": [1, 3, 4, 11],
-    "Cmin7(b9)no5": [1, 2, 4, 11]
-}
+    public notes: Tone[] = []
+    public noteValues: number[] = []
 
-export class Chord {
-    public static apply(root: number, chord: Triad | Tetrad) {
-        return chord.map((el) => el + root - 1)
+    abstract get type(): string
+
+    protected abstract get name(): string
+
+    protected abstract get noteIntervals(): number[]
+
+    protected constructor(root: Tone | number) {
+        if (typeof root === "number") {
+            this.root = NUMBER_TONE_LOOKUP[root % 12 as NumRange<0, 11>]
+            this.rootValue = root
+        } else {
+            this.root = root
+            this.rootValue = TONE_NUMBER_LOOKUP[root]
+        }
+
+        this.init()
     }
 
-    public static toNotes(root: number, chord: Triad | Tetrad, duration: NoteDuration) {
-        const applied = Chord.apply(root, chord)
-        return applied.map((val) => new Note(Pitch.of(val).tone_octave, new Beat(duration)))
+    protected init() {
+        for (const interval of this.noteIntervals) {
+            this.notes.push(Pitch.of(this.rootValue + interval).tone)
+            this.noteValues.push(this.rootValue + interval)
+        }
+    }
+
+    public toString(): string {
+        return `${this.root} ${this.name}`
     }
 }
+
+abstract class TriadChord extends Chord {
+    get type() {
+        return "Triad"
+    }
+}
+
+class MajorTriadChord extends TriadChord {
+    get name() {
+        return "Major"
+    }
+
+    get noteIntervals() {
+        return [0, 4, 7]
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+class MinorTriadChord extends TriadChord {
+    get name() {
+        return "Minor"
+    }
+
+    get noteIntervals() {
+        return [0, 3, 7]
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+class AugmentedTriadChord extends TriadChord {
+    get name() {
+        return "Augmented"
+    }
+
+    get noteIntervals() {
+        return [0, 4, 8]
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+class DiminishedTriadChord extends TriadChord {
+    get name() {
+        return "Diminished"
+    }
+
+    get noteIntervals() {
+        return [0, 3, 6]
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+abstract class SuspendedChord extends TriadChord {}
+
+class SecondSuspendedChord extends SuspendedChord {
+    get name() {
+        return "Suspended 2nd"
+    }
+
+    get noteIntervals() {
+        return [0, 2, 7]
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+class FourthSuspendedChord extends SuspendedChord {
+    get name() {
+        return "Suspended 4th"
+    }
+
+    get noteIntervals() {
+        return [0, 5, 7]
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+abstract class TetradChord extends Chord {
+    get type() {
+        return "Tetrad"
+    }
+}
+
+abstract class SeventhChord extends TetradChord {
+}
+
+class DominantSeventhChord extends SeventhChord {
+    get name() {
+        return "7th"
+    }
+
+    get noteIntervals() {
+        return [0, 4, 7, 10]
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+class MajorSeventhChord extends SeventhChord {
+    get name() {
+        return "Major 7th"
+    }
+
+    get noteIntervals() {
+        return [0, 4, 7, 11]
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+class MinorSeventhChord extends SeventhChord {
+    get name() {
+        return "Minor 7th"
+    }
+
+    get noteIntervals() {
+        return [0, 3, 7, 10]
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+class DiminishedSeventhChord extends SeventhChord {
+    get name() {
+        return "Diminished 7th"
+    }
+
+    get noteIntervals() {
+        return [0, 3, 6, 9]
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+class Voicing {
+    public chord: Chord
+    public inversion: number
+    public octave: Octave
+
+    public get notes(): Pitch[] {
+        const offset = parseInt(this.octave) * 12 + 12
+        const chordNotes = this.chord.noteValues
+        if (this.inversion > 0) {
+            return [...chordNotes.slice(this.inversion - 1), ...chordNotes.slice(0, this.inversion - 1).map((val) => val + 12)].map((noteValue) => new Pitch(noteValue + offset))
+        } else {
+            return chordNotes.map((noteValue) => new Pitch(noteValue + offset))
+        }
+    }
+
+    constructor(chord: Chord, inversion: number = 0, octave: Octave | number = "4") {
+        this.chord = chord
+        this.inversion = inversion % chord.noteValues.length
+        this.octave = octave.toString() as Octave
+    }
+
+    toNotes(duration: NoteDuration): Note[] {
+        return this.notes.map((pitch) => new Note(pitch, new Beat(duration)))
+    }
+}
+
+export const TRIAD_CHORDS = [MajorTriadChord, MinorTriadChord, AugmentedTriadChord, DiminishedTriadChord, SecondSuspendedChord, FourthSuspendedChord]
+export const TETRAD_CHORDS = [DominantSeventhChord, MajorSeventhChord, MinorSeventhChord, DiminishedSeventhChord]
+export const CHORDS = [...TRIAD_CHORDS, ...TETRAD_CHORDS]
+export type Chords = typeof CHORDS[number]
