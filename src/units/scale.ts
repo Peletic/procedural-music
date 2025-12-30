@@ -4,10 +4,11 @@ export abstract class Scale {
     public root: Tone
     public rootValue: number
 
-    public notes: Tone[7] = []
-    public noteValues: number[7] = []
+    public notes: Tone[] = []
+    public noteValues: number[] = []
 
-    abstract get intervals(): number[7]
+    abstract get intervals(): number[]
+    abstract get scaleName(): string
 
     protected constructor(root: Tone | number) {
         if (typeof root === 'number') {
@@ -25,11 +26,19 @@ export abstract class Scale {
             this.noteValues.push(this.rootValue + sum)
         }
     }
+
+    toString() {
+        return `${this.root} ${this.scaleName} Scale`
+    }
 }
 
 export class MajorScale extends Scale {
     get intervals() {
         return [0, 2, 2, 1, 2, 2, 2, 1]
+    }
+
+    get scaleName() {
+        return "Major"
     }
 
     constructor(root: Tone | number) {
@@ -43,7 +52,42 @@ export class MinorScale extends Scale {
         return [0, 2, 1, 2, 2, 1, 2, 2]
     }
 
+    get scaleName() {
+        return "Minor"
+    }
+
     constructor(root: Tone | number) {
         super(root);
     }
 }
+
+export class MajorPentatonicScale extends Scale {
+    get intervals() {
+        return [0, 2, 2, 3, 2, 3]
+    }
+
+    get scaleName() {
+        return "Major Pentatonic"
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+export class MinorPentatonicScale extends Scale {
+    get intervals() {
+        return [0, 3, 2, 2, 3, 2]
+    }
+
+    get scaleName() {
+        return "Minor Pentatonic"
+    }
+
+    constructor(root: Tone | number) {
+        super(root);
+    }
+}
+
+export const SCALES = [MajorScale, MinorScale, MajorPentatonicScale, MinorPentatonicScale]
+export type Scales = typeof SCALES[number]
