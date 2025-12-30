@@ -1,5 +1,5 @@
-import {TONE_NUMBER_LOOKUP, ToneOctave, Tone, WHOLE_STEPS, HALF_STEPS} from "@/src/units/tone";
-import {SCALES} from "@/src/units/scale";
+import {HALF_STEPS, Tone, TONE_NUMBER_LOOKUP, ToneOctave, WHOLE_STEPS} from "@/src/units/tone";
+import {Scale, SCALES} from "@/src/units/scale";
 
 export const ALL_SCALES = genAllScales()
 
@@ -10,7 +10,7 @@ export function matchingScales(notes: ToneOctave[] | Tone[] | number[]) {
         notes = notes.map((noteValue) => noteValue % 12)
     }
 
-    const matchingScales : Scale[] = []
+    const matchingScales: Scale[] = []
 
     for (const scale of ALL_SCALES) {
         if (notes.every((value) => scale.noteValues.includes(value))) {
@@ -21,7 +21,7 @@ export function matchingScales(notes: ToneOctave[] | Tone[] | number[]) {
     return matchingScales
 }
 
-function genAllScales() : Scale[] {
+function genAllScales(): Scale[] {
     const scales = []
     for (const ScaleType of SCALES) {
         for (const step of [...WHOLE_STEPS, ...HALF_STEPS]) {

@@ -1,4 +1,5 @@
 import {NUMBER_TONE_LOOKUP, Tone, TONE_NUMBER_LOOKUP} from "@/src/units/tone";
+import {NumRange} from "@/src/helpers/types";
 
 export abstract class Scale {
     public root: Tone
@@ -12,17 +13,21 @@ export abstract class Scale {
 
     protected constructor(root: Tone | number) {
         if (typeof root === 'number') {
-            this.root = NUMBER_TONE_LOOKUP[root]
+            this.root = NUMBER_TONE_LOOKUP[root as NumRange<0, 11>]
             this.rootValue = root
         } else {
             this.root = root
             this.rootValue = TONE_NUMBER_LOOKUP[root]
         }
 
+        this.init()
+    }
+
+    protected init() {
         let sum = 0
         for (const interval of this.intervals) {
             sum += interval
-            this.notes.push(NUMBER_TONE_LOOKUP[(this.rootValue + sum) % 12])
+            this.notes.push(NUMBER_TONE_LOOKUP[(this.rootValue + sum) % 12 as NumRange<0, 11>])
             this.noteValues.push(this.rootValue + sum)
         }
     }
@@ -91,3 +96,5 @@ export class MinorPentatonicScale extends Scale {
 
 export const SCALES = [MajorScale, MinorScale, MajorPentatonicScale, MinorPentatonicScale]
 export type Scales = typeof SCALES[number]
+
+console.log(`${new MajorScale("C").notes}`)
