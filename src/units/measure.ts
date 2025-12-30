@@ -45,7 +45,7 @@ export class Measure {
     }
 
     public static lastOccupiedPosition(measure: Measure): Position {
-        return Position.of(Object.entries(measure.collection).filter(([idx, content]) => content.length > 0).sort(([idxA, contentA], [idxB, contentB]) => (idxB.split("::")[0] / Math.pow(2, idxB.split("::")[1] - 1)) - (idxA.split("::")[0] / Math.pow(2, idxA.split("::")[1] - 1)))[0][0])
+        return Position.of(Object.entries(measure.collection).filter(([idx, content]) => content.length > 0).sort(([idxA, contentA], [idxB, contentB]) => (parseInt(idxB.split("::")[0]) / Math.pow(2, parseInt(idxB.split("::")[1]) - 1)) - (parseInt(idxA.split("::")[0]) / Math.pow(2, parseInt(idxA.split("::")[1]) - 1)))[0][0] as ElementPosition)
     }
 
     public static join(measureA: Measure, measureB: Measure, startingPosition: ElementPosition) {

@@ -12,9 +12,9 @@ export default function FillChordsButton({setStave}: { setStave: Dispatch<SetSta
         const measures = []
         for (const tetrad of new Array(TETRAD_CHORDS.length).map((n, idx) => new TETRAD_CHORDS[idx](0))) {
             measures.push(Measure.from((
-                new Voicing(tetrad).notes.map((val) => {
+                new Voicing(tetrad).toNotes("1/1").map((val) => {
                         return {
-                            element: ((new Note((val).tone_octave, new Beat("1/1"))) as IMeasureElement),
+                            element: (val as IMeasureElement),
                             position: Position.of("1::1")
                         }
                     }
