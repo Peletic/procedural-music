@@ -12,7 +12,7 @@ export default function ArpeggiateButton({setStave}: { setStave: Dispatch<SetSta
         const chord : Chord = new CHORDS[Math.floor(Math.random() * CHORDS.length)](Math.floor(Math.random()*11))
         const measures = []
         for (let i = 0; i < 5; i++) {
-            measures.push(...Measure.join(Measure.from(arpeggiate({chord: new Voicing(chord, 0).notes}, 60 + i, 1, 4)), Measure.from(arpeggiate({chord: new Voicing(chord, 0).notes.slice(0, 3)}, 60 + i, 2, 4)), "4::4"))
+            measures.push(...Measure.join(Measure.from(arpeggiate({chord: new Voicing(chord).notes}, i, 1, 4)), Measure.from(arpeggiate({chord: new Voicing(chord, 0).notes.slice(0, 3)}, i, 2, 4)), "4::4"))
         }
 
 
