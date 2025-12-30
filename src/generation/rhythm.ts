@@ -16,7 +16,7 @@ export function arpeggiate({chord, rhythm}: {
 
     const up: { element: Note, position: Position }[] = []
     const down: { element: Note, position: Position }[] = []
-    chord.sort((a, b) => (a.value <= b.value))
+    chord.sort((a, b) => (a.value - b.value))
 
 
     for (let n = 0; n < chord.length; n++) {
