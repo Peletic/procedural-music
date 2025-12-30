@@ -31,6 +31,10 @@ export class Pitch {
         return this.tone_octave
     }
 
+    public valueOf(): number {
+        return this.value;
+    }
+
     [Symbol.toPrimitive](hint: string) {
         if (hint === "default") {
             return this.tone_octave

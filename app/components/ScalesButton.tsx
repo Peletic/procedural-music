@@ -5,6 +5,7 @@ import {IMeasureElement, Measure, Position} from "@/src/units/measure";
 import {Note} from "@/src/units/note";
 import {Beat} from "@/src/units/beat";
 import {ALL_SCALES} from "@/src/helpers/scales";
+import { NumRange } from "@/src/helpers/types";
 
 export default function ScalesButton({setStave}: { setStave: Dispatch<SetStateAction<Stave>> }) {
     return (<button onClick={(e) => {
@@ -14,7 +15,7 @@ export default function ScalesButton({setStave}: { setStave: Dispatch<SetStateAc
             measures.push(Measure.from(scale.noteValues.map((note: number, idx: number) => {
                 return {
                     element: new Note(note + 60, new Beat("1/4")) as IMeasureElement,
-                    position: new Position(idx + 1, 4)
+                    position: new Position(idx + 1 as NumRange<1, 64>, 4)
                 }
             })))
         }

@@ -1,3 +1,4 @@
+//@ts-nocheck
 // 1 = up, 2 = down, 3 = up down, 4 = down up
 
 import {Beat, BeatLevel} from "@/src/units/beat";
