@@ -35,7 +35,7 @@ export class Measure {
 
     public put(element: IMeasureElement, position: Position | ElementPosition) {
         const pos = (position instanceof Position ? position.valueOf() : position) as unknown as ElementPosition
-        console.log(pos)
+        //console.log(pos)
         this.collection[pos].push(element)
     }
 
@@ -44,7 +44,7 @@ export class Measure {
         return this.collection[pos]
     }
 
-    public static lastOccupiedPosition(measure : Measure) : Position {
+    public static lastOccupiedPosition(measure: Measure): Position {
         return Position.of(Object.entries(measure.collection).filter(([idx, content]) => content.length > 0).sort(([idxA, contentA], [idxB, contentB]) => (idxB.split("::")[0] / Math.pow(2, idxB.split("::")[1] - 1)) - (idxA.split("::")[0] / Math.pow(2, idxA.split("::")[1] - 1)))[0][0])
     }
 
@@ -109,7 +109,7 @@ export class Measure {
         }
     }
 
-    public static joinMeasures(measures : Measure[]) {
+    public static joinMeasures(measures: Measure[]) {
         const joined = [measures[0]]
 
         for (let i = 1; i < measures.length; i++) {

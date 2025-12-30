@@ -8,11 +8,14 @@ import {Note} from "@/src/units/note";
 export function arpeggiate({chord, rhythm}: {
     chord: Pitch[],
     rhythm?: Beat[]
-}, root: Pitch | number, pattern: 1 | 2, durationBase : BeatLevel, offset = 0 ): { element: IMeasureElement, position: Position }[] {
+}, root: Pitch | number, pattern: 1 | 2, durationBase: BeatLevel, offset = 0): {
+    element: IMeasureElement,
+    position: Position
+}[] {
     const res: IMeasureElement[] = []
 
-    const up: { element: Note, position: ElementPosition }[] = []
-    const down: { element: Note, position: ElementPosition }[] = []
+    const up: { element: Note, position: Position }[] = []
+    const down: { element: Note, position: Position }[] = []
     chord.sort((a, b) => (a.value <= b.value))
 
 

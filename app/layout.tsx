@@ -24,7 +24,7 @@ export default function RootLayout({
             <title>Procedural Music Generation</title>
         </head>
         <body className={"dm-serif-text-regular"}>
-            {children}
+        {children}
         </body>
         </html>
     );

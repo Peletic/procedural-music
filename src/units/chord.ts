@@ -4,7 +4,7 @@ import {NumRange} from "@/src/helpers/types";
 import {Note} from "@/src/units/note";
 import {Beat, NoteDuration} from "@/src/units/beat";
 
-abstract class Chord {
+export abstract class Chord {
     public root: Tone
     public rootValue: number
 
@@ -41,13 +41,13 @@ abstract class Chord {
     }
 }
 
-abstract class TriadChord extends Chord {
+export abstract class TriadChord extends Chord {
     get type() {
         return "Triad"
     }
 }
 
-class MajorTriadChord extends TriadChord {
+export class MajorTriadChord extends TriadChord {
     get name() {
         return "Major"
     }
@@ -61,7 +61,7 @@ class MajorTriadChord extends TriadChord {
     }
 }
 
-class MinorTriadChord extends TriadChord {
+export class MinorTriadChord extends TriadChord {
     get name() {
         return "Minor"
     }
@@ -75,7 +75,7 @@ class MinorTriadChord extends TriadChord {
     }
 }
 
-class AugmentedTriadChord extends TriadChord {
+export class AugmentedTriadChord extends TriadChord {
     get name() {
         return "Augmented"
     }
@@ -89,7 +89,7 @@ class AugmentedTriadChord extends TriadChord {
     }
 }
 
-class DiminishedTriadChord extends TriadChord {
+export class DiminishedTriadChord extends TriadChord {
     get name() {
         return "Diminished"
     }
@@ -103,9 +103,10 @@ class DiminishedTriadChord extends TriadChord {
     }
 }
 
-abstract class SuspendedChord extends TriadChord {}
+export abstract class SuspendedChord extends TriadChord {
+}
 
-class SecondSuspendedChord extends SuspendedChord {
+export class SecondSuspendedChord extends SuspendedChord {
     get name() {
         return "Suspended 2nd"
     }
@@ -119,7 +120,7 @@ class SecondSuspendedChord extends SuspendedChord {
     }
 }
 
-class FourthSuspendedChord extends SuspendedChord {
+export class FourthSuspendedChord extends SuspendedChord {
     get name() {
         return "Suspended 4th"
     }
@@ -133,16 +134,16 @@ class FourthSuspendedChord extends SuspendedChord {
     }
 }
 
-abstract class TetradChord extends Chord {
+export abstract class TetradChord extends Chord {
     get type() {
         return "Tetrad"
     }
 }
 
-abstract class SeventhChord extends TetradChord {
+export abstract class SeventhChord extends TetradChord {
 }
 
-class DominantSeventhChord extends SeventhChord {
+export class DominantSeventhChord extends SeventhChord {
     get name() {
         return "7th"
     }
@@ -156,7 +157,7 @@ class DominantSeventhChord extends SeventhChord {
     }
 }
 
-class MajorSeventhChord extends SeventhChord {
+export class MajorSeventhChord extends SeventhChord {
     get name() {
         return "Major 7th"
     }
@@ -170,7 +171,7 @@ class MajorSeventhChord extends SeventhChord {
     }
 }
 
-class MinorSeventhChord extends SeventhChord {
+export class MinorSeventhChord extends SeventhChord {
     get name() {
         return "Minor 7th"
     }
@@ -184,7 +185,7 @@ class MinorSeventhChord extends SeventhChord {
     }
 }
 
-class DiminishedSeventhChord extends SeventhChord {
+export class DiminishedSeventhChord extends SeventhChord {
     get name() {
         return "Diminished 7th"
     }
@@ -198,7 +199,7 @@ class DiminishedSeventhChord extends SeventhChord {
     }
 }
 
-class Voicing {
+export class Voicing {
     public chord: Chord
     public inversion: number
     public octave: Octave

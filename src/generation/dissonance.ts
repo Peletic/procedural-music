@@ -58,7 +58,7 @@ export function netDissonance(...pitches: Pitch[]) {
         for (let y = x + 1; y < num; y++) {
             let pair
 
-                pair = pitches[y]
+            pair = pitches[y]
 
             //console.log(`Pair: ${pitches[x]}x${pair} = ${measureDissonance(pitches[x], pair)}`)
             sum += measureDissonance(pitches[x], pair)
@@ -67,6 +67,7 @@ export function netDissonance(...pitches: Pitch[]) {
 
     return sum / num
 }
+
 /*
 const cd = measureDissonance("C4", "D4")
 const cs = measureDissonance("C4", "D#4")

@@ -1,18 +1,18 @@
 import Stave from "@/src/units/stave";
 import {Dispatch, SetStateAction} from "react";
-import {C_TETRADS} from "@/src/units/chord";
+
 import {arpeggiate} from "@/src/generation/rhythm";
 import {Pitch} from "@/src/units/pitch";
 import {Measure} from "@/src/units/measure";
+import {Chord, CHORDS, Voicing} from "@/src/units/chord";
 
 export default function ArpeggiateButton({setStave}: { setStave: Dispatch<SetStateAction<Stave>> }) {
     return (<button onClick={(e) => {
         const stave = new Stave(120)
-        const chord = Object.values(C_TETRADS)[Math.floor(Math.random() * Object.entries(C_TETRADS).length)]
+        const chord : Chord = new CHORDS[Math.floor(Math.random() * CHORDS.length)](Math.floor(Math.random()*11))
         const measures = []
         for (let i = 0; i < 5; i++) {
-            const transformed = chord.map((val) => Pitch.of(val))
-            measures.push(...Measure.join(Measure.from(arpeggiate({chord: transformed}, 60 + i, 1, 4)), Measure.from(arpeggiate({chord: transformed.slice(0, 3)}, 60 + i, 2, 4)), "4::4"))
+            measures.push(...Measure.join(Measure.from(arpeggiate({chord: new Voicing(chord, 0).notes}, 60 + i, 1, 4)), Measure.from(arpeggiate({chord: new Voicing(chord, 0).notes.slice(0, 3)}, 60 + i, 2, 4)), "4::4"))
         }
 
 

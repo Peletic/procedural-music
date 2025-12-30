@@ -39,7 +39,7 @@ export default function TestButton() {
                     }
 
                     const measure = new Measure();
-                    const putChord = (function (base: number, i: number, a: number, b: number,  c: number) {
+                    const putChord = (function (base: number, i: number, a: number, b: number, c: number) {
                         measure.put(new Note(Pitch.of(base + a).tone_octave, new Beat("1/4")), Position.of(`${i}::3` as ElementPosition));
                         measure.put(new Note(Pitch.of(base + 4 + b).tone_octave, new Beat("1/4")), Position.of(`${i}::3` as ElementPosition));
                         measure.put(new Note(Pitch.of(base + 7 + c).tone_octave, new Beat("1/4")), Position.of(`${i}::3` as ElementPosition));

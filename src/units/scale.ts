@@ -9,6 +9,7 @@ export abstract class Scale {
     public noteValues: number[] = []
 
     abstract get intervals(): number[]
+
     abstract get scaleName(): string
 
     protected constructor(root: Tone | number) {
@@ -96,5 +97,3 @@ export class MinorPentatonicScale extends Scale {
 
 export const SCALES = [MajorScale, MinorScale, MajorPentatonicScale, MinorPentatonicScale]
 export type Scales = typeof SCALES[number]
-
-console.log(`${new MajorScale("C").notes}`)

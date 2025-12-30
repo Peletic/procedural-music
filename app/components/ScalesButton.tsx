@@ -1,10 +1,8 @@
-import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/algorithm";
 import Stave from "@/src/units/stave";
 import {Dispatch, SetStateAction} from "react";
-import {C_TETRADS, C_TRIADS, Chord} from "@/src/units/chord";
-import {ElementPosition, IMeasureElement, Measure, Position} from "@/src/units/measure";
+import {Chord} from "@/src/units/chord";
+import {IMeasureElement, Measure, Position} from "@/src/units/measure";
 import {Note} from "@/src/units/note";
-import {Pitch} from "@/src/units/pitch";
 import {Beat} from "@/src/units/beat";
 import {ALL_SCALES} from "@/src/helpers/scales";
 
@@ -13,8 +11,11 @@ export default function ScalesButton({setStave}: { setStave: Dispatch<SetStateAc
         const stave = new Stave(120);
         const measures = []
         for (const scale of ALL_SCALES) {
-            measures.push(Measure.from(scale.noteValues.map((note, idx) => {
-                return {element: new Note(note + 60, new Beat("1/4")) as IMeasureElement, position: new Position(idx + 1, 4)}
+            measures.push(Measure.from(scale.noteValues.map((note: number, idx: number) => {
+                return {
+                    element: new Note(note + 60, new Beat("1/4")) as IMeasureElement,
+                    position: new Position(idx + 1, 4)
+                }
             })))
         }
 

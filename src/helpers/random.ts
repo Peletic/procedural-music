@@ -46,7 +46,7 @@ export class RandomNumberGenerator {
     }
 
     randomInRange(lowerBounds: number, upperBounds: number) {
-        return Math.floor(this.random()*(upperBounds-lowerBounds + 1)+lowerBounds)
+        return Math.floor(this.random() * (upperBounds - lowerBounds + 1) + lowerBounds)
     }
 
     public static createSeed(): string {
