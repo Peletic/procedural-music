@@ -1,0 +1,27 @@
+import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/algorithm";
+import Stave from "@/src/units/stave";
+import {Dispatch, SetStateAction} from "react";
+import {C_TETRADS, C_TRIADS, Chord} from "@/src/units/chord";
+import {ElementPosition, IMeasureElement, Measure, Position} from "@/src/units/measure";
+import {Note} from "@/src/units/note";
+import {Pitch} from "@/src/units/pitch";
+import {Beat} from "@/src/units/beat";
+import {ALL_SCALES} from "@/src/helpers/scales";
+
+export default function ScalesButton({setStave}: { setStave: Dispatch<SetStateAction<Stave>> }) {
+    return (<button onClick={(e) => {
+        const stave = new Stave(120);
+        const measures = []
+        for (const scale of ALL_SCALES) {
+            measures.push(Measure.from(scale.noteValues.map((note, idx) => {
+                return {element: new Note(note + 60, new Beat("1/4")) as IMeasureElement, position: new Position(idx + 1, 4)}
+            })))
+        }
+
+        Measure.joinMeasures(measures).forEach(el => stave.put(el))
+        setStave(stave)
+    }}
+                    className={"text-foreground w-fit h-fit flex flex-col mx-2 justify-center align-middle content-center raleway-text-regular p-2 border-blue-400/20 border-[1px]"}>
+        Fill Scales
+    </button>)
+}

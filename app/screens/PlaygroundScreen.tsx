@@ -11,6 +11,7 @@ import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/algori
 import RegenerateButton from "@/app/components/RegenerateButton";
 import FillChordsButton from "@/app/components/FillChordsButton";
 import ArpeggiateButton from "@/app/components/ArpeggiateButton";
+import ScalesButton from "@/app/components/ScalesButton";
 
 export default function PlaygroundScreen() {
     /*const initStave = new Stave(120);
@@ -71,6 +72,7 @@ export default function PlaygroundScreen() {
                     <RegenerateButton setStave={setStave}/>
                     <FillChordsButton setStave={setStave}/>
                     <ArpeggiateButton setStave={setStave}/>
+                    <ScalesButton setStave={setStave}/>
                 </div>
                 <div>
                     <DarkModeToggle/>

@@ -60,7 +60,7 @@ export function netDissonance(...pitches: Pitch[]) {
 
                 pair = pitches[y]
 
-            console.log(`Pair: ${pitches[x]}x${pair} = ${measureDissonance(pitches[x], pair)}`)
+            //console.log(`Pair: ${pitches[x]}x${pair} = ${measureDissonance(pitches[x], pair)}`)
             sum += measureDissonance(pitches[x], pair)
         }
     }

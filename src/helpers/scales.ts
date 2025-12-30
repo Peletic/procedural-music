@@ -1,9 +1,9 @@
 import {TONE_NUMBER_LOOKUP, ToneOctave, Tone, WHOLE_STEPS, HALF_STEPS} from "@/src/units/tone";
 import {SCALES} from "@/src/units/scale";
 
-const ALL_SCALES = genAllScales()
+export const ALL_SCALES = genAllScales()
 
-export function matchesScales(notes: ToneOctave[] | Tone[] | number[]) {
+export function matchingScales(notes: ToneOctave[] | Tone[] | number[]) {
     if (typeof notes[0] !== "number") {
         notes = notes.map((pitch) => TONE_NUMBER_LOOKUP[pitch.toString().split("::")[0] as Tone])
     } else {

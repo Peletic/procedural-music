@@ -1,13 +1,19 @@
 import {Tone, ToneOctave} from "./tone";
 import {Beat} from "./beat";
 import {IMeasureElement} from "./measure";
+import {Pitch} from "@/src/units/pitch";
 
 export class Note implements IMeasureElement {
     duration : Beat
     note : ToneOctave
-    constructor(note : ToneOctave,  duration : Beat) {
+    constructor(note : ToneOctave | number,  duration : Beat) {
         this.duration = duration
-        this.note = note
+        if (typeof note === "number") {
+            this.note = Pitch.of(note).tone_octave
+        } else {
+            this.note = note
+        }
+
     }
 }
 

@@ -28,7 +28,6 @@ export class Measure {
     public static from(elements: { element: IMeasureElement, position: Position | ElementPosition }[]): Measure {
         const measure = new Measure();
         for (let element of elements) {
-
             measure.put(element.element, element.position)
         }
         return measure
@@ -36,6 +35,7 @@ export class Measure {
 
     public put(element: IMeasureElement, position: Position | ElementPosition) {
         const pos = (position instanceof Position ? position.valueOf() : position) as unknown as ElementPosition
+        console.log(pos)
         this.collection[pos].push(element)
     }
 
@@ -54,7 +54,6 @@ export class Measure {
         const startingN = Position.of(startingPosition).nth
 
         for (let el of Object.entries(measureB.collection)) {
-
             if (el[1].length == 0) continue
 
             const diff = Math.pow(2, Position.of(startingPosition).level - 1) / Math.pow(2, Position.of(el[0] as ElementPosition).level - 1)
@@ -108,6 +107,20 @@ export class Measure {
         } else {
             return [newMeasureA]
         }
+    }
+
+    public static joinMeasures(measures : Measure[]) {
+        const joined = [measures[0]]
+
+        for (let i = 1; i < measures.length; i++) {
+            const recent = joined[joined.length - 1]
+            const together = Measure.join(recent, measures[i], Measure.lastOccupiedPosition(recent).position)
+
+            joined.pop()
+            joined.push(...together)
+        }
+
+        return joined
     }
 
     public collection: { [pos in ElementPosition]: IMeasureElement[] } = {

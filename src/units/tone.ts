@@ -2,8 +2,11 @@ import {NumRange, Permutations} from "../helpers/types";
 
 export type Octave = "1" | "2" | "3" | "4" | "5" | "6" | "7";
 
-export type WholeStep = "C" | "D" | "E" | "F" | "G" | "A" | "B"
-export type HalfStep = "C#" | "D#" | "F#" | "G#" | "A#"
+export const WHOLE_STEPS = ["C", "D", "E", "F", "G", "A", "B"]
+export const HALF_STEPS = ["C#", "D#", "F#", "G#", "A#"]
+
+export type WholeStep = WHOLE_STEPS[number]
+export type HalfStep = HALF_STEPS[number]
 
 export type RedundantHalfStep = "Db" | "Eb" | "Gb" | "Ab" | "Bb"
 
@@ -13,7 +16,7 @@ export type Semitone = WholeStep | HalfStep
 export type Tone = Semitone | RedundantHalfStep
 export type ToneOctave = "A0" | "A#0" | "Bb0" | "B0" | Permutations<Tone, Octave> | "C8"
 
-export const NUMBER_WHOLE_STEP : {[p in WholeStep]: number} = {
+export const NUMBER_WHOLE_STEP: { [p in WholeStep]: number } = {
     C: 0,
     D: 1,
     E: 2,

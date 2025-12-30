@@ -15,18 +15,8 @@ export default function ArpeggiateButton({setStave}: { setStave: Dispatch<SetSta
             measures.push(...Measure.join(Measure.from(arpeggiate({chord: transformed}, 60 + i, 1, 4)), Measure.from(arpeggiate({chord: transformed.slice(0, 3)}, 60 + i, 2, 4)), "4::4"))
         }
 
-        let joined = [measures[0]]
 
-        for (let i = 1; i < measures.length; i++) {
-
-            const recent = joined[joined.length - 1]
-            const together = Measure.join(recent, measures[i], Measure.lastOccupiedPosition(recent).position)
-
-            joined.pop()
-            joined.push(...together)
-        }
-
-        joined.forEach((m) => stave.put(m))
+        Measure.joinMeasures(measures).forEach((m) => stave.put(m))
 
         setStave(stave)
     }}
