@@ -17,7 +17,7 @@ export abstract class Chord {
 
     protected abstract get noteIntervals(): number[]
 
-    protected constructor(root: Tone | number) {
+    public constructor(root: Tone | number) {
         if (typeof root === "number") {
             this.root = NUMBER_TONE_LOOKUP[root % 12 as NumRange<0, 11>]
             this.rootValue = root
@@ -199,6 +199,84 @@ export class DiminishedSeventhChord extends SeventhChord {
     }
 }
 
+export abstract class DiatonicChord extends TriadChord {
+    get type() {
+        return "Diatonic"
+    }
+}
+
+export class FirstDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "I";
+    }
+
+    public get noteIntervals(): number[] {
+        return [0, 4, 7];
+    }
+}
+
+export class SecondDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "ii";
+    }
+
+    public get noteIntervals(): number[] {
+        return [2, 5, 9];
+    }
+}
+
+export class ThirdDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "iii";
+    }
+
+    public get noteIntervals(): number[] {
+        return [4, 7, 11];
+    }
+}
+
+export class FourthDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "IV";
+    }
+
+    public get noteIntervals(): number[] {
+        return [5, 9, 12];
+    }
+}
+
+export class FifthDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "V";
+    }
+
+    public get noteIntervals(): number[] {
+        return [7, 11, 14];
+    }
+}
+
+export class SixthDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "vi";
+    }
+
+    public get noteIntervals(): number[] {
+        return [9, 12, 16];
+    }
+}
+
+export class SeventhDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "vii°7";
+    }
+
+    public get noteIntervals(): number[] {
+        return [11, 14, 17];
+    }
+}
+
+export const DIATONIC = [FirstDiatonic, SecondDiatonic, ThirdDiatonic, FourthDiatonic, FifthDiatonic, SixthDiatonic, SeventhDiatonic]
+
 export class Voicing {
     public chord: Chord
     public inversion: number
@@ -208,7 +286,7 @@ export class Voicing {
         const offset = parseInt(this.octave) * 12 + 12
         const chordNotes = this.chord.noteValues
         if (this.inversion > 0) {
-            return [...chordNotes.slice(this.inversion - 1), ...chordNotes.slice(0, this.inversion - 1).map((val) => val + 12)].map((noteValue) => new Pitch(noteValue + offset))
+            return [...chordNotes.slice(this.inversion), ...chordNotes.slice(0, this.inversion).map((val) => val + 12)].map((noteValue) => new Pitch(noteValue + offset))
         } else {
             return chordNotes.map((noteValue) => new Pitch(noteValue + offset))
         }

@@ -2,8 +2,8 @@ import {Beat, BeatLevel} from "./beat";
 import {JoinedNumberCombinations, NumRange} from "../helpers/types";
 import {Note} from "../units/note"
 
-export interface IMeasureElement {
-    duration: Beat
+export abstract class MeasureElement {
+    abstract duration: Beat
 }
 
 export class Position {
@@ -25,7 +25,7 @@ export class Position {
 export type ElementPosition = JoinedNumberCombinations<"::", NumRange<1, 64>, BeatLevel>
 
 export class Measure {
-    public static from(elements: { element: IMeasureElement, position: Position | ElementPosition }[]): Measure {
+    public static from(elements: { element: MeasureElement, position: Position | ElementPosition }[]): Measure {
         const measure = new Measure();
         for (let element of elements) {
             measure.put(element.element, element.position)
@@ -33,7 +33,7 @@ export class Measure {
         return measure
     }
 
-    public put(element: IMeasureElement, position: Position | ElementPosition) {
+    public put(element: MeasureElement, position: Position | ElementPosition) {
         const pos = (position instanceof Position ? position.valueOf() : position) as unknown as ElementPosition
         //console.log(pos)
         this.collection[pos].push(element)
@@ -73,8 +73,8 @@ export class Measure {
             }
         }
 
-        const fit: { element: IMeasureElement, position: Position }[] = []
-        const overflow: { element: IMeasureElement, position: Position }[] = []
+        const fit: { element: MeasureElement, position: Position }[] = []
+        const overflow: { element: MeasureElement, position: Position }[] = []
 
         for (const item of transformedB) {
 
@@ -123,7 +123,7 @@ export class Measure {
         return joined
     }
 
-    public collection: { [pos in ElementPosition]: IMeasureElement[] } = {
+    public collection: { [pos in ElementPosition]: MeasureElement[] } = {
         "1::1": [],
         "1::2": [],
         "1::3": [],

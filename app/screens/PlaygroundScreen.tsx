@@ -8,6 +8,8 @@ import RegenerateButton from "@/app/components/RegenerateButton";
 import FillChordsButton from "@/app/components/FillChordsButton";
 import ArpeggiateButton from "@/app/components/ArpeggiateButton";
 import ScalesButton from "@/app/components/ScalesButton";
+import ProgressionButton from "@/app/components/ProgressionButton";
+import TCPButton from "@/app/components/TCPButton";
 
 export default function PlaygroundScreen() {
     /*const initStave = new Stave(120);
@@ -69,6 +71,8 @@ export default function PlaygroundScreen() {
                     <FillChordsButton setStave={setStave}/>
                     <ArpeggiateButton setStave={setStave}/>
                     <ScalesButton setStave={setStave}/>
+                    <ProgressionButton setStave={setStave}/>
+                    <TCPButton setStave={setStave}/>
                 </div>
                 <div>
                     <DarkModeToggle/>

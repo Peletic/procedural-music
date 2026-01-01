@@ -1,6 +1,6 @@
 import Stave from "../units/stave";
 import {RandomNumberGenerator} from "@/src/helpers/random";
-import {Voicing} from "@/src/units/chord";
+import {DIATONIC, Voicing} from "@/src/units/chord";
 import {Measure, Position} from "@/src/units/measure";
 import {matchingScales} from "@/src/helpers/scales";
 import {Scale, SCALES} from "@/src/units/scale";
@@ -38,6 +38,37 @@ export class MusicGenerator {
     }
 
     pickProgression(random: RandomNumberGenerator, args: MusicGeneratorArgs, scale: Scale, chordsInProgression: number) {
+        console.log(DIATONIC[0].prototype)
+        const MAJOR_DIATONIC = DIATONIC.filter(Diatonic => Diatonic.prototype.name.toUpperCase() == Diatonic.prototype.name)
+        const MINOR_DIATONIC = DIATONIC.filter(Diatonic => Diatonic.prototype.name.toLowerCase() == Diatonic.prototype.name)
+
+        const USABLE_DIATONIC = [...MAJOR_DIATONIC]
+        const loopTil = (args.loop ? chordsInProgression - 1 : chordsInProgression)
+
+        const toUse = []
+        for (let i = 0; i < loopTil; i++) {
+            const rand = random.randomInRange(0, USABLE_DIATONIC.length - 1)
+            toUse.push(new (USABLE_DIATONIC[rand])(scale.root))
+        }
+
+        if (args.loop) toUse.push(toUse[0])
+
+        const voicings: Voicing[] = []
+        const names: string[] = []
+        for (const chord of toUse) {
+            if (names.length > 0 && names.includes(chord.name)) {
+                const occurrences = names.filter((name) => name === chord.name).length
+                voicings.push(new Voicing(chord, occurrences, occurrences > 2 ? 5 : 4))
+            } else {
+                voicings.push(new Voicing(chord))
+            }
+            names.push(chord.name)
+        }
+
+        return voicings
+    }
+
+    avantGardePickProgression(random: RandomNumberGenerator, args: MusicGeneratorArgs, scale: Scale, chordsInProgression: number) {
         const progression = []
         const possibleChords = this.appliedChordsInScale(scale)
 
@@ -109,17 +140,18 @@ export interface MusicGeneratorArgs {
     persistentKey: boolean,
     progressionTimeout: number,
     maxEndingDissonance: number,
-    maxStartingDissonance: number
+    maxStartingDissonance: number,
+    useMinorDiatonics: boolean
 }
 
 export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
-    minChordsInProgression: number = 6
-    maxChordsInProgression: number = 6
+    minChordsInProgression: number = 4
+    maxChordsInProgression: number = 4
     minRoot: number = 60
     maxRoot: number = 60
     minProgressionRootDelta: number = 0
     maxProgressionRootDelta: number = 0
-    loop = true
+    loop = false
     maxTotalDissonance = 5
     maxIndividualDissonance = 1.5
     minRhythmicDivisions = 1
@@ -133,6 +165,7 @@ export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
     progressionTimeout = 100000
     maxEndingDissonance = 0
     maxStartingDissonance = 0
+    useMinorDiatonics = false
 }
 
 const gen = new MusicGenerator()
