@@ -10,14 +10,14 @@ export default function MeasureComponent({value, idxN, last}: { value: Measure, 
         <div className={"h-[3em]"}>
             <img className={"absolute h-[3em] border-r-[2px] border-black"} style={{width: `${12.5}em`}}
                  src={"staff.svg"}/>
-            {last ? <img className={"absolute h-[3em] border-r-[2px] border-black ml-[6.7em]"} style={{width: `${6}em`}}
-                         src={"staff-end.svg"}/> : null}
+            {last && <img className={"absolute h-[3em] border-r-[2px] border-black ml-[6.7em]"} style={{width: `${6}em`}}
+                         src={"staff-end.svg"}/>}
         </div>
         <div className={"h-[3em]"}>
             <img className={"absolute h-[3em] border-r-[2px] border-black"} style={{width: `${12.5}em`}}
                  src={"staff.svg"}/>
-            {last ? <img className={"absolute h-[3em] border-r-[2px] border-black ml-[6.7em]"} style={{width: `${6}em`}}
-                         src={"staff-end.svg"}/> : null}
+            {last && <img className={"absolute h-[3em] border-r-[2px] border-black ml-[6.7em]"} style={{width: `${6}em`}}
+                         src={"staff-end.svg"}/>}
             {Object.entries(value.collection).map(([pos, notes]) => notes.map((el) => <NoteComponent note={el as Note}
                                                                                                      pos={pos as ElementPosition}
                                                                                                      key={`${(el as Note).note}::${pos}::${(el as Note).duration}`}/>))}
