@@ -1,7 +1,7 @@
 import Stave from "@/src/units/stave";
 import {Dispatch, SetStateAction} from "react";
 import {TETRAD_CHORDS, Voicing} from "@/src/units/chord";
-import {IMeasureElement, Measure, Position} from "@/src/units/measure";
+import {Measure, Position} from "@/src/units/measure";
 
 export default function FillChordsButton({setStave}: { setStave: Dispatch<SetStateAction<Stave>> }) {
     return (<button onClick={(e) => {
@@ -11,7 +11,7 @@ export default function FillChordsButton({setStave}: { setStave: Dispatch<SetSta
             measures.push(Measure.from((
                 new Voicing(tetrad).toNotes("1/1").map((val) => {
                         return {
-                            element: (val as IMeasureElement),
+                            element: (val),
                             position: Position.of("1::1")
                         }
                     }
