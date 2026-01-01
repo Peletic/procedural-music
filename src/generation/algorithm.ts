@@ -58,9 +58,9 @@ export class MusicGenerator {
         for (const chord of toUse) {
             if (names.length > 0 && names.includes(chord.name)) {
                 const occurrences = names.filter((name) => name === chord.name).length
-                voicings.push(new Voicing(chord, occurrences, occurrences > 2 ? 4 : 3))
+                voicings.push(new Voicing(chord, occurrences, occurrences > 2 ? 3 : 2))
             } else {
-                voicings.push(new Voicing(chord))
+                voicings.push(new Voicing(chord, 0, 2))
             }
             names.push(chord.name)
         }
