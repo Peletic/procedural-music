@@ -1,15 +1,6 @@
 import Stave from "@/src/units/stave";
 import {Dispatch, SetStateAction} from "react";
-import {
-    Chord,
-    DIATONIC,
-    DiatonicChord,
-    FifthDiatonic,
-    FirstDiatonic,
-    FourthDiatonic, MajorTriadChord,
-    ThirdDiatonic,
-    Voicing
-} from "@/src/units/chord";
+import {FifthDiatonic, FirstDiatonic, FourthDiatonic, Voicing} from "@/src/units/chord";
 import {Measure} from "@/src/units/measure";
 import {NoteDuration} from "@/src/units/beat";
 

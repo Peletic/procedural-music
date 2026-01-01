@@ -2,9 +2,6 @@ import Stave from "@/src/units/stave";
 import {Dispatch, SetStateAction} from "react";
 import {TETRAD_CHORDS, Voicing} from "@/src/units/chord";
 import {IMeasureElement, Measure, Position} from "@/src/units/measure";
-import {Note} from "@/src/units/note";
-import {Pitch} from "@/src/units/pitch";
-import {Beat} from "@/src/units/beat";
 
 export default function FillChordsButton({setStave}: { setStave: Dispatch<SetStateAction<Stave>> }) {
     return (<button onClick={(e) => {
