@@ -58,7 +58,7 @@ export class MusicGenerator {
         for (const chord of toUse) {
             if (names.length > 0 && names.includes(chord.name)) {
                 const occurrences = names.filter((name) => name === chord.name).length
-                voicings.push(new Voicing(chord, occurrences, occurrences > 2 ? 5 : 4))
+                voicings.push(new Voicing(chord, occurrences, occurrences > 2 ? 4 : 3))
             } else {
                 voicings.push(new Voicing(chord))
             }
@@ -151,7 +151,7 @@ export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
     maxRoot: number = 60
     minProgressionRootDelta: number = 0
     maxProgressionRootDelta: number = 0
-    loop = false
+    loop = true
     maxTotalDissonance = 5
     maxIndividualDissonance = 1.5
     minRhythmicDivisions = 1
