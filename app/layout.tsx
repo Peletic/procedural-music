@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
     title: "Procedural Music Generation",
-    description: "Handmade 'songwriting' algorithm inspired by classical music theory, video game music, and jrock. ",
+    description: "Handmade 'songwriting' program inspired by classical music theory, video game music, and jrock. ",
 };
 
 export default function RootLayout({
