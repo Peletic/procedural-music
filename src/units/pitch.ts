@@ -1,5 +1,6 @@
 import {NUMBER_TONE_LOOKUP, Octave, Semitone, Tone, TONE_NUMBER_LOOKUP, ToneOctave} from "./tone";
 import {NumRange} from "../helpers/types";
+import {Note} from "@/src/units/note";
 
 
 export class Pitch {
@@ -13,13 +14,15 @@ export class Pitch {
         this.tone_octave = `${this.tone}${this.octave}`
     }
 
-    public static of(val: number | Tone | ToneOctave | Pitch) {
+    public static of(val: number | Tone | ToneOctave | Pitch | Note) {
         if (typeof val == "number") {
             return new Pitch(val)
         } else {
             let value = val
             if (val instanceof Pitch) {
                 value = val.tone_octave
+            } else if (val instanceof Note) {
+                value = val.note
             }
             return new Pitch(
                 TONE_NUMBER_LOOKUP[value.toString().replace(/(0|[1-9]|1[01])/g, "") as Semitone]

@@ -1,6 +1,7 @@
 import {NumRange} from "@/src/helpers/types";
 import {Note} from "@/src/units/note";
 import {Pitch} from "@/src/units/pitch";
+import {Tone} from "@/src/units/tone";
 
 // Arbitrary scale of dissonance
 export type Dissonance = NumRange<0, 10>
@@ -50,7 +51,9 @@ export function pitchToFrequency(pitch: Pitch): number {
 
 }
 
-export function netDissonance(...pitches: Pitch[]) {
+export function netDissonance(...pitches: Pitch[] | Tone[]) {
+    if (typeof pitches[0] === "string") pitches = pitches.map((tone) => Pitch.of(tone))
+
     const num = pitches.length
     let sum = 0
 
@@ -61,7 +64,7 @@ export function netDissonance(...pitches: Pitch[]) {
             pair = pitches[y]
 
             //console.log(`Pair: ${pitches[x]}x${pair} = ${measureDissonance(pitches[x], pair)}`)
-            sum += measureDissonance(pitches[x], pair)
+            sum += measureDissonance(pitches[x] as Pitch, pair as Pitch)
         }
     }
 

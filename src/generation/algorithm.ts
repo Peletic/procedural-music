@@ -1,15 +1,11 @@
 import Stave from "../units/stave";
 import {RandomNumberGenerator} from "@/src/helpers/random";
-import {Chord, Voicing} from "@/src/units/chord";
-import {IMeasureElement, Measure, Position} from "@/src/units/measure";
-import {Note} from "@/src/units/note";
-import {Pitch} from "@/src/units/pitch";
-import {Beat} from "@/src/units/beat";
+import {Voicing} from "@/src/units/chord";
+import {Measure, Position} from "@/src/units/measure";
 import {matchingScales} from "@/src/helpers/scales";
-import {MajorScale, Scale, SCALES} from "@/src/units/scale";
+import {Scale, SCALES} from "@/src/units/scale";
 import {ALL_APPLIED_CHORDS} from "@/src/helpers/chords";
-import {pitch} from "next/dist/build/webpack/loaders/next-swc-loader";
-import {unwatchFile} from "node:fs";
+import {netDissonance} from "@/src/generation/dissonance";
 
 export class MusicGenerator {
 
@@ -50,14 +46,35 @@ export class MusicGenerator {
         if (possibleChords.length == 0) return []
 
         let used: number[] = []
-        for (let i = 0; i < (args.loop ? chordsInProgression - 1 : chordsInProgression); i++) {
-            const rand = random.randomInRange(0, possibleChords.length - used.length - 1)
-            const add = used.filter((val) => rand >= val).length ? used.filter((val) => rand >= val).length : 0
-            const appliedChord = possibleChords[rand + add]
 
+        const loopTil = (args.loop ? chordsInProgression - 1 : chordsInProgression)
+        for (let i = 0; i < loopTil; i++) {
+            let appliedChord
+            if (i === loopTil - 1 || i === 0) {
+                let found = false
+                let rand = random.randomInRange(0, possibleChords.length - used.length - 1)
+                let k = 0
+                while (!found && k < args.progressionTimeout) {
+                    const possibleChordDissonance = netDissonance(...new Voicing(possibleChords[rand]).notes)
+                    if (possibleChordDissonance <= (i === 0 ? args.maxStartingDissonance : args.maxEndingDissonance)) {
+                        found = true
+                        break
+                    }
+                    rand = random.randomInRange(0, possibleChords.length - used.length - 1)
+                    k++
+                }
+
+                used.push(rand)
+                appliedChord = possibleChords[rand]
+            } else {
+                const rand = random.randomInRange(0, possibleChords.length - used.length - 1)
+                const add = used.filter((val) => rand >= val).length
+                appliedChord = possibleChords[rand + add]
+                used.push(rand + add)
+            }
 
             console.log(new Voicing(appliedChord).notes)
-            progression.push(new Voicing(appliedChord))
+            progression.push(new Voicing(appliedChord, random.randomInRange(1, 3)))
         }
 
         if (args.loop) {
@@ -66,34 +83,6 @@ export class MusicGenerator {
 
         return progression
     }
-
-    /*pickRandomChord(random: RandomNumberGenerator) {
-        const numTetrads = Object.entries(C_TETRADS).length
-        const numChords = numTetrads + Object.entries(C_TRIADS).length
-
-        const num = random.randomInRange(0, numChords - 1)
-
-        if (num < numTetrads) {
-            return Object.entries(C_TETRADS)[num]
-        } else {
-            return Object.entries(C_TRIADS)[num - numTetrads]
-        }
-    }
-
-    pickRandomTriad(random: RandomNumberGenerator) {
-        const numTriads = Object.entries(C_TRIADS).length
-        const num = random.randomInRange(0, numTriads - 1)
-
-        return Object.entries(C_TRIADS)[num]
-
-    }
-
-    pickRandomTetrad(random: RandomNumberGenerator) {
-        const numTetrads = Object.entries(C_TETRADS).length
-        const num = random.randomInRange(0, numTetrads - 1)
-
-        return Object.entries(C_TETRADS)[num]
-    }*/
 
     appliedChordsInScale(scale: Scale) {
         return ALL_APPLIED_CHORDS.filter((chord) => matchingScales(chord.notes).map((scale) => scale.toString()).includes(scale.toString()))
@@ -118,17 +107,19 @@ export interface MusicGeneratorArgs {
     excludeDiminished: boolean,
     excludeAugmented: boolean,
     persistentKey: boolean,
-    progressionTimeout: number
+    progressionTimeout: number,
+    maxEndingDissonance: number,
+    maxStartingDissonance: number
 }
 
 export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
-    minChordsInProgression: number = 2
+    minChordsInProgression: number = 6
     maxChordsInProgression: number = 6
     minRoot: number = 60
     maxRoot: number = 60
     minProgressionRootDelta: number = 0
     maxProgressionRootDelta: number = 0
-    loop = false
+    loop = true
     maxTotalDissonance = 5
     maxIndividualDissonance = 1.5
     minRhythmicDivisions = 1
@@ -140,6 +131,8 @@ export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
     excludeAugmented = false
     persistentKey = true
     progressionTimeout = 100000
+    maxEndingDissonance = 0
+    maxStartingDissonance = 0
 }
 
 const gen = new MusicGenerator()
