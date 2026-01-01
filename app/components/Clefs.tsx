@@ -2,13 +2,13 @@ export default function Clefs({}) {
     return (<div className={"h-[7.3em] flex flex-col justify-between border-l-2"}>
 
         <div className={"h-[3em] w-[3.1em]"}>
-            <img className={"absolute h-[3em] border-black object-fill"} style={{width: `${3.1}em`}}
+            <img className={"absolute border-black object-fill"} style={{width: `${3.1}em`, height: `${3}em`}}
                  src={"staff.svg"}/>
             <img className={"h-[5em] mt-[-0.95em] ml-[0.1em]"} src={"/treble_clef.svg"}/>
         </div>
 
         <div className={"h-[3em] w-[3.1em]"}>
-            <img className={"absolute h-[3em] border-black object-fill"} style={{width: `${3.1}em`}}
+            <img className={"absolute border-black object-fill"} style={{width: `${3.1}em`, height: `${3}em`}}
                  src={"staff.svg"}/>
             <img className={"h-[2.5em] ml-[0.1em]"} src={"/bass_clef.svg"}/>
         </div>
