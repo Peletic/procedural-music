@@ -11,11 +11,12 @@ import {
     Voicing
 } from "@/src/units/chord";
 import {Measure} from "@/src/units/measure";
+import {NoteDuration} from "@/src/units/beat";
 
 export default function TCPButton({setStave}: { setStave: Dispatch<SetStateAction<Stave>> }) {
     const transformer = (Chord: typeof FirstDiatonic, voicing = 0, octave = 4, base = 2) => {
         return Measure.from(
-            (new Voicing(new Chord(2), voicing, octave).toNotes(`1/${base}`).map((note) => ({
+            (new Voicing(new Chord(2), voicing, octave).toNotes(`1/${base}` as NoteDuration).map((note) => ({
                 element: note,
                 position: `1::2`
             }))))
