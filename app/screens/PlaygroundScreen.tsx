@@ -62,10 +62,12 @@ export default function PlaygroundScreen() {
 
     return (<>
         <div
-            className={"text-black w-full min-h-full flex flex-row content-center justify-between align-middle pt-7 mt-4 gap-12"}>
-            <div className={"flex flex-col justify-between"}>
-                <div className={"flex flex-row flex-wrap max-w-[30em] align-middle gap-4"}>
+            className={"text-black w-full min-h-full flex flex-col-reverse md:flex-row content-center justify-between align-middle pt-7 mt-4 gap-12 md:text-normal"}>
+            <div className={"flex mp-2 md:p-0 flex-col justify-between w-full relative w-[100vw] md:max-w-[30em] text-lg"}>
+                <div
+                    className={"p-2 md:p-0 flex flex-col md:flex-row md:flex-wrap w-full md:max-w-[30em] align-middle gap-4"}>
                     <TestPlayAudio stave={stave}/>
+
                     <BPMInputField stave={stave} setStave={setStave}/>
                     <RegenerateButton setStave={setStave}/>
                     <FillChordsButton setStave={setStave}/>
