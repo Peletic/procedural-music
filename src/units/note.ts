@@ -1,9 +1,9 @@
 import {ToneOctave} from "./tone";
 import {Beat} from "./beat";
-import {IMeasureElement} from "./measure";
+import {MeasureElement} from "./measure";
 import {Pitch} from "@/src/units/pitch";
 
-export class Note implements IMeasureElement {
+export class Note implements MeasureElement {
     duration: Beat
     note: ToneOctave
 
@@ -20,7 +20,7 @@ export class Note implements IMeasureElement {
     }
 }
 
-export class Rest implements IMeasureElement {
+export class Rest implements MeasureElement {
     constructor(public duration: Beat) {
     }
 }

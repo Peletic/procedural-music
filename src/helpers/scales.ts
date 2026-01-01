@@ -9,7 +9,7 @@ export function matchingScales(notes: ToneOctave[] | Tone[] | number[]) {
         notes = notes.map((pitch) => TONE_NUMBER_LOOKUP[pitch.toString().split("::")[0] as Tone])
         console.log(notes)
     } else {
-        notes = notes.map((noteValue) => noteValue % 12)
+        notes = notes.map((noteValue) => (noteValue as number) % 12)
     }
     const matchingScales: Scale[] = []
 
