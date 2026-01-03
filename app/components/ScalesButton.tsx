@@ -13,7 +13,7 @@ export default function ScalesButton({setStave}: { setStave: Dispatch<SetStateAc
         for (const scale of ALL_SCALES) {
             measures.push(Measure.from(scale.noteValues.map((note: number, idx: number) => {
                 return {
-                    element: new Note(note + 48, new Beat("1/4")),
+                    element: new Note(note + 48 , new Beat("1/4")),
                     position: new Position(idx + 1 as NumRange<1, 64>, 4)
                 }
             })))
