@@ -8,17 +8,21 @@ import {ALL_APPLIED_CHORDS} from "@/src/helpers/chords";
 import {netDissonance} from "@/src/generation/dissonance";
 
 export class MusicGenerator {
-
-    generate(length: number, bpm: number, args: MusicGeneratorArgs, seed?: string) {
+    random : RandomNumberGenerator
+    
+    constructor(public args: MusicGeneratorArgs, public seed? : string) {
+        this.random = new RandomNumberGenerator(this.seed)
+    }
+    
+    generate(bpm: number) {
         const stave = new Stave(bpm)
-        const random = new RandomNumberGenerator(seed)
 
-        const chordsInProgression = random.randomInRange(args.minChordsInProgression, args.maxChordsInProgression)
+        const chordsInProgression = this.random.randomInRange(this.args.minChordsInProgression, this.args.maxChordsInProgression)
 
-        const scale = new SCALES[random.randomInRange(0, SCALES.length - 1)](random.randomInRange(0, 11))
+        const scale = new SCALES[this.random.randomInRange(0, SCALES.length - 1)](this.random.randomInRange(0, 11))
         console.log(`${scale} with notes ${scale.notes}`)
 
-        const progression = this.pickProgression(random, args, scale, chordsInProgression)
+        const progression = this.pickProgression(scale, chordsInProgression)
 
         console.log(progression)
 
@@ -37,24 +41,25 @@ export class MusicGenerator {
         return stave
     }
 
-    pickProgression(random: RandomNumberGenerator, args: MusicGeneratorArgs, scale: Scale, chordsInProgression: number) {
+    pickProgression(scale: Scale, chordsInProgression: number) {
         console.log(DIATONIC[0].prototype)
         const MAJOR_DIATONIC = DIATONIC.filter(Diatonic => Diatonic.prototype.name.toUpperCase() == Diatonic.prototype.name)
         const MINOR_DIATONIC = DIATONIC.filter(Diatonic => Diatonic.prototype.name.toLowerCase() == Diatonic.prototype.name)
 
-        const USABLE_DIATONIC = [...MAJOR_DIATONIC]
-        const loopTil = (args.loop ? chordsInProgression - 1 : chordsInProgression)
+        const USABLE_DIATONIC = [...MAJOR_DIATONIC, ...(this.args.excludeMinors ? [] : MINOR_DIATONIC)]
+        const loopTil = (this.args.loop ? chordsInProgression - 1 : chordsInProgression)
 
         const toUse = []
         for (let i = 0; i < loopTil; i++) {
-            const rand = random.randomInRange(0, USABLE_DIATONIC.length - 1)
+            const rand = this.random.randomInRange(0, USABLE_DIATONIC.length - 1)
             toUse.push(new (USABLE_DIATONIC[rand])(scale.root))
         }
 
-        if (args.loop) toUse.push(toUse[0])
+        if (this.args.loop) toUse.push(toUse[0])
 
         const voicings: Voicing[] = []
         const names: string[] = []
+
         for (const chord of toUse) {
             if (names.length > 0 && names.includes(chord.name)) {
                 const occurrences = names.filter((name) => name === chord.name).length
@@ -68,7 +73,11 @@ export class MusicGenerator {
         return voicings
     }
 
-    avantGardePickProgression(random: RandomNumberGenerator, args: MusicGeneratorArgs, scale: Scale, chordsInProgression: number) {
+    pickMelody() {
+
+    }
+
+    avantGardePickProgression(scale: Scale, chordsInProgression: number) {
         const progression = []
         const possibleChords = this.appliedChordsInScale(scale)
 
@@ -78,37 +87,37 @@ export class MusicGenerator {
 
         let used: number[] = []
 
-        const loopTil = (args.loop ? chordsInProgression - 1 : chordsInProgression)
+        const loopTil = (this.args.loop ? chordsInProgression - 1 : chordsInProgression)
         for (let i = 0; i < loopTil; i++) {
             let appliedChord
             if (i === loopTil - 1 || i === 0) {
                 let found = false
-                let rand = random.randomInRange(0, possibleChords.length - used.length - 1)
+                let rand = this.random.randomInRange(0, possibleChords.length - used.length - 1)
                 let k = 0
-                while (!found && k < args.progressionTimeout) {
+                while (!found && k < this.args.progressionTimeout) {
                     const possibleChordDissonance = netDissonance(...new Voicing(possibleChords[rand]).notes)
-                    if (possibleChordDissonance <= (i === 0 ? args.maxStartingDissonance : args.maxEndingDissonance)) {
+                    if (possibleChordDissonance <= (i === 0 ? this.args.maxStartingDissonance : this.args.maxEndingDissonance)) {
                         found = true
                         break
                     }
-                    rand = random.randomInRange(0, possibleChords.length - used.length - 1)
+                    rand = this.random.randomInRange(0, possibleChords.length - used.length - 1)
                     k++
                 }
 
                 used.push(rand)
                 appliedChord = possibleChords[rand]
             } else {
-                const rand = random.randomInRange(0, possibleChords.length - used.length - 1)
+                const rand = this.random.randomInRange(0, possibleChords.length - used.length - 1)
                 const add = used.filter((val) => rand >= val).length
                 appliedChord = possibleChords[rand + add]
                 used.push(rand + add)
             }
 
             console.log(new Voicing(appliedChord).notes)
-            progression.push(new Voicing(appliedChord, random.randomInRange(1, 3)))
+            progression.push(new Voicing(appliedChord, this.random.randomInRange(1, 3)))
         }
 
-        if (args.loop) {
+        if (this.args.loop) {
             progression.push(progression[0])
         }
 
@@ -168,5 +177,5 @@ export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
     useMinorDiatonics = false
 }
 
-const gen = new MusicGenerator()
-gen.generate(6, 120, new DefaultMusicGeneratorArgs())
+const gen = new MusicGenerator(new DefaultMusicGeneratorArgs())
+gen.generate(120)

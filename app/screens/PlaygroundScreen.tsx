@@ -3,7 +3,7 @@ import SheetComponent from "@/app/components/SheetComponent";
 import BPMInputField from "@/app/components/BPMInputField";
 import {useState} from "react";
 import DarkModeToggle from "@/app/components/DarkModeToggle";
-import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/algorithm";
+import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/generator";
 import RegenerateButton from "@/app/components/RegenerateButton";
 import FillChordsButton from "@/app/components/FillChordsButton";
 import ArpeggiateButton from "@/app/components/ArpeggiateButton";
@@ -58,7 +58,7 @@ export default function PlaygroundScreen() {
     testMeasureFive.put(new Note("F#4", new Beat("1/4")), Position.of("4::3"))
     initStave.put(testMeasureFive)*/
 
-    const [stave, setStave] = useState(new MusicGenerator().generate(4, 120, new DefaultMusicGeneratorArgs()))
+    const [stave, setStave] = useState(new MusicGenerator(new DefaultMusicGeneratorArgs()).generate(120))
 
     return (<>
         <div
