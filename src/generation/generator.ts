@@ -26,7 +26,6 @@ import {NoteDuration} from "@/src/units/beat";
 import {chunkArray, mergeConcurrent} from "@/src/helpers/array";
 import {NUMBER_TONE_LOOKUP} from "@/src/units/tone";
 import {NumRange} from "@/src/helpers/types";
-import {durationToString} from "next/dist/build/duration-to-string";
 
 export class MusicGenerator {
     random: RandomNumberGenerator
@@ -41,7 +40,7 @@ export class MusicGenerator {
         //const chordsInProgression = this.random.randomInRange(this.args.minChordsInProgression, this.args.maxChordsInProgression)
 
         const scale = new SCALES[this.random.randomInRange(0, SCALES.length - 1)](this.random.randomInRange(0, 11))
-        console.log(`${scale} with notes ${scale.notes}`)
+        // console.log(`${scale} with notes ${scale.notes}`)
 
 
         const melody = this.pickMelody(scale)
@@ -81,7 +80,7 @@ export class MusicGenerator {
                 }
             ))]))*/
 
-        measures.map((measure, idx) => Measure.mergeMeasures(measure, Measure.joinMeasures(progression)[idx])).forEach((measure) => stave.put(measure))
+        Measure.joinMeasures(measures).map((measure, idx) => Measure.mergeMeasures(measure, Measure.joinMeasures(progression)[idx])).forEach((measure) => stave.put(measure))
 
 
         return stave
@@ -93,28 +92,28 @@ export class MusicGenerator {
 
         const groups = numberGroups.map(group => group.map((note) => NUMBER_TONE_LOOKUP[note % 12 as NumRange<0, 11>]))
 
-        console.log(`${scale.toString()} diatonics are ${chordPool}`)
-        console.log(groups)
-        console.log(numberGroups)
+        // console.log(`${scale.toString()} diatonics are ${chordPool}`)
+        // console.log(groups)
+        // console.log(numberGroups)
 
         const toUse = []
         let total = 0
         for (let group of groups) {
-            console.log(group)
+            // console.log(group)
             const matchingChords = chordPool.filter((chord) => includesAllNotes(chord, group))
             let dur = 0
 
             if (matchingChords.length > 0) {
                 const rand = this.random.randomInRange(0, matchingChords.length - 1)
-                console.log(`Duration = ${group.length} for ${group}`)
+                // console.log(`Duration = ${group.length} for ${group}`)
                 toUse.push({chord: (matchingChords[rand]), duration: group.length})
                 dur += group.length
-                console.log("Duration " + dur)
+                // console.log("Duration " + dur)
             } else {
                 if (mergeConcurrent(group).length <= 1) {
                     console.error(mergeConcurrent(group) + " and " + group)
-                    console.log(scale)
-                    chordPool.forEach((chord) => console.log(chord.notes))
+                    // console.log(scale)
+                    // chordPool.forEach((chord) => // console.log(chord.notes))
                 }
                 let subgroups = [mergeConcurrent(group).slice(0, mergeConcurrent(group).length - 1), mergeConcurrent(group).slice(mergeConcurrent(group).length - 1)]
                 let k = 0
@@ -124,17 +123,17 @@ export class MusicGenerator {
                         for (const subgroup of subgroups) {
                             const matching = chordPool.filter((chord) => includesAllNotes(chord, subgroup.map((a) => a.el)))
                             const rand = this.random.randomInRange(0, matching.length - 1)
-                            console.log(`Duration = ${subgroup.map((val) => val.count).reduce((prev, curr) => prev + curr)} for subgroup ${JSON.stringify(subgroup)}`)
+                            // console.log(`Duration = ${subgroup.map((val) => val.count).reduce((prev, curr) => prev + curr)} for subgroup ${JSON.stringify(subgroup)}`)
                             dur += subgroup.map((val) => val.count).reduce((prev, curr) => prev + curr)
                             toUse.push({
                                 chord: (matching[rand]),
                                 duration: subgroup.map((val) => val.count).reduce((prev, curr) => prev + curr)
                             })
-                            console.log("Duration " + dur)
+                            // console.log("Duration " + dur)
                         }
                         break
                     } else {
-                        console.log("Looping")
+                        // console.log("Looping")
                         subgroups = [subgroups[0].slice(0, subgroups[0].length - 1), subgroups[0].slice(subgroups[0].length - 1), ...subgroups.slice(1)]
                     }
                     k++
@@ -143,9 +142,9 @@ export class MusicGenerator {
                     console.error(`Reached progression timeout`)
                 }
             }
-            console.log(dur)
+            // console.log(dur)
             total += dur
-            console.log(total)
+            // console.log(total)
 
         }
 
@@ -168,11 +167,11 @@ export class MusicGenerator {
         }
 
         if (toUse.map((chord) => chord.duration).reduce((prev, curr) => prev + curr) !== numberGroups.flat().length) {
-            console.log(toUse)
+            // console.log(toUse)
             console.error(`Unequal ${toUse.map((chord) => chord.duration).reduce((prev, curr) => prev + curr)} to ${numberGroups.map((ar) => ar.length).reduce((prev, curr) => prev + curr)}`)
         }
 
-        //console.log(toUse.map((chord) => chord.duration).reduce((prev, curr) => prev + curr) + " and " + toUse.length)
+        //// console.log(toUse.map((chord) => chord.duration).reduce((prev, curr) => prev + curr) + " and " + toUse.length)
 
         return voicings
     }

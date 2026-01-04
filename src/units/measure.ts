@@ -63,15 +63,15 @@ export class Measure {
 
             const diff = Math.pow(2, Position.of(startingPosition).level - 1) / Math.pow(2, Position.of(el[0] as ElementPosition).level - 1)
             const elLevel = Position.of(el[0] as ElementPosition).level
-            const elN = Position.of(el[0] as ElementPosition).nth - 1
+            const elN = Position.of(el[0] as ElementPosition).nth
 
             let newPosition
 
-            if (startingLevel >= elLevel) {
-                newPosition = `${startingN + (elN * diff)}::${startingLevel}`
+            if (diff >= 1) {
+                newPosition = `${startingN + ((elN-1) * diff)}::${startingLevel}`
                 // console.log(`Eln ${elN} New position is ${newPosition}`)
             } else {
-                newPosition = `${((startingN-1) * Math.pow(diff, -1)) + elN + 1}::${elLevel}`
+                newPosition = `${((startingN - 1) * (Math.pow(2, elLevel-1) / Math.pow(2, startingLevel-1))) + elN}::${elLevel}`
                 // console.log(`New position is ${newPosition} and diff is ${Math.pow(diff, -1)}`)
             }
             for (const a of el[1]) {
@@ -85,16 +85,16 @@ export class Measure {
         for (const item of transformedB) {
 
             const base = parseInt(item.position.toString().split("::")[1])
-            const n = parseInt(item.position.toString().split("::")[0])
+            const n = parseFloat(item.position.toString().split("::")[0])
 
             // console.log(`N is {${n}} || Base is {(${Math.pow(2, base - 1)})}`)
 
             if ((n/Math.pow(2, base - 1)) > 1) {
                 overflow.push({
                     element: item.element,
-                    position: new Position((n - Math.pow(2, base - 1))as NumRange<1, 64>, base as BeatLevel)
+                    position: new Position((n - Math.pow(2, base - 1)) as NumRange<1, 64>, base as BeatLevel)
                 })
-                //console.log(`N is ${n} at base ${base} at starting level ${startingLevel}\nThe overflowing new position is ${new Position((n - Math.pow(2, startingLevel - 1)) as NumRange<1, 64>, base as BeatLevel).valueOf()}`)
+                console.log(`N is ${n} at base ${base} at starting level ${startingLevel}\nThe overflowing new position is ${new Position(((n - Math.pow(2, base - 1))) as NumRange<1, 64>, base as BeatLevel).valueOf()}`)
             } else {
                 fit.push({element: item.element, position: Position.of(item.position)})
             }
@@ -131,7 +131,7 @@ export class Measure {
             // 1::(4) is occupied by 1/4 that means that the next available would be 2::(4)
 
             let prevNth = lastOccupied.nth - 1
-            let prevNthSixtyFourths = (prevNth / Math.pow(2, lastOccupied.level - 1)) * 64
+            let prevNthSixtyFourths = ((lastOccupied.nth - 1) / Math.pow(2, lastOccupied.level - 1)) * 64
 
             let nextToOccupyNumerator = (occupier.duration.numerator / Math.pow(2, occupier.duration.denominator - 1)) * 64 + prevNthSixtyFourths
 
@@ -139,7 +139,7 @@ export class Measure {
 
             nextToOccupyNumerator = nextToOccupyNumerator/gcd + 1
 
-            //console.log(`Previously occupied position is ${lastOccupied.valueOf()}. The occupier is ${occupier.duration.toString()}. \nThe previously occupied position is equal to ${prevNthSixtyFourths} sixty fourths and the occupier occupies ${(occupier.duration.numerator / Math.pow(2, occupier.duration.denominator - 1)) * 64} sixty fourths. \nThis means that we can occupy ${nextToOccupyNumerator}::(${Math.pow(2, Math.log2(64/gcd))}) == ${new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position}`)
+            console.log(`Previously occupied position is ${lastOccupied.valueOf()}. The occupier is ${occupier.duration.toString()}. \nThe previously occupied position is equal to ${prevNthSixtyFourths} sixty fourths and the occupier occupies ${(occupier.duration.numerator / Math.pow(2, occupier.duration.denominator - 1)) * 64} sixty fourths. \nThis means that we can occupy ${nextToOccupyNumerator}::(${Math.pow(2, Math.log2(64/gcd))}) == ${new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position}`)
 
 
             const together = Measure.join(recent, measures[i], new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position)
