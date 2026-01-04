@@ -18,9 +18,9 @@ export default function MeasureComponent({value, idxN, last}: { value: Measure, 
                  src={"staff.svg"}/>
             {last && <img className={"absolute h-[3em] border-r-[2px] border-black object-fill ml-[6.7em]"} style={{width: `${6}em`}}
                          src={"staff-end.svg"}/>}
-            {Object.entries(value.collection).map(([pos, notes]) => notes.map((el) => <NoteComponent note={el as Note}
+            {Object.entries(value.collection).map(([pos, notes]) => [...new Set(notes)].map((el) => <NoteComponent note={el as Note}
                                                                                                      pos={pos as ElementPosition}
-                                                                                                     key={`${(el as Note).note}::${pos}::${(el as Note).duration}`}/>))}
+                                                                                                     key={`${JSON.stringify(el)}::${pos}::${(el as Note).duration}::${idxN}::${Math.random()*10}`}/>))}
         </div>
 
     </div>)

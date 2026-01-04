@@ -17,8 +17,8 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
         console.log(netDissonance(...(array as Note[]).map((el) => Pitch.of(el.note))))
         for (let el of array as Note[]) {
             instruments[0].play(el.note, 0, {
-                duration: (((tr * 4) / Math.pow(2, el.duration.denominator - 1)) / 1000),
-                release: (((tr * 4) / Math.pow(2, el.duration.denominator - 1)) / 1000)
+                duration: (((tr * 4) / Math.pow(2, el.duration.denominator - 1)) / 1000) * el.duration.numerator,
+                release: (((tr * 4) / Math.pow(2, el.duration.denominator - 1)) / 1000) * el.duration.numerator
             })
         }
 

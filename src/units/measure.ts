@@ -36,7 +36,7 @@ export class Measure {
 
     public put(element: MeasureElement, position: Position | ElementPosition) {
         const pos = (position instanceof Position ? position.valueOf() : position) as unknown as ElementPosition
-        //console.log(pos)
+        //// console.log(pos)
         this.collection[pos].push(element)
     }
 
@@ -69,10 +69,10 @@ export class Measure {
 
             if (startingLevel >= elLevel) {
                 newPosition = `${startingN + (elN * diff)}::${startingLevel}`
-                console.log(`Eln ${elN} New position is ${newPosition}`)
+                // console.log(`Eln ${elN} New position is ${newPosition}`)
             } else {
                 newPosition = `${((startingN-1) * Math.pow(diff, -1)) + elN + 1}::${elLevel}`
-                console.log(`New position is ${newPosition} and diff is ${Math.pow(diff, -1)}`)
+                // console.log(`New position is ${newPosition} and diff is ${Math.pow(diff, -1)}`)
             }
             for (const a of el[1]) {
                 transformedB.push({element: a as Note, position: newPosition as ElementPosition})
@@ -87,14 +87,14 @@ export class Measure {
             const base = parseInt(item.position.toString().split("::")[1])
             const n = parseInt(item.position.toString().split("::")[0])
 
-            console.log(`N is {${n}} || Base is {(${Math.pow(2, base - 1)})}`)
+            // console.log(`N is {${n}} || Base is {(${Math.pow(2, base - 1)})}`)
 
             if ((n/Math.pow(2, base - 1)) > 1) {
                 overflow.push({
                     element: item.element,
-                    position: new Position((n - Math.pow(2, base - 1)) as NumRange<1, 64>, base as BeatLevel)
+                    position: new Position((n - Math.pow(2, base - 1))as NumRange<1, 64>, base as BeatLevel)
                 })
-                console.log(`N is ${n} at base ${base} at starting level ${startingLevel}\nThe overflowing new position is ${new Position((n - Math.pow(2, startingLevel - 1)) as NumRange<1, 64>, base as BeatLevel).valueOf()}`)
+                //console.log(`N is ${n} at base ${base} at starting level ${startingLevel}\nThe overflowing new position is ${new Position((n - Math.pow(2, startingLevel - 1)) as NumRange<1, 64>, base as BeatLevel).valueOf()}`)
             } else {
                 fit.push({element: item.element, position: Position.of(item.position)})
             }
@@ -139,7 +139,7 @@ export class Measure {
 
             nextToOccupyNumerator = nextToOccupyNumerator/gcd + 1
 
-            console.log(`Previously occupied position is ${lastOccupied.valueOf()}. The occupier is ${occupier.duration.toString()}. \nThe previously occupied position is equal to ${prevNthSixtyFourths} sixty fourths and the occupier occupies ${(occupier.duration.numerator / Math.pow(2, occupier.duration.denominator - 1)) * 64} sixty fourths. \nThis means that we can occupy ${nextToOccupyNumerator}::(${Math.pow(2, Math.log2(64/gcd))}) == ${new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position}`)
+            //console.log(`Previously occupied position is ${lastOccupied.valueOf()}. The occupier is ${occupier.duration.toString()}. \nThe previously occupied position is equal to ${prevNthSixtyFourths} sixty fourths and the occupier occupies ${(occupier.duration.numerator / Math.pow(2, occupier.duration.denominator - 1)) * 64} sixty fourths. \nThis means that we can occupy ${nextToOccupyNumerator}::(${Math.pow(2, Math.log2(64/gcd))}) == ${new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position}`)
 
 
             const together = Measure.join(recent, measures[i], new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position)
@@ -149,6 +149,21 @@ export class Measure {
         }
 
         return joined
+    }
+
+    public static mergeMeasures(measureA: Measure, measureB: Measure) {
+        if (measureA == undefined) {
+            console.log(measureA)
+            return measureB
+        } else if (measureB == undefined) {
+            console.log(measureB)
+            return measureA
+        }
+        const measureC = new Measure()
+        measureC.collection = Object.fromEntries(Object.entries(measureC.collection).map(([p, vals]) => {
+            return [p, [...new Set([...measureA.at(p as ElementPosition), ...measureB.at(p as ElementPosition)])]]
+        })) as {[pos in ElementPosition]: MeasureElement[]}
+        return measureC
     }
 
     public collection: { [pos in ElementPosition]: MeasureElement[] } = {

@@ -205,7 +205,7 @@ export abstract class DiatonicChord extends TriadChord {
     }
 }
 
-export class FirstDiatonic extends DiatonicChord {
+export class FirstMajorDiatonic extends DiatonicChord {
     public get name(): string {
         return "I";
     }
@@ -215,7 +215,17 @@ export class FirstDiatonic extends DiatonicChord {
     }
 }
 
-export class SecondDiatonic extends DiatonicChord {
+export class FirstMinorDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "i";
+    }
+
+    public get noteIntervals(): number[] {
+        return [0, 3, 7];
+    }
+}
+
+export class SecondMinorDiatonic extends DiatonicChord {
     public get name(): string {
         return "ii";
     }
@@ -225,7 +235,27 @@ export class SecondDiatonic extends DiatonicChord {
     }
 }
 
-export class ThirdDiatonic extends DiatonicChord {
+export class DiminishedSecondMinorDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "ii°";
+    }
+
+    public get noteIntervals(): number[] {
+        return [2, 5, 8];
+    }
+}
+
+export class ThirdMajorDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "III";
+    }
+
+    public get noteIntervals(): number[] {
+        return [4, 7, 10];
+    }
+}
+
+export class ThirdMinorDiatonic extends DiatonicChord {
     public get name(): string {
         return "iii";
     }
@@ -235,7 +265,7 @@ export class ThirdDiatonic extends DiatonicChord {
     }
 }
 
-export class FourthDiatonic extends DiatonicChord {
+export class FourthMajorDiatonic extends DiatonicChord {
     public get name(): string {
         return "IV";
     }
@@ -245,7 +275,17 @@ export class FourthDiatonic extends DiatonicChord {
     }
 }
 
-export class FifthDiatonic extends DiatonicChord {
+export class FourthMinorDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "iv";
+    }
+
+    public get noteIntervals(): number[] {
+        return [5, 8, 12];
+    }
+}
+
+export class FifthMajorDiatonic extends DiatonicChord {
     public get name(): string {
         return "V";
     }
@@ -255,7 +295,27 @@ export class FifthDiatonic extends DiatonicChord {
     }
 }
 
-export class SixthDiatonic extends DiatonicChord {
+export class FifthMinorDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "v";
+    }
+
+    public get noteIntervals(): number[] {
+        return [7, 10, 14];
+    }
+}
+
+export class SixthMajorDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "VI";
+    }
+
+    public get noteIntervals(): number[] {
+        return [8, 12, 15];
+    }
+}
+
+export class SixthMinorDiatonic extends DiatonicChord {
     public get name(): string {
         return "vi";
     }
@@ -265,7 +325,17 @@ export class SixthDiatonic extends DiatonicChord {
     }
 }
 
-export class SeventhDiatonic extends DiatonicChord {
+export class SeventhMajorDiatonic extends DiatonicChord {
+    public get name(): string {
+        return "VII";
+    }
+
+    public get noteIntervals(): number[] {
+        return [11, 15, 18];
+    }
+}
+
+export class DiminishedSeventhMinorDiatonic extends DiatonicChord {
     public get name(): string {
         return "vii°7";
     }
@@ -275,7 +345,7 @@ export class SeventhDiatonic extends DiatonicChord {
     }
 }
 
-export const DIATONIC = [FirstDiatonic, SecondDiatonic, ThirdDiatonic, FourthDiatonic, FifthDiatonic, SixthDiatonic, SeventhDiatonic]
+export const DIATONIC = [FirstMajorDiatonic, FirstMinorDiatonic, SecondMinorDiatonic, ThirdMajorDiatonic, ThirdMinorDiatonic, FourthMajorDiatonic, FourthMinorDiatonic, FifthMajorDiatonic, FifthMinorDiatonic, SixthMajorDiatonic, SixthMinorDiatonic, SeventhMajorDiatonic, DiminishedSecondMinorDiatonic, DiminishedSeventhMinorDiatonic]
 
 export class Voicing {
     public chord: Chord

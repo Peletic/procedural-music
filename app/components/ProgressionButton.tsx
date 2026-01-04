@@ -1,6 +1,6 @@
 import Stave from "@/src/units/stave";
 import {Dispatch, SetStateAction} from "react";
-import {DIATONIC, FirstDiatonic, Voicing} from "@/src/units/chord";
+import {DIATONIC, FirstMajorDiatonic, Voicing} from "@/src/units/chord";
 import {Measure} from "@/src/units/measure";
 
 export default function ProgressionButton({setStave}: { setStave: Dispatch<SetStateAction<Stave>> }) {
@@ -12,7 +12,7 @@ export default function ProgressionButton({setStave}: { setStave: Dispatch<SetSt
         })))))
 
         measures.push(Measure.from(
-            (new Voicing(new FirstDiatonic(0), 0, 5).toNotes("1/2").map((note) => ({
+            (new Voicing(new FirstMajorDiatonic(0), 0, 5).toNotes("1/2").map((note) => ({
                 element: note,
                 position: "1::2"
             }))))

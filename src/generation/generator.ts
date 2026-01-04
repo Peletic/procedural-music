@@ -1,14 +1,32 @@
 import Stave from "../units/stave";
 import {RandomNumberGenerator} from "@/src/helpers/random";
-import {DIATONIC, Voicing} from "@/src/units/chord";
+import {
+    DiminishedSecondMinorDiatonic,
+    FifthMajorDiatonic,
+    FifthMinorDiatonic,
+    FirstMajorDiatonic,
+    FirstMinorDiatonic,
+    FourthMajorDiatonic,
+    FourthMinorDiatonic,
+    SecondMinorDiatonic,
+    SeventhMajorDiatonic,
+    SixthMajorDiatonic,
+    SixthMinorDiatonic,
+    ThirdMajorDiatonic,
+    ThirdMinorDiatonic,
+    Voicing
+} from "@/src/units/chord";
 import {ElementPosition, Measure} from "@/src/units/measure";
 import {matchingScales} from "@/src/helpers/scales";
 import {Scale, SCALES} from "@/src/units/scale";
-import {ALL_APPLIED_CHORDS} from "@/src/helpers/chords";
+import {ALL_APPLIED_CHORDS, includesAllNotes} from "@/src/helpers/chords";
 import {netDissonance} from "@/src/generation/dissonance";
 import {Note} from "@/src/units/note";
 import {NoteDuration} from "@/src/units/beat";
 import {chunkArray, mergeConcurrent} from "@/src/helpers/array";
+import {NUMBER_TONE_LOOKUP} from "@/src/units/tone";
+import {NumRange} from "@/src/helpers/types";
+import {durationToString} from "next/dist/build/duration-to-string";
 
 export class MusicGenerator {
     random: RandomNumberGenerator
@@ -20,7 +38,7 @@ export class MusicGenerator {
     generate(bpm: number) {
         const stave = new Stave(bpm)
 
-        const chordsInProgression = this.random.randomInRange(this.args.minChordsInProgression, this.args.maxChordsInProgression)
+        //const chordsInProgression = this.random.randomInRange(this.args.minChordsInProgression, this.args.maxChordsInProgression)
 
         const scale = new SCALES[this.random.randomInRange(0, SCALES.length - 1)](this.random.randomInRange(0, 11))
         console.log(`${scale} with notes ${scale.notes}`)
@@ -28,23 +46,31 @@ export class MusicGenerator {
 
         const melody = this.pickMelody(scale)
         const groups = chunkArray(melody, 4).map((chunk) => mergeConcurrent(chunk))
-        console.log(groups)
+        // console.log(groups)
 
         // if 1 then (4) 3, if 2 then (2) 2, if 3 then (2) 2, if 4 then (1) 1
 
-        const measures = groups.flatMap((group) => Measure.joinMeasures(
-            group.map((el, idx) => {
+        const measures = groups.flatMap((group) =>
+            Measure.joinMeasures(group.map((el, idx) => {
                 const measure = new Measure()
                 measure.put(
-                    new Note(el.el, `${el.count === 3 ? 1.5 : 1}/${el.count == 1 ? 3 : (el.count == 4 ? 1 : 2)}` as NoteDuration),
-                    `1::${el.count == 1 ? 3 : Math.ceil(Math.pow((el.count) / 4, -1))}` as ElementPosition
+                    new Note(el.el, el.count == 3 ? "1.5/2" : `1/${el.count === 4 ? 1 : el.count == 2 ? 2 : 3}` as NoteDuration),
+                    `1::4` as ElementPosition
                 )
 
                 return measure
-            })
-        ))
+            }))
+        )
 
-        const progression = this.pickProgression(scale, chordsInProgression)
+        const progression = this.pickProgression(scale, chunkArray(melody, 4)).map((chunk) => Measure.from(chunk.map((note) => {
+            // console.log(note.duration.denominator)
+            return ({
+                element: note,
+                position: `1::${note.duration.denominator}` as ElementPosition
+            })
+        })))
+
+        console.log(melody.length + " or " + Measure.joinMeasures(measures).length + ":" + Measure.joinMeasures(progression).length + " or " +  progression.length)
 
         /*const measures = progression.map((value, idx) => Measure.from([...(
             value.toNotes("1/1").map((val) => {
@@ -55,40 +81,98 @@ export class MusicGenerator {
                 }
             ))]))*/
 
-        measures.forEach((measure) => stave.put(measure))
+        measures.map((measure, idx) => Measure.mergeMeasures(measure, Measure.joinMeasures(progression)[idx])).forEach((measure) => stave.put(measure))
 
 
         return stave
     }
 
-    pickProgression(scale: Scale, chordsInProgression: number) {
-        console.log(DIATONIC[0].prototype)
-        const MAJOR_DIATONIC = DIATONIC.filter(Diatonic => Diatonic.prototype.name.toUpperCase() == Diatonic.prototype.name)
-        const MINOR_DIATONIC = DIATONIC.filter(Diatonic => Diatonic.prototype.name.toLowerCase() == Diatonic.prototype.name)
+    pickProgression(scale: Scale, numberGroups: number[][]) {
 
-        const USABLE_DIATONIC = [...MAJOR_DIATONIC, ...(this.args.excludeMinors ? [] : MINOR_DIATONIC)]
-        const loopTil = (this.args.loop ? chordsInProgression - 1 : chordsInProgression)
+        const chordPool = (scale.toString().toLowerCase().includes("major") ? [FirstMajorDiatonic, SecondMinorDiatonic, ThirdMinorDiatonic, FourthMajorDiatonic, FifthMajorDiatonic, SixthMinorDiatonic, DiminishedSecondMinorDiatonic] : [FirstMinorDiatonic, DiminishedSecondMinorDiatonic, ThirdMajorDiatonic, FourthMinorDiatonic, FifthMinorDiatonic, SixthMajorDiatonic, SeventhMajorDiatonic]).map((Diatonic) => new Diatonic(scale.root))
+
+        const groups = numberGroups.map(group => group.map((note) => NUMBER_TONE_LOOKUP[note % 12 as NumRange<0, 11>]))
+
+        console.log(`${scale.toString()} diatonics are ${chordPool}`)
+        console.log(groups)
+        console.log(numberGroups)
 
         const toUse = []
-        for (let i = 0; i < loopTil; i++) {
-            const rand = this.random.randomInRange(0, USABLE_DIATONIC.length - 1)
-            toUse.push(new (USABLE_DIATONIC[rand])(scale.root))
+        let total = 0
+        for (let group of groups) {
+            console.log(group)
+            const matchingChords = chordPool.filter((chord) => includesAllNotes(chord, group))
+            let dur = 0
+
+            if (matchingChords.length > 0) {
+                const rand = this.random.randomInRange(0, matchingChords.length - 1)
+                console.log(`Duration = ${group.length} for ${group}`)
+                toUse.push({chord: (matchingChords[rand]), duration: group.length})
+                dur += group.length
+                console.log("Duration " + dur)
+            } else {
+                if (mergeConcurrent(group).length <= 1) {
+                    console.error(mergeConcurrent(group) + " and " + group)
+                    console.log(scale)
+                    chordPool.forEach((chord) => console.log(chord.notes))
+                }
+                let subgroups = [mergeConcurrent(group).slice(0, mergeConcurrent(group).length - 1), mergeConcurrent(group).slice(mergeConcurrent(group).length - 1)]
+                let k = 0
+                while (k <= this.args.progressionTimeout) {
+                    const subgroupMatchingChords = chordPool.filter((chord) => includesAllNotes(chord, subgroups[0].map((a) => a.el)))
+                    if (subgroupMatchingChords.length > 0) {
+                        for (const subgroup of subgroups) {
+                            const matching = chordPool.filter((chord) => includesAllNotes(chord, subgroup.map((a) => a.el)))
+                            const rand = this.random.randomInRange(0, matching.length - 1)
+                            console.log(`Duration = ${subgroup.map((val) => val.count).reduce((prev, curr) => prev + curr)} for subgroup ${JSON.stringify(subgroup)}`)
+                            dur += subgroup.map((val) => val.count).reduce((prev, curr) => prev + curr)
+                            toUse.push({
+                                chord: (matching[rand]),
+                                duration: subgroup.map((val) => val.count).reduce((prev, curr) => prev + curr)
+                            })
+                            console.log("Duration " + dur)
+                        }
+                        break
+                    } else {
+                        console.log("Looping")
+                        subgroups = [subgroups[0].slice(0, subgroups[0].length - 1), subgroups[0].slice(subgroups[0].length - 1), ...subgroups.slice(1)]
+                    }
+                    k++
+                }
+                if (k >= this.args.progressionTimeout) {
+                    console.error(`Reached progression timeout`)
+                }
+            }
+            console.log(dur)
+            total += dur
+            console.log(total)
+
         }
 
-        if (this.args.loop) toUse.push(toUse[0])
-
-        const voicings: Voicing[] = []
+        const voicings: Note[][] = []
         const names: string[] = []
 
         for (const chord of toUse) {
-            if (names.length > 0 && names.includes(chord.name)) {
-                const occurrences = names.filter((name) => name === chord.name).length
-                voicings.push(new Voicing(chord, occurrences, occurrences > 2 ? 3 : 2))
-            } else {
-                voicings.push(new Voicing(chord, 0, 2))
+            if (chord.chord == undefined) {
+                console.error(`Undefined chord`)
+                continue
             }
-            names.push(chord.name)
+
+            if (names.length > 0 && names.includes(chord.chord.name)) {
+                const occurrences = names.filter((name) => name === chord.chord.name).length
+                voicings.push(new Voicing(chord.chord, occurrences, occurrences > 2 ? 3 : 2).toNotes(chord.duration === 3 ? "1.5/2" : `1/${chord.duration === 4 ? 1 : chord.duration == 2 ? 2 : 3}` as NoteDuration))
+            } else {
+                voicings.push(new Voicing(chord.chord, 0, 2).toNotes(chord.duration === 3 ? `1.5/2` : `1/${chord.duration === 4 ? 1 : chord.duration == 2 ? 2 : 3}` as NoteDuration))
+            }
+            names.push(chord.chord.name)
         }
+
+        if (toUse.map((chord) => chord.duration).reduce((prev, curr) => prev + curr) !== numberGroups.flat().length) {
+            console.log(toUse)
+            console.error(`Unequal ${toUse.map((chord) => chord.duration).reduce((prev, curr) => prev + curr)} to ${numberGroups.map((ar) => ar.length).reduce((prev, curr) => prev + curr)}`)
+        }
+
+        //console.log(toUse.map((chord) => chord.duration).reduce((prev, curr) => prev + curr) + " and " + toUse.length)
 
         return voicings
     }
@@ -113,7 +197,7 @@ export class MusicGenerator {
 
         const notes = [homeNote, ...steps.map((val, idx, arr) => {
             const sum = (arr.slice(0, idx + 1).reduce((prev, curr) => prev + curr)) + homeNote
-            console.log(sum)
+            // console.log(sum)
             return sum
         })]
 
@@ -122,10 +206,11 @@ export class MusicGenerator {
         for (const note of notes) {
             for (let i = 0; i < this.random.randomInRange(this.args.minPhraseNoteLengthBase, this.args.maxPhraseNoteLengthBase); i++) {
                 const remainder = note % scale.noteValues.length
+                // console.log(`${scale.noteValues.map((val) => val % 12)} and ${(scale.noteValues[remainder >= 0 ? remainder : scale.noteValues.length + remainder] + 60 + Math.floor(note / scale.noteValues.length) % 2 * 12) % 12}`)
                 repeatedNotes.push(scale.noteValues[remainder >= 0 ? remainder : scale.noteValues.length + remainder] + 60 + Math.floor(note / scale.noteValues.length) % 2 * 12)
             }
         }
-        console.log(repeatedNotes)
+        // console.log(repeatedNotes)
         return repeatedNotes
     }
 
@@ -137,7 +222,7 @@ export class MusicGenerator {
         const progression = []
         const possibleChords = this.appliedChordsInScale(scale)
 
-        console.log(`${scale.toString()} has ${possibleChords.length} chords`)
+        // console.log(`${scale.toString()} has ${possibleChords.length} chords`)
 
         if (possibleChords.length == 0) return []
 
@@ -169,7 +254,7 @@ export class MusicGenerator {
                 used.push(rand + add)
             }
 
-            console.log(new Voicing(appliedChord).notes)
+            // console.log(new Voicing(appliedChord).notes)
             progression.push(new Voicing(appliedChord, this.random.randomInRange(1, 3)))
         }
 
@@ -237,7 +322,7 @@ export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
     progressionTimeout = 100000
     maxEndingDissonance = 0
     maxStartingDissonance = 0
-    useMinorDiatonics = false
+    useMinorDiatonics = true
     maxIndividualMelodyDissonance = 5
     minPhraseNotes = 12
     maxPhraseNotes = 12

@@ -1,11 +1,11 @@
 import Stave from "@/src/units/stave";
 import {Dispatch, SetStateAction} from "react";
-import {FifthDiatonic, FirstDiatonic, FourthDiatonic, Voicing} from "@/src/units/chord";
+import {FifthMajorDiatonic, FirstMajorDiatonic, FourthMajorDiatonic, Voicing} from "@/src/units/chord";
 import {Measure} from "@/src/units/measure";
 import {NoteDuration} from "@/src/units/beat";
 
 export default function TCPButton({setStave}: { setStave: Dispatch<SetStateAction<Stave>> }) {
-    const transformer = (Chord: typeof FirstDiatonic, voicing = 0, octave = 4, base = 2) => {
+    const transformer = (Chord: typeof FirstMajorDiatonic, voicing = 0, octave = 4, base = 2) => {
         return Measure.from(
             (new Voicing(new Chord(2), voicing, octave).toNotes(`1/${base}` as NoteDuration).map((note) => ({
                 element: note,
@@ -14,7 +14,7 @@ export default function TCPButton({setStave}: { setStave: Dispatch<SetStateActio
     }
     return (<button onClick={(e) => {
         const stave = new Stave(120);
-        const measures = [transformer(FirstDiatonic), transformer(FourthDiatonic, 1, 3), transformer(FifthDiatonic, 1, 3), transformer(FifthDiatonic, 2, 3), transformer(FifthDiatonic), transformer(FourthDiatonic), transformer(FirstDiatonic, 1, 4, 1)]
+        const measures = [transformer(FirstMajorDiatonic), transformer(FourthMajorDiatonic, 1, 3), transformer(FifthMajorDiatonic, 1, 3), transformer(FifthMajorDiatonic, 2, 3), transformer(FifthMajorDiatonic), transformer(FourthMajorDiatonic), transformer(FirstMajorDiatonic, 1, 4, 1)]
 
         Measure.joinMeasures(measures).forEach(el => stave.put(el))
         setStave(stave)
