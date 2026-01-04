@@ -1,7 +1,7 @@
 import TestPlayAudio from "@/app/components/TestPlayAudio";
 import SheetComponent from "@/app/components/SheetComponent";
 import BPMInputField from "@/app/components/BPMInputField";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import DarkModeToggle from "@/app/components/DarkModeToggle";
 import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/generator";
 import RegenerateButton from "@/app/components/RegenerateButton";
@@ -10,6 +10,7 @@ import ArpeggiateButton from "@/app/components/ArpeggiateButton";
 import ScalesButton from "@/app/components/ScalesButton";
 import ProgressionButton from "@/app/components/ProgressionButton";
 import TCPButton from "@/app/components/TCPButton";
+import Stave from "@/src/units/stave";
 
 export default function PlaygroundScreen() {
     /*const initStave = new Stave(120);
@@ -58,7 +59,11 @@ export default function PlaygroundScreen() {
     testMeasureFive.put(new Note("F#4", new Beat("1/4")), Position.of("4::3"))
     initStave.put(testMeasureFive)*/
 
-    const [stave, setStave] = useState(new MusicGenerator(new DefaultMusicGeneratorArgs()).generate(120))
+    const [stave, setStave] = useState<Stave>(new Stave(120))
+
+    useEffect(() => {
+        setStave(new MusicGenerator(new DefaultMusicGeneratorArgs()).generate(120))
+    }, [])
 
     return (<>
         <div

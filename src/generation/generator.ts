@@ -1,19 +1,22 @@
 import Stave from "../units/stave";
 import {RandomNumberGenerator} from "@/src/helpers/random";
 import {DIATONIC, Voicing} from "@/src/units/chord";
-import {Measure, Position} from "@/src/units/measure";
+import {ElementPosition, Measure} from "@/src/units/measure";
 import {matchingScales} from "@/src/helpers/scales";
 import {Scale, SCALES} from "@/src/units/scale";
 import {ALL_APPLIED_CHORDS} from "@/src/helpers/chords";
 import {netDissonance} from "@/src/generation/dissonance";
+import {Note} from "@/src/units/note";
+import {NoteDuration} from "@/src/units/beat";
+import {chunkArray, mergeConcurrent} from "@/src/helpers/array";
 
 export class MusicGenerator {
-    random : RandomNumberGenerator
-    
-    constructor(public args: MusicGeneratorArgs, public seed? : string) {
+    random: RandomNumberGenerator
+
+    constructor(public args: MusicGeneratorArgs, public seed?: string) {
         this.random = new RandomNumberGenerator(this.seed)
     }
-    
+
     generate(bpm: number) {
         const stave = new Stave(bpm)
 
@@ -22,18 +25,35 @@ export class MusicGenerator {
         const scale = new SCALES[this.random.randomInRange(0, SCALES.length - 1)](this.random.randomInRange(0, 11))
         console.log(`${scale} with notes ${scale.notes}`)
 
+
+        const melody = this.pickMelody(scale)
+        const groups = chunkArray(melody, 4).map((chunk) => mergeConcurrent(chunk))
+        console.log(groups)
+
+        // if 1 then (4) 3, if 2 then (2) 2, if 3 then (2) 2, if 4 then (1) 1
+
+        const measures = groups.flatMap((group) => Measure.joinMeasures(
+            group.map((el, idx) => {
+                const measure = new Measure()
+                measure.put(
+                    new Note(el.el, `${el.count % 2 == 0 ? 1 : 1.5}/${el.count == 1 ? 3 : Math.ceil(Math.pow((el.count) / 4, -1))}` as NoteDuration),
+                    `1::${el.count == 1 ? 3 : Math.ceil(Math.pow((el.count) / 4, -1))}` as ElementPosition
+                )
+
+                return measure
+            })
+        ))
+
         const progression = this.pickProgression(scale, chordsInProgression)
 
-        console.log(progression)
-
-        const measures = progression.map((value) => Measure.from((
+        /*const measures = progression.map((value, idx) => Measure.from([...(
             value.toNotes("1/1").map((val) => {
                     return {
                         element: val,
                         position: Position.of("1::1")
                     }
                 }
-            ))))
+            ))]))*/
 
         measures.forEach((measure) => stave.put(measure))
 
@@ -73,7 +93,43 @@ export class MusicGenerator {
         return voicings
     }
 
-    pickMelody() {
+    pickMelody(scale: Scale) {
+
+        // welcome to my personal hell
+
+        // first musical phrase
+        const homeNote = this.random.randomInRange(0, scale.noteValues.length - 1)
+
+        // 0 = down 1 = up
+        const phraseDirection = this.random.randomInRange(0, 1) === 1 ? 1 : -1
+
+        const steps: number[] = new Array(this.random.randomInRange(this.args.minPhraseNotes - 1, this.args.maxPhraseNotes - 1))
+        const stepWeightingSum = Object.values(this.args.weightedIntervals).reduce((prev, curr) => prev + curr)
+        const mappedStepWeights = Object.entries(this.args.weightedIntervals).flatMap(([str, num]) => new Array(num).fill(parseInt(str)))
+
+        for (let i = 0; i < steps.length; i++) {
+            steps[i] = mappedStepWeights[this.random.randomInRange(0, stepWeightingSum - 1)] * phraseDirection * (this.random.random() <= this.args.phraseDirectionSwapChance ? -1 : 1)
+        }
+
+        const notes = [homeNote, ...steps.map((val, idx, arr) => {
+            const sum = (arr.slice(0, idx + 1).reduce((prev, curr) => prev + curr)) + homeNote
+            console.log(sum)
+            return sum
+        })]
+
+        const repeatedNotes: number[] = []
+
+        for (const note of notes) {
+            for (let i = 0; i < this.random.randomInRange(this.args.minPhraseNoteLengthBase, this.args.maxPhraseNoteLengthBase); i++) {
+                const remainder = note % scale.noteValues.length
+                repeatedNotes.push(scale.noteValues[remainder >= 0 ? remainder : scale.noteValues.length + remainder] + 60 + Math.floor(note / scale.noteValues.length) % 2 * 12)
+            }
+        }
+        console.log(repeatedNotes)
+        return repeatedNotes
+    }
+
+    transformAccompaniment() {
 
     }
 
@@ -150,12 +206,19 @@ export interface MusicGeneratorArgs {
     progressionTimeout: number,
     maxEndingDissonance: number,
     maxStartingDissonance: number,
-    useMinorDiatonics: boolean
+    useMinorDiatonics: boolean,
+    maxIndividualMelodyDissonance: number,
+    minPhraseNotes: number,
+    maxPhraseNotes: number,
+    weightedIntervals: { [interval: number]: number },
+    phraseDirectionSwapChance: number,
+    minPhraseNoteLengthBase: number,
+    maxPhraseNoteLengthBase: number
 }
 
 export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
-    minChordsInProgression: number = 4
-    maxChordsInProgression: number = 4
+    minChordsInProgression: number = 12
+    maxChordsInProgression: number = 12
     minRoot: number = 60
     maxRoot: number = 60
     minProgressionRootDelta: number = 0
@@ -175,6 +238,14 @@ export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
     maxEndingDissonance = 0
     maxStartingDissonance = 0
     useMinorDiatonics = false
+    maxIndividualMelodyDissonance = 5
+    minPhraseNotes = 12
+    maxPhraseNotes = 12
+    weightedIntervals = {0: 5, 1: 50, 2: 25, 3: 20, 5: 0, 6: 5}
+    phraseDirectionSwapChance = 0.4
+
+    minPhraseNoteLengthBase = 1
+    maxPhraseNoteLengthBase = 3
 }
 
 const gen = new MusicGenerator(new DefaultMusicGeneratorArgs())

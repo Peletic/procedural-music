@@ -1,5 +1,5 @@
 import {ToneOctave} from "./tone";
-import {Beat} from "./beat";
+import {Beat, NoteDuration} from "./beat";
 import {MeasureElement} from "./measure";
 import {Pitch} from "@/src/units/pitch";
 
@@ -7,8 +7,12 @@ export class Note implements MeasureElement {
     duration: Beat
     note: ToneOctave
 
-    constructor(note: ToneOctave | Pitch | number, duration: Beat) {
-        this.duration = duration
+    constructor(note: ToneOctave | Pitch | number, duration: Beat | NoteDuration) {
+        if (typeof duration === "string") {
+            this.duration = new Beat(duration)
+        } else {
+            this.duration = duration
+        }
         if (typeof note === "number") {
             this.note = Pitch.of(note).tone_octave
         } else if (note instanceof Pitch) {
