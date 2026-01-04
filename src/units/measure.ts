@@ -69,10 +69,10 @@ export class Measure {
 
             if (startingLevel >= elLevel) {
                 newPosition = `${startingN + (elN * diff)}::${startingLevel}`
-                console.log(`New position is ${newPosition}`)
+                console.log(`Eln ${elN} New position is ${newPosition}`)
             } else {
-                newPosition = `${(startingN * Math.pow(diff, -1)) + elN}::${elLevel}`
-                console.log(`New position is ${newPosition} and diff is ${diff}`)
+                newPosition = `${((startingN-1) * Math.pow(diff, -1)) + elN + 1}::${elLevel}`
+                console.log(`New position is ${newPosition} and diff is ${Math.pow(diff, -1)}`)
             }
             for (const a of el[1]) {
                 transformedB.push({element: a as Note, position: newPosition as ElementPosition})
@@ -92,9 +92,9 @@ export class Measure {
             if ((n/Math.pow(2, base - 1)) > 1) {
                 overflow.push({
                     element: item.element,
-                    position: new Position((n - Math.pow(2, startingLevel - 1)) as NumRange<1, 64>, base as BeatLevel)
+                    position: new Position((n - Math.pow(2, base - 1)) as NumRange<1, 64>, base as BeatLevel)
                 })
-                console.log(`N is ${(Math.pow(2, base))} at starting level ${startingLevel}\nThe overflowing new position is ${new Position((n - Math.pow(2, startingLevel - 1)) as NumRange<1, 64>, base as BeatLevel).valueOf()}`)
+                console.log(`N is ${n} at base ${base} at starting level ${startingLevel}\nThe overflowing new position is ${new Position((n - Math.pow(2, startingLevel - 1)) as NumRange<1, 64>, base as BeatLevel).valueOf()}`)
             } else {
                 fit.push({element: item.element, position: Position.of(item.position)})
             }

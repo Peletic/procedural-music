@@ -48,7 +48,7 @@ export default function NoteComponent({note, pos}: { note: Note, pos: ElementPos
 
     const scale = 64
     const idx =  (Position.of(pos).nth-1) / Math.pow(2, Position.of(pos).level - 1) * 64
-    const baseOffset = 0.75
+    const baseOffset = 1.2
 
     const offsetScalar = (12 - 0.75) / scale;
     const offset = (idx - 1) * offsetScalar + baseOffset
@@ -63,7 +63,7 @@ export default function NoteComponent({note, pos}: { note: Note, pos: ElementPos
     if (note.duration.denominator == 1) {
         addt.height = "0.65em"
     } else if (note.duration.dotted) {
-        addt.height = "50px"
+        addt.height = "52px"
         //addt.width = "1.4em"
         addt["objectFit"] = "cover"
     } else {

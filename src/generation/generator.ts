@@ -36,7 +36,7 @@ export class MusicGenerator {
             group.map((el, idx) => {
                 const measure = new Measure()
                 measure.put(
-                    new Note(el.el, `${el.count % 2 == 0 ? 1 : 1.5}/${el.count == 1 ? 3 : Math.ceil(Math.pow((el.count) / 4, -1))}` as NoteDuration),
+                    new Note(el.el, `${el.count === 3 ? 1.5 : 1}/${el.count == 1 ? 3 : (el.count == 4 ? 1 : 2)}` as NoteDuration),
                     `1::${el.count == 1 ? 3 : Math.ceil(Math.pow((el.count) / 4, -1))}` as ElementPosition
                 )
 
