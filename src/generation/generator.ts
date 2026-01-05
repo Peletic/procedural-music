@@ -40,7 +40,7 @@ export class MusicGenerator {
         //const chordsInProgression = this.random.randomInRange(this.args.minChordsInProgression, this.args.maxChordsInProgression)
 
         const scale = new SCALES[this.random.randomInRange(0, SCALES.length - 1)](this.random.randomInRange(0, 11))
-        // console.log(`${scale} with notes ${scale.notes}`)
+        console.log(`${scale} with notes ${scale.notes}`)
 
 
         const melody = this.pickMelody(scale)
@@ -69,7 +69,7 @@ export class MusicGenerator {
             })
         })))
 
-        console.log(melody.length + " or " + Measure.joinMeasures(measures).length + ":" + Measure.joinMeasures(progression).length + " or " +  progression.length)
+        // console.log(melody.length + " or " + Measure.joinMeasures(measures).length + ":" + Measure.joinMeasures(progression).length + " or " +  progression.length)
 
         /*const measures = progression.map((value, idx) => Measure.from([...(
             value.toNotes("1/1").map((val) => {
@@ -323,13 +323,13 @@ export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
     maxStartingDissonance = 0
     useMinorDiatonics = true
     maxIndividualMelodyDissonance = 5
-    minPhraseNotes = 12
-    maxPhraseNotes = 12
-    weightedIntervals = {0: 5, 1: 50, 2: 25, 3: 20, 5: 0, 6: 5}
+    minPhraseNotes = 20
+    maxPhraseNotes = 20
+    weightedIntervals = {0: 2, 1: 50, 2: 25, 3: 20, 4: 10, 5: 3, 6: 5}
     phraseDirectionSwapChance = 0.4
 
     minPhraseNoteLengthBase = 1
-    maxPhraseNoteLengthBase = 3
+    maxPhraseNoteLengthBase = 2
 }
 
 const gen = new MusicGenerator(new DefaultMusicGeneratorArgs())

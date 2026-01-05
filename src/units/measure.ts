@@ -48,7 +48,7 @@ export class Measure {
     public static lastOccupiedPosition(measure: Measure): Position {
         const entries = Object.entries((measure.collection))
         const cleaned = entries.filter(([idx, content]) => content.length > 0).sort((a, b) => parseInt(b[0].split("::")[0]) / parseInt(b[0].split("::")[1]) - parseInt(a[0].split("::")[0]) / parseInt(a[0].split("::")[1]) )
-        console.log(cleaned)
+        // console.log(cleaned)
         const highestMeasureElements = cleaned[0][0]
         return Position.of(highestMeasureElements as ElementPosition)
         // return Position.of(Object.entries(measure.collection).filter(([idx, content]) => content.length > 0).sort(([idxA, contentA], [idxB, contentB]) => (parseFloat(idxB.split("::")[0]) / Math.pow(2, parseInt(idxB.split("::")[1]) - 1)) - (parseFloat(idxA.split("::")[0]) / Math.pow(2, parseInt(idxA.split("::")[1]) - 1)))[0][0] as ElementPosition)
@@ -95,7 +95,7 @@ export class Measure {
                     element: item.element,
                     position: new Position((n - Math.pow(2, base - 1)) as NumRange<1, 64>, base as BeatLevel)
                 })
-                console.log(`N is ${n} at base ${base} at starting level ${startingLevel}\nThe overflowing new position is ${new Position(((n - Math.pow(2, base - 1))) as NumRange<1, 64>, base as BeatLevel).valueOf()}`)
+                // console.log(`N is ${n} at base ${base} at starting level ${startingLevel}\nThe overflowing new position is ${new Position(((n - Math.pow(2, base - 1))) as NumRange<1, 64>, base as BeatLevel).valueOf()}`)
             } else {
                 fit.push({element: item.element, position: Position.of(item.position)})
             }
@@ -140,7 +140,7 @@ export class Measure {
 
             nextToOccupyNumerator = nextToOccupyNumerator/gcd + 1
 
-            console.log(`Previously occupied position is ${lastOccupied.valueOf()}. The occupier is ${occupier.duration.toString()}. \nThe previously occupied position is equal to ${prevNthSixtyFourths} sixty fourths and the occupier occupies ${(occupier.duration.numerator / Math.pow(2, occupier.duration.denominator - 1)) * 64} sixty fourths. \nThis means that we can occupy ${nextToOccupyNumerator}::(${Math.pow(2, Math.log2(64/gcd))}) == ${new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position}`)
+            // console.log(`Previously occupied position is ${lastOccupied.valueOf()}. The occupier is ${occupier.duration.toString()}. \nThe previously occupied position is equal to ${prevNthSixtyFourths} sixty fourths and the occupier occupies ${(occupier.duration.numerator / Math.pow(2, occupier.duration.denominator - 1)) * 64} sixty fourths. \nThis means that we can occupy ${nextToOccupyNumerator}::(${Math.pow(2, Math.log2(64/gcd))}) == ${new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position}`)
 
 
             const together = Measure.join(recent, measures[i], new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position)
