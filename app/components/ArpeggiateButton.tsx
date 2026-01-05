@@ -6,7 +6,7 @@ import {Measure} from "@/src/units/measure";
 import {Chord, CHORDS, Voicing} from "@/src/units/chord";
 
 export default function ArpeggiateButton({setStave}: { setStave: Dispatch<SetStateAction<Stave>> }) {
-    return (<button onClick={(e) => {
+    return (<button onClick={() => {
         const stave = new Stave(120)
         const chord: Chord = new CHORDS[Math.floor(Math.random() * CHORDS.length)](Math.floor(Math.random() * 11))
         const measures = []
@@ -17,7 +17,7 @@ export default function ArpeggiateButton({setStave}: { setStave: Dispatch<SetSta
         Measure.joinMeasures(measures).forEach((m) => stave.put(m))
         setStave(stave)
     }}
-                    className={"text-foreground w-fit h-fit flex flex-col mx-2 justify-center align-middle content-center raleway-text-regular p-2 border-blue-400/20 border-[1px]"}>
+                    className={"text-foreground w-fit h-fit flex flex-col mx-2 justify-center align-middle content-center raleway-text-regular p-2 border-blue-400/20 border"}>
         Generate Arpeggio
     </button>)
 }

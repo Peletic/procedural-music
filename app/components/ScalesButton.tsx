@@ -22,7 +22,7 @@ export default function ScalesButton({setStave}: { setStave: Dispatch<SetStateAc
         Measure.joinMeasures(measures).forEach(el => stave.put(el))
         setStave(stave)
     }}
-                    className={"text-foreground w-fit h-fit flex flex-col mx-2 justify-center align-middle content-center raleway-text-regular p-2 border-blue-400/20 border-[1px]"}>
+                    className={"text-foreground w-fit h-fit flex flex-col mx-2 justify-center align-middle content-center raleway-text-regular p-2 border-blue-400/20 border"}>
         Fill Scales
     </button>)
 }

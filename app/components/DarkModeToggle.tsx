@@ -3,13 +3,11 @@ import {useState} from "react";
 export default function DarkModeToggle() {
 
     const checkTheme = () => {
-        if (document.documentElement.classList.contains("dark")) {
-            return false;
-        }
-        return true;
+        return !document.documentElement.classList.contains("dark");
+
     };
     const [isLight, setIsLight] = useState(checkTheme);
-    return (<button onClick={(e) => {
+    return (<button onClick={() => {
         document.documentElement.classList.toggle(
             "dark"
         );

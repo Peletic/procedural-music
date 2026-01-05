@@ -1,4 +1,4 @@
-import {Pitch} from "../../src/units/pitch";
+import {Pitch} from "@/src/units/pitch";
 
 export default function pitchTest() {
     for (let i = 22; i < 120; i++) {

@@ -8,10 +8,10 @@ export default function NumInputField({name, onInput, baseValue}: {
 
     return (
         <div
-            className={"text-foreground w-fit h-fit flex flex-col mx-2 justify-center align-middle content-center raleway-text-regular p-2 border-blue-400/20 border-[1px]"}>
+            className={"text-foreground w-fit h-fit flex flex-col mx-2 justify-center align-middle content-center raleway-text-regular p-2 border-blue-400/20 border"}>
             <p className={"text-xs"}>{name}</p>
             <input
-                className={"max-w-16 w-12 border-blue-400/20 border-t-[1px] rounded-none text-base dm-serif-text-regular"}
+                className={"max-w-16 w-12 border-blue-400/20 border-t rounded-none text-base dm-serif-text-regular"}
                 type={"number"} onInput={onInput} value={`${baseValue}`}/>
         </div>)
 }

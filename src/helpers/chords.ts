@@ -1,4 +1,4 @@
-import {Chord, CHORDS, Voicing} from "@/src/units/chord";
+import {Chord, CHORDS} from "@/src/units/chord";
 import {Tone} from "@/src/units/tone";
 import {Logger} from "@/src/helpers/log";
 

@@ -2,7 +2,7 @@
 // 1 = up, 2 = down, 3 = up down, 4 = down up
 
 import {Beat, BeatLevel} from "@/src/units/beat";
-import {ElementPosition, IMeasureElement, Position} from "@/src/units/measure";
+import {IMeasureElement, Position} from "@/src/units/measure";
 import {Pitch} from "@/src/units/pitch";
 import {Note} from "@/src/units/note";
 
