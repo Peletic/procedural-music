@@ -325,11 +325,11 @@ export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
     maxIndividualMelodyDissonance = 5
     minPhraseNotes = 40
     maxPhraseNotes = 40
-    weightedIntervals = {0: 2, 1: 20, 2: 25, 3: 20, 4: 10, 5: 3, 6: 5}
+    weightedIntervals = {0: 12, 1: 20, 2: 25, 3: 20, 4: 10, 5: 12, 6: 5}
     phraseDirectionSwapChance = 0.4
 
     minPhraseNoteLengthBase = 1
-    maxPhraseNoteLengthBase = 1
+    maxPhraseNoteLengthBase = 3
 }
 
 const gen = new MusicGenerator(new DefaultMusicGeneratorArgs())
