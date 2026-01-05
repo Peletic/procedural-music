@@ -159,7 +159,7 @@ export class MusicGenerator {
 /*
             if (names.length > 0 && names.includes(chord.chord.name)) {*/
                 //const occurrences = names.filter((name) => name === chord.chord.name).length
-                voicings.push(new Voicing(chord.chord, this.random.randomInRange(0, chord.chord.notes.length - 1), 3).toNotes(chord.duration === 3 ? "1.5/2" : `1/${chord.duration === 4 ? 1 : chord.duration == 2 ? 2 : 3}` as NoteDuration))
+                voicings.push(new Voicing(chord.chord, this.random.randomInRange(0, chord.chord.notes.length - 1), 2).toNotes(chord.duration === 3 ? "1.5/2" : `1/${chord.duration === 4 ? 1 : chord.duration == 2 ? 2 : 3}` as NoteDuration))
             /*} else {
                 voicings.push(new Voicing(chord.chord, 0, 2).toNotes(chord.duration === 3 ? `1.5/2` : `1/${chord.duration === 4 ? 1 : chord.duration == 2 ? 2 : 3}` as NoteDuration))
             }*/
