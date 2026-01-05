@@ -1,5 +1,5 @@
 import {ElementPosition, Measure} from "@/src/units/measure";
-import NoteComponent from "@/app/components/NoteComponent";
+import NoteComponent from "@/components/NoteComponent";
 import {Note} from "@/src/units/note";
 
 export default function MeasureComponent({value, idxN, last}: { value: Measure, idxN: number, last?: boolean }) {

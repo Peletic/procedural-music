@@ -1,6 +1,6 @@
 import Stave from "@/src/units/stave";
-import MeasureComponent from "@/app/components/MeasureComponent";
-import Clefs from "@/app/components/Clefs";
+import MeasureComponent from "@/components/MeasureComponent";
+import Clefs from "@/components/Clefs";
 
 export default function SheetComponent({stave}: { stave: Stave }) {
     return (<div

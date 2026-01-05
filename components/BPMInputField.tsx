@@ -1,4 +1,4 @@
-import NumInputField from "@/app/components/NumInputField";
+import NumInputField from "@/components/NumInputField";
 import Stave from "@/src/units/stave";
 import {Dispatch, SetStateAction, useState} from "react";
 

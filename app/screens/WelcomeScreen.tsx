@@ -1,4 +1,4 @@
-import {LargeHeading} from "@/app/components/Heading";
+import {LargeHeading} from "@/components/Heading";
 import {establishAudioContext, instantiateInstrument} from "@/lib/audio";
 import {Dispatch, SetStateAction} from "react";
 

@@ -1,85 +1,44 @@
-import TestPlayAudio from "@/app/components/TestPlayAudio";
-import SheetComponent from "@/app/components/SheetComponent";
-import BPMInputField from "@/app/components/BPMInputField";
+import TestPlayAudio from "@/components/TestPlayAudio";
+import SheetComponent from "@/components/SheetComponent";
+import BPMInputField from "@/components/BPMInputField";
 import {useEffect, useState} from "react";
-import DarkModeToggle from "@/app/components/DarkModeToggle";
+import DarkModeToggle from "@/components/DarkModeToggle";
 import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/generator";
-import RegenerateButton from "@/app/components/RegenerateButton";
-import FillChordsButton from "@/app/components/FillChordsButton";
-import ArpeggiateButton from "@/app/components/ArpeggiateButton";
-import ScalesButton from "@/app/components/ScalesButton";
-import ProgressionButton from "@/app/components/ProgressionButton";
+import RegenerateButton from "@/components/RegenerateButton";
+import FillChordsButton from "@/components/FillChordsButton";
+import ArpeggiateButton from "@/components/ArpeggiateButton";
+import ScalesButton from "@/components/ScalesButton";
+import ProgressionButton from "@/components/ProgressionButton";
 import TCPButton from "@/trashcan/TCPButton";
 import Stave from "@/src/units/stave";
+import ConfigSection from "@/components/config/ConfigSection";
 
 export default function PlaygroundScreen() {
-    /*const initStave = new Stave(120);
-
-    const testMeasure = new Measure();
-
-    testMeasure.put(new Note("C4", new Beat("1/2")), Position.of("1::3"))
-    testMeasure.put(new Note("E4", new Beat("1/2")), Position.of("1::3"))
-    testMeasure.put(new Note("G4", new Beat("1/2")), Position.of("1::3"))
-    testMeasure.put(new Note("D4", new Beat("1/3")), Position.of("2::3"))
-    testMeasure.put(new Note("E4", new Beat("1/3")), Position.of("3::3"))
-    testMeasure.put(new Note("F#4", new Beat("1/3")), Position.of("4::3"))
-    initStave.put(testMeasure)
-
-    const testMeasureTwo = new Measure();
-
-    testMeasureTwo.put(new Note("G#4", new Beat("1/3")), Position.of("1::3"))
-    testMeasureTwo.put(new Note("Ab4", new Beat("1/1")), Position.of("2::3"))
-    testMeasureTwo.put(new Note("Bb4", new Beat("1/1")), Position.of("3::3"))
-    testMeasureTwo.put(new Note("C5", new Beat("1/3")), Position.of("4::3"))
-    initStave.put(testMeasureTwo)
-
-    const testMeasureThree = new Measure();
-
-    testMeasureThree.put(new Note("D5", new Beat("1/3")), Position.of("1::3"))
-    testMeasureThree.put(new Note("E5", new Beat("1/3")), Position.of("2::3"))
-    testMeasureThree.put(new Note("F5", new Beat("1/3")), Position.of("3::3"))
-    testMeasureThree.put(new Note("G5", new Beat("1/3")), Position.of("4::3"))
-    initStave.put(testMeasureThree)
-
-    const testMeasureFour = new Measure();
-
-    testMeasureFour.put(new Note("D5", new Beat("1/4")), Position.of("1::3"))
-    testMeasureFour.put(new Note("E5", new Beat("1/5")), Position.of("2::3"))
-    testMeasureFour.put(new Note("F5", new Beat("1/3")), Position.of("3::3"))
-    testMeasureFour.put(new Note("G5", new Beat("1/3")), Position.of("4::3"))
-    initStave.put(testMeasureFour)
-
-    const testMeasureFive = new Measure();
-
-    testMeasureFive.put(new Note("C4", new Beat("1/5")), Position.of("1::3"))
-    testMeasureFive.put(new Note("E4", new Beat("1/5")), Position.of("1::3"))
-    testMeasureFive.put(new Note("G4", new Beat("1/5")), Position.of("1::3"))
-    testMeasureFive.put(new Note("D4", new Beat("1/4")), Position.of("2::3"))
-    testMeasureFive.put(new Note("E4", new Beat("1/4")), Position.of("3::3"))
-    testMeasureFive.put(new Note("F#4", new Beat("1/4")), Position.of("4::3"))
-    initStave.put(testMeasureFive)*/
-
     const [stave, setStave] = useState<Stave>(new Stave(120))
 
     useEffect(() => {
         setStave(new MusicGenerator(new DefaultMusicGeneratorArgs()).generate(120))
     }, [])
 
+    const [opt, setOpts] = useState({var: {value: false, title: "booleans"}})
+
     return (<>
         <div
             className={"text-black w-full min-h-full flex flex-col-reverse md:flex-row content-center justify-between align-middle pt-7 mt-4 gap-12 md:text-normal"}>
-            <div className={"flex mp-2 md:p-0 flex-col justify-between w-full relative w-[100vw] md:max-w-[30em] text-lg"}>
+            <div className={"flex mp-2 md:p-0 flex-col justify-between w-full relative md:max-w-[30em] text-lg"}>
                 <div
-                    className={"p-2 md:p-0 flex flex-col md:flex-row md:flex-wrap w-full md:max-w-[30em] align-middle gap-4"}>
+                    className={"p-2 md:p-0 flex flex-col w-full md:max-w-[30em] align-middle gap-4"}>
                     <TestPlayAudio stave={stave}/>
-
-                    <BPMInputField stave={stave} setStave={setStave}/>
+                    <div className={"flex flex-col"}>
+                    <ConfigSection config={opt} setConfig={setOpts}>Test</ConfigSection>
+                    </div>
+                    {/*<BPMInputField stave={stave} setStave={setStave}/>
                     <RegenerateButton setStave={setStave}/>
                     <FillChordsButton setStave={setStave}/>
                     <ArpeggiateButton setStave={setStave}/>
                     <ScalesButton setStave={setStave}/>
                     <ProgressionButton setStave={setStave}/>
-                    <TCPButton setStave={setStave}/>
+                    <TCPButton setStave={setStave}/>*/}
                 </div>
                 <div>
                     <DarkModeToggle/>
