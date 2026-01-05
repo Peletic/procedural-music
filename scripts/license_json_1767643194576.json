@@ -1,242 +1,226 @@
 {
     "bass_clef.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
-        "license_prepend": ""
+        "author": "Wikimedia user pd4u",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Pd4u",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Clef_Bass_(F).svg",
+        "license_name": "WTF Public License",
+        "license_link": "https://www.wtfpl.net/about",
+        "license_prepend": "the"
     },
     "downwards-dotted_half_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Coyau",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Coyau",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Blanche_point%C3%A9e.svg#/media/File:Blanche_point%C3%A9e.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "downwards-dotted_quarter_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Coyau",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Coyau",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Noire_point%C3%A9e.svg#/media/File:Noire_point%C3%A9e.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "downwards-dotted_whole_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
+        "author": "PianistHere",
+        "author_link": "https://commons.wikimedia.org/wiki/User:PianistHere",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Dotted_whole_note.svg#/media/File:Dotted_whole_note.svg",
+        "license_name": "CC BY-SA 4.0",
+        "license_link": "https://creativecommons.org/licenses/by-sa/4.0",
         "license_prepend": ""
     },
     "downwards-eighth_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Coyau",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Coyau",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Croche.svg#/media/File:Croche.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "downwards-half_note.svg": {
         "author": "",
         "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Blanche.svg#/media/File:Blanche.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "downwards-quarter_note.svg": {
-        "author": "",
+        "author": "Christophe Dang Ngoc Chan",
         "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Figure_rythmique_noire_hampe_bas.svg#/media/File:Figure_rythmique_noire_hampe_bas.svg",
+        "license_name": "CC BY-SA 3.0",
+        "license_link": "http://creativecommons.org/licenses/by-sa/3.0/",
         "license_prepend": ""
     },
     "downwards-sixteenth_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Coyau",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Coyau",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Double-croche.svg#/media/File:Double-croche.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "downwards-thirty_second_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Coyau",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Coyau",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Triple-croche.svg#/media/File:Triple-croche.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "downwards-whole_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Coyau",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Coyau",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Ronde.svg#/media/File:Ronde.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "flat.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "っ",
+        "author_link": "https://commons.wikimedia.org/wiki/User:%E3%81%A3",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Flat.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
-    },
-    "grand_staff.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "moon.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
+        "author": "Fabián Alexis",
+        "author_link": "https://github.com/fabianalexisinostroza/Antu",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Antu_system-suspend-hibernate.svg#/media/File:Antu_system-suspend-hibernate.svg",
+        "license_name": "CC BY-SA 3.0",
+        "license_link": "https://creativecommons.org/licenses/by-sa/3.0",
         "license_prepend": ""
     },
     "pause.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
-        "license_prepend": ""
-    },
-    "perspective-piano.png": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
-        "license_prepend": ""
+        "author": "Wikimedia Design, OOUI team and other Wikimedia contributors",
+        "author_link": "https://github.com/wikimedia/design-codex/blob/main/AUTHORS.txt",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Codex_icon_pause_color-base.svg#/media/File:Codex_icon_pause_color-base.svg",
+        "license_name": "CC BY 4.0",
+        "license_link": "https://creativecommons.org/licenses/by/4.0",
+        "license_prepend": "the"
     },
     "play.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Apple Inc.",
+        "author_link": "https://music.apple.com/includes/js-cdn/musickit/v3/components/musickit-components/assets/icons/play.svg",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Apple_Music_play_button.svg#/media/File:Apple_Music_play_button.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "sharp.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "っ",
+        "author_link": "https://commons.wikimedia.org/wiki/User:%E3%81%A3",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Sharp.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "staff-end.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Denelson83",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Denelson83",
+        "source_link": "https://commons.wikimedia.org/wiki/Musical_notation#/media/File:Music-endbar.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "staff.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
+        "author": "っ",
+        "author_link": "https://commons.wikimedia.org/wiki/User:%E3%81%A3",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Staff96.svg#/media/File:Staff96.svg",
+        "license_name": "CC BY 2.5",
+        "license_link": "https://creativecommons.org/licenses/by/2.5",
         "license_prepend": ""
     },
     "sun.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
+        "author": "Luca Burgio",
+        "author_link": "https://github.com/lucaburgio",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Iconoir_sun-light.svg#/media/File:Iconoir_sun-light.svg",
+        "license_name": "MIT",
+        "license_link": "http://opensource.org/licenses/mit-license.php",
         "license_prepend": ""
     },
     "treble_clef.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "っ",
+        "author_link": "https://commons.wikimedia.org/wiki/User:%E3%81%A3",
+        "source_link": "https://commons.wikimedia.org/wiki/File:GClef.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "upwards-dotted_half_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Coyau",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Coyau",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Blanche_point%C3%A9e_t%C3%AAte_en_bas.svg#/media/File:Blanche_point%C3%A9e_t%C3%AAte_en_bas.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "upwards-dotted_quarter_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Coyau",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Coyau",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Noire_point%C3%A9e_t%C3%AAte_en_bas.svg#/media/File:Noire_point%C3%A9e_t%C3%AAte_en_bas.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "upwards-dotted_whole_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
+        "author": "PianistHere",
+        "author_link": "https://commons.wikimedia.org/wiki/User:PianistHere",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Dotted_whole_note.svg#/media/File:Dotted_whole_note.svg",
+        "license_name": "CC BY-SA 4.0",
+        "license_link": "https://creativecommons.org/licenses/by-sa/4.0",
         "license_prepend": ""
     },
     "upwards-eighth_note.svg": {
         "author": "",
         "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Croche_t%C3%AAte_en_bas.svg#/media/File:Croche_t%C3%AAte_en_bas.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "upwards-half_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Coyau",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Coyau",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Blanche_t%C3%AAte_en_bas.svg#/media/File:Blanche_t%C3%AAte_en_bas.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     },
     "upwards-quarter_note.svg": {
-        "author": "",
+        "author": "Christophe Dan Ngoc Chan",
         "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Figure_rythmique_noire_hampe_haut.svg#/media/File:Figure_rythmique_noire_hampe_haut.svg",
+        "license_name": "CC BY-SA 3.0",
+        "license_link": "http://creativecommons.org/licenses/by-sa/3.0/",
         "license_prepend": ""
     },
     "upwards-sixteenth_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
+        "author": "Christophe Dang Ngoc Chan (cdang)",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Cdang",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Figure_rythmique_double_croche_hampe_haut.svg#/media/File:Figure_rythmique_double_croche_hampe_haut.svg",
+        "license_name": "CC BY-SA 3.0",
+        "license_link": "http://creativecommons.org/licenses/by-sa/3.0/",
         "license_prepend": ""
     },
     "upwards-thirty_second_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
-        "license_link": "",
+        "author": "PianistHere",
+        "author_link": "https://commons.wikimedia.org/wiki/User:PianistHere",
+        "source_link": "https://commons.wikimedia.org/wiki/File:32nd_note.svg#/media/File:32nd_note.svg",
+        "license_name": "CC BY-SA 4.0",
+        "license_link": "https://creativecommons.org/licenses/by-sa/4.0",
         "license_prepend": ""
     },
     "upwards-whole_note.svg": {
-        "author": "",
-        "author_link": "",
-        "source_link": "",
-        "license_name": "",
+        "author": "Coyau",
+        "author_link": "https://commons.wikimedia.org/wiki/User:Coyau",
+        "source_link": "https://commons.wikimedia.org/wiki/File:Ronde.svg#/media/File:Ronde.svg",
+        "license_name": "Public Domain",
         "license_link": "",
-        "license_prepend": ""
+        "license_prepend": "the"
     }
 }
