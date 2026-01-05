@@ -31,7 +31,7 @@ function entryToString(entryName, entry) {
 
     let author = ""
     if (!entry["author"]) {
-        author = "an unknown Wikimedia User"
+        author = "an unknown Wikimedia user"
     } else if (entry["author"].toLowerCase().includes("apple")) {
         author = `${entry["author"]}`
     } else {
@@ -46,7 +46,7 @@ function entryToString(entryName, entry) {
 
     let license = ""
 
-    if (!entry["license_prepend"]) {
+    if (entry["license_prepend"]) {
         license += `${entry["license_prepend"]} `
     }
     if (!entry["license_link"]) {
@@ -55,7 +55,7 @@ function entryToString(entryName, entry) {
         license += `[${entry["license_name"]}](${entry["license_link"]})`
     }
 
-    return `"${item}" by ${author} under ${license} <br>`
+    return `"${item}" by ${author} is licensed under ${license} <br>`
 }
 
 transformJSON("license_json_1767643194576.json")
