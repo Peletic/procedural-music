@@ -9,7 +9,7 @@ import FillChordsButton from "@/app/components/FillChordsButton";
 import ArpeggiateButton from "@/app/components/ArpeggiateButton";
 import ScalesButton from "@/app/components/ScalesButton";
 import ProgressionButton from "@/app/components/ProgressionButton";
-import TCPButton from "@/app/components/TCPButton";
+import TCPButton from "@/trashcan/TCPButton";
 import Stave from "@/src/units/stave";
 
 export default function PlaygroundScreen() {

@@ -6,6 +6,9 @@ import {SetStateAction, useEffect, useState} from "react";
 import {Player} from "soundfont-player";
 import {netDissonance} from "@/src/generation/dissonance";
 import {Pitch} from "@/src/units/pitch";
+import {Logger} from "@/src/helpers/log";
+
+const LoggerInstance = new Logger("playback")
 
 export default function TestPlayAudio({stave}: { stave: Stave }) {
     const [interrupted, setInterrupted] = useState(0)
@@ -13,8 +16,8 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
     const tr = (60 * 1000) / stave.bpm;
 
     const play = async (array: any, instruments: Player[]) => {
-        console.log((array as Note[]).map((el) => Pitch.of(el.note)))
-        console.log(netDissonance(...(array as Note[]).map((el) => Pitch.of(el.note))))
+        LoggerInstance.log("Playing notes " + (array as Note[]).map((el) => Pitch.of(el.note)))
+        LoggerInstance.log("Net Dissonance = " + netDissonance(...(array as Note[]).map((el) => Pitch.of(el.note))))
         for (let el of array as Note[]) {
             instruments[0].play(el.note, 0, {
                 duration: (((tr * 4) / Math.pow(2, el.duration.denominator - 1)) / 1000) * el.duration.numerator,

@@ -375,5 +375,5 @@ export class Voicing {
 
 export const TRIAD_CHORDS = [MajorTriadChord, MinorTriadChord, AugmentedTriadChord, DiminishedTriadChord, SecondSuspendedChord, FourthSuspendedChord]
 export const TETRAD_CHORDS = [DominantSeventhChord, MajorSeventhChord, MinorSeventhChord, DiminishedSeventhChord]
-export const CHORDS = [...TRIAD_CHORDS, ...TETRAD_CHORDS]
+export const CHORDS = [...TRIAD_CHORDS, ...TETRAD_CHORDS, ...DIATONIC]
 export type Chords = typeof CHORDS[number]

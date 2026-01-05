@@ -2,6 +2,9 @@ import {Beat, BeatLevel} from "./beat";
 import {JoinedNumberCombinations, NumRange} from "../helpers/types";
 import {Note} from "../units/note"
 import {greatestCommonDivisorOf} from "@/src/helpers/number";
+import {Logger} from "@/src/helpers/log";
+
+const LoggerInstance = new Logger("measure")
 
 export abstract class MeasureElement {
     abstract duration: Beat
@@ -36,7 +39,7 @@ export class Measure {
 
     public put(element: MeasureElement, position: Position | ElementPosition) {
         const pos = (position instanceof Position ? position.valueOf() : position) as unknown as ElementPosition
-        //// console.log(pos)
+        LoggerInstance.log(pos)
         this.collection[pos].push(element)
     }
 
@@ -48,7 +51,7 @@ export class Measure {
     public static lastOccupiedPosition(measure: Measure): Position {
         const entries = Object.entries((measure.collection))
         const cleaned = entries.filter(([idx, content]) => content.length > 0).sort((a, b) => parseInt(b[0].split("::")[0]) / parseInt(b[0].split("::")[1]) - parseInt(a[0].split("::")[0]) / parseInt(a[0].split("::")[1]) )
-        // console.log(cleaned)
+        LoggerInstance.log(cleaned)
         const highestMeasureElements = cleaned[0][0]
         return Position.of(highestMeasureElements as ElementPosition)
         // return Position.of(Object.entries(measure.collection).filter(([idx, content]) => content.length > 0).sort(([idxA, contentA], [idxB, contentB]) => (parseFloat(idxB.split("::")[0]) / Math.pow(2, parseInt(idxB.split("::")[1]) - 1)) - (parseFloat(idxA.split("::")[0]) / Math.pow(2, parseInt(idxA.split("::")[1]) - 1)))[0][0] as ElementPosition)
@@ -70,10 +73,10 @@ export class Measure {
 
             if (diff >= 1) {
                 newPosition = `${startingN + ((elN-1) * diff)}::${startingLevel}`
-                // console.log(`Eln ${elN} New position is ${newPosition}`)
+                LoggerInstance.log(`Eln ${elN} New position is ${newPosition}`)
             } else {
                 newPosition = `${((startingN - 1) * (Math.pow(2, elLevel-1) / Math.pow(2, startingLevel-1))) + elN}::${elLevel}`
-                // console.log(`New position is ${newPosition} and diff is ${Math.pow(diff, -1)}`)
+                LoggerInstance.log(`New position is ${newPosition} and diff is ${Math.pow(diff, -1)}`)
             }
             for (const a of el[1]) {
                 transformedB.push({element: a as Note, position: newPosition as ElementPosition})
@@ -88,14 +91,14 @@ export class Measure {
             const base = parseInt(item.position.toString().split("::")[1])
             const n = parseFloat(item.position.toString().split("::")[0])
 
-            // console.log(`N is {${n}} || Base is {(${Math.pow(2, base - 1)})}`)
+            LoggerInstance.log(`N is {${n}} || Base is {(${Math.pow(2, base - 1)})}`)
 
             if ((n/Math.pow(2, base - 1)) > 1) {
                 overflow.push({
                     element: item.element,
                     position: new Position((n - Math.pow(2, base - 1)) as NumRange<1, 64>, base as BeatLevel)
                 })
-                // console.log(`N is ${n} at base ${base} at starting level ${startingLevel}\nThe overflowing new position is ${new Position(((n - Math.pow(2, base - 1))) as NumRange<1, 64>, base as BeatLevel).valueOf()}`)
+                LoggerInstance.log(`N is ${n} at base ${base} at starting level ${startingLevel}\nThe overflowing new position is ${new Position(((n - Math.pow(2, base - 1))) as NumRange<1, 64>, base as BeatLevel).valueOf()}`)
             } else {
                 fit.push({element: item.element, position: Position.of(item.position)})
             }
@@ -126,21 +129,15 @@ export class Measure {
             const recent = joined[joined.length - 1]
             const lastOccupied = Measure.lastOccupiedPosition(recent)
             const occupier = recent.at(lastOccupied).reduce((prev, curr) => prev.duration.denominator === curr.duration.denominator ? (curr.duration.dotted ? curr : prev) : (prev.duration.denominator < curr.duration.denominator ? prev : curr))
-            // 1/4 filling in 1/8 would mean the next occupied would be 3/8
-            // eg 8/4 = 2; 2*1 = 3
 
-            // 1::(4) is occupied by 1/4 that means that the next available would be 2::(4)
-
-            let prevNth = lastOccupied.nth - 1
             let prevNthSixtyFourths = ((lastOccupied.nth - 1) / Math.pow(2, lastOccupied.level - 1)) * 64
-
             let nextToOccupyNumerator = (occupier.duration.numerator / Math.pow(2, occupier.duration.denominator - 1)) * 64 + prevNthSixtyFourths
 
             const gcd = greatestCommonDivisorOf(nextToOccupyNumerator, 64)
 
             nextToOccupyNumerator = nextToOccupyNumerator/gcd + 1
 
-            // console.log(`Previously occupied position is ${lastOccupied.valueOf()}. The occupier is ${occupier.duration.toString()}. \nThe previously occupied position is equal to ${prevNthSixtyFourths} sixty fourths and the occupier occupies ${(occupier.duration.numerator / Math.pow(2, occupier.duration.denominator - 1)) * 64} sixty fourths. \nThis means that we can occupy ${nextToOccupyNumerator}::(${Math.pow(2, Math.log2(64/gcd))}) == ${new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position}`)
+            LoggerInstance.log(`Previously occupied position is ${lastOccupied.valueOf()}. The occupier is ${occupier.duration.toString()}. \nThe previously occupied position is equal to ${prevNthSixtyFourths} sixty fourths and the occupier occupies ${(occupier.duration.numerator / Math.pow(2, occupier.duration.denominator - 1)) * 64} sixty fourths. \nThis means that we can occupy ${nextToOccupyNumerator}::(${Math.pow(2, Math.log2(64/gcd))}) == ${new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position}`)
 
 
             const together = Measure.join(recent, measures[i], new Position(nextToOccupyNumerator as NumRange<1, 64>, Math.log2(64/gcd) + 1 as NumRange<1, 6>).position)
@@ -154,10 +151,8 @@ export class Measure {
 
     public static mergeMeasures(measureA: Measure, measureB: Measure) {
         if (measureA == undefined) {
-            console.log(measureA)
             return measureB
         } else if (measureB == undefined) {
-            console.log(measureB)
             return measureA
         }
         const measureC = new Measure()
