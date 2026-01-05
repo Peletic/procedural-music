@@ -149,21 +149,21 @@ export class MusicGenerator {
         }
 
         const voicings: Note[][] = []
-        const names: string[] = []
+        //const names: string[] = []
 
         for (const chord of toUse) {
             if (chord.chord == undefined) {
                 console.error(`Undefined chord`)
                 continue
             }
-
-            if (names.length > 0 && names.includes(chord.chord.name)) {
-                const occurrences = names.filter((name) => name === chord.chord.name).length
-                voicings.push(new Voicing(chord.chord, occurrences, occurrences > 2 ? 3 : 2).toNotes(chord.duration === 3 ? "1.5/2" : `1/${chord.duration === 4 ? 1 : chord.duration == 2 ? 2 : 3}` as NoteDuration))
-            } else {
+/*
+            if (names.length > 0 && names.includes(chord.chord.name)) {*/
+                //const occurrences = names.filter((name) => name === chord.chord.name).length
+                voicings.push(new Voicing(chord.chord, this.random.randomInRange(0, chord.chord.notes.length - 1)).toNotes(chord.duration === 3 ? "1.5/2" : `1/${chord.duration === 4 ? 1 : chord.duration == 2 ? 2 : 3}` as NoteDuration))
+            /*} else {
                 voicings.push(new Voicing(chord.chord, 0, 2).toNotes(chord.duration === 3 ? `1.5/2` : `1/${chord.duration === 4 ? 1 : chord.duration == 2 ? 2 : 3}` as NoteDuration))
-            }
-            names.push(chord.chord.name)
+            }*/
+            //names.push(chord.chord.name)
         }
 
         if (toUse.map((chord) => chord.duration).reduce((prev, curr) => prev + curr) !== numberGroups.flat().length) {
