@@ -254,7 +254,7 @@ export class MusicGenerator {
             }
 
             // console.log(new Voicing(appliedChord).notes)
-            progression.push(new Voicing(appliedChord, this.random.randomInRange(1, 3)))
+            progression.push(new Voicing(appliedChord, this.random.randomInRange(1, 3), 3))
         }
 
         if (this.args.loop) {
