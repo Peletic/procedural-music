@@ -8,15 +8,15 @@ export default function MeasureComponent({value, idxN, last}: { value: Measure, 
     return (<div className={"h-[7.3em] border-black flex flex-col-reverse justify-between"}
                  style={{width: `${width}em`, borderRight: `${(idxN + 1) % 3 == 0 ? "2px" : "0px"} solid black`}}>
         <div className={"h-[3em]"}>
-            <img className={"absolute h-[3em] border-r-2 object-fill border-black"} style={{width: `${12.5}em`}}
+            <img className={"absolute h-[3em] border-r-2 object-fill border-black"} style={{width: `${12.5}em`}} width={"200px"}
                  src={"staff.svg"} height={"48px"}/>
-            {last && <img className={"absolute h-[3em] border-r-2 object-fill border-black ml-[6.7em]"} style={{width: `${6}em`}}
+            {last && <img className={"absolute h-[3em] border-r-2 object-fill border-black ml-[6.7em]"} style={{width: `${6}em`}} width={"96px"}
                          src={"staff-end.svg"} height={"48px"}/>}
         </div>
         <div className={"h-[3em]"}>
-            <img className={"absolute h-[3em] border-r-2 border-black object-fill"} style={{width: `${12.5}em`}}
+            <img className={"absolute h-[3em] border-r-2 border-black object-fill"} style={{width: `${12.5}em`}} width={"200px"}
                  src={"staff.svg"} height={"48px"}/>
-            {last && <img className={"absolute h-[3em] border-r-2 border-black object-fill ml-[6.7em]"} style={{width: `${6}em`}}
+            {last && <img className={"absolute h-[3em] border-r-2 border-black object-fill ml-[6.7em]"} style={{width: `${6}em`}} width={"96px"}
                          src={"staff-end.svg"} height={"48px"}/>}
             {Object.entries(value.collection).map(([pos, notes]) => [...new Set(notes)].map((el) => <NoteComponent note={el as Note}
                                                                                                      pos={pos as ElementPosition}
