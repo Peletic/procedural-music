@@ -7,6 +7,7 @@ import {Player} from "soundfont-player";
 import {netDissonance} from "@/src/generation/dissonance";
 import {Pitch} from "@/src/units/pitch";
 import {Logger} from "@/src/helpers/log";
+import {Button} from "@/components/ui/button";
 
 const LoggerInstance = new Logger("playback")
 
@@ -66,7 +67,7 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
         }
     }, [interrupted])
     return (<>
-            <button onClick={(e) => {
+            <Button onClick={(e) => {
                 e.preventDefault();
                 if (interrupted == 0 || interrupted == 1) {
                     setInterrupted(2)
@@ -77,9 +78,13 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
                     clearTimeout(interval)
                     setInterrupted(1)
                 }
-            }} className={"bg-accent rounded text-sm w-8 h-8 flex justify-center fill-foreground"}>{interrupted == 2 ?
-                <img className={"object-fill h-6 my-auto"} src={"/pause.svg"}/> :
-                <img src={"/play.svg"} className={"object-fill h-6 my-auto"}/>}</button>
+            }} size={"icon-lg"}>
+                {
+                    interrupted == 2 ?
+                        <img className={"object-fill h-6 my-auto"} src={"/pause.svg"}/> :
+                        <img src={"/play.svg"} className={"object-fill h-6 my-auto"}/>
+                }
+            </Button>
         </>
     )
 }
