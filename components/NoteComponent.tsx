@@ -61,7 +61,7 @@ export default function NoteComponent({note, pos}: { note: Note, pos: ElementPos
     const addt: { [p: string]: any } = {}
     addt.height = "41.91px"
     if (note.duration.denominator == 1) {
-        addt.height = "0.65em"
+        addt.height = "10.4px"
     } else if (note.duration.dotted) {
         addt.height = "52px"
         //addt.width = "1.4em"
@@ -92,27 +92,27 @@ export default function NoteComponent({note, pos}: { note: Note, pos: ElementPos
         <img src={"/flat.svg"} style={
             {
                 position: "absolute",
-                height: "1.35em",
-                width: "0.7em",
+                height: "21.6px",
+                width: "11.2px",
                 display: `${flat}`,
-                marginLeft: `${flatOffset}em`,
-                marginTop: `${flatVerticalOffset}em`
+                marginLeft: `${flatOffset * 16}px`,
+                marginTop: `${flatVerticalOffset * 16}px`
             }
         }/>
         <img src={"/sharp.svg"} style={
             {
                 position: "absolute",
-                height: "1.65em",
-                width: "0.8em",
+                height: "26.4px",
+                width: "12.8px",
                 display: `${sharp}`,
-                marginLeft: `${sharpOffset}em`,
-                marginTop: `${sharpVerticalOffset}em`
+                marginLeft: `${sharpOffset * 16}px`,
+                marginTop: `${sharpVerticalOffset * 16}px`
             }
         }/>
         <img src={`/${svgName}`} id={`${idx}::64`} style={
             {
-                marginLeft: `${offset}em`,
-                marginTop: `${topMargin}em`,
+                marginLeft: `${offset*16}px`,
+                marginTop: `${topMargin*16}px`,
                 position: "absolute",
                 ...addt
             }
