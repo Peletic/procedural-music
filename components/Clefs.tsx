@@ -6,7 +6,7 @@ export default function Clefs({}) {
         <div className={"h-[48px] w-[49.6px]"}>
             <img className={"absolute border-black object-fill"} style={{width: `49.6px`, height: `48px`}}
                  src={"staff.svg"} width={"49.6px"} height={"48px"}/>
-            <div className={"h-[40px] w-[35px] absolute"}>
+            <div className={"h-[40px] w-[32px] absolute"}>
                 <img className={"h-[80px] mt-[-0.95em] ml-[2.6px]"} src={"/treble_clef.svg"}/>
             </div>
         </div>
