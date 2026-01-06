@@ -12,7 +12,7 @@ export default function WelcomeScreen({setState}: { setState: Dispatch<SetStateA
         <LargeHeading/>
         <button onClick={onBeginClick}
                 className={"text-center justify-center content-center flex flex-col hover:border rounded-sm border-foreground/70 bg-foreground/10 gap-2 mx-20"}>
-            <img src={"perspective-piano.png"} alt={"pixel art of a piano"} className={"mx-2"}/>
+            <img src={"perspective-piano.png"} alt={"pixel art of a piano"} className={"mx-2"} style={{width: "95%", margin: "auto"}}/>
             <p className={"raleway-text-regular w-auto bg-foreground/30 text-sm p-0.5"}>Begin</p>
         </button>
     </div>)
