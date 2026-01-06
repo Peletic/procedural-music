@@ -20,12 +20,12 @@ import {ElementPosition, Measure} from "@/src/units/measure";
 import {matchingScales} from "@/src/helpers/scales";
 import {Scale, SCALES} from "@/src/units/scale";
 import {ALL_APPLIED_CHORDS, includesAllNotes} from "@/src/helpers/chords";
-import {netDissonance} from "@/src/generation/dissonance";
 import {Note} from "@/src/units/note";
 import {NoteDuration} from "@/src/units/beat";
 import {chunkArray, mergeConcurrent} from "@/src/helpers/array";
 import {NUMBER_TONE_LOOKUP} from "@/src/units/tone";
 import {NumRange} from "@/src/helpers/types";
+
 import {Logger} from "@/src/helpers/log";
 
 const LoggerInstance = new Logger("generator")
@@ -93,7 +93,7 @@ export class MusicGenerator {
                 }
                 let subgroups = [mergeConcurrent(group).slice(0, mergeConcurrent(group).length - 1), mergeConcurrent(group).slice(mergeConcurrent(group).length - 1)]
                 let k = 0
-                while (k <= this.args.progressionTimeout) {
+                while (k <= this.args.progressionTimeout.value) {
                     const subgroupMatchingChords = chordPool.filter((chord) => includesAllNotes(chord, subgroups[0].map((a) => a.el)))
                     if (subgroupMatchingChords.length > 0) {
                         for (const subgroup of subgroups) {
@@ -110,7 +110,7 @@ export class MusicGenerator {
                     }
                     k++
                 }
-                if (k >= this.args.progressionTimeout) {
+                if (k >= this.args.progressionTimeout.value) {
                     LoggerInstance.error(`Reached progression timeout`)
                 }
             }
@@ -140,13 +140,12 @@ export class MusicGenerator {
 
         // 0 = down 1 = up
         const phraseDirection = this.random.randomInRange(0, 1) === 1 ? 1 : -1
-
-        const steps: number[] = new Array(this.random.randomInRange(this.args.minPhraseNotes - 1, this.args.maxPhraseNotes - 1))
-        const stepWeightingSum = Object.values(this.args.weightedIntervals).reduce((prev, curr) => prev + curr)
-        const mappedStepWeights = Object.entries(this.args.weightedIntervals).flatMap(([str, num]) => new Array(num).fill(parseInt(str)))
+        const steps: number[] = new Array(this.random.randomInRange(this.args.minPhraseNotes.value, this.args.maxPhraseNotes.value))
+        const stepWeightingSum = Object.values(this.args.weightedIntervals.value).reduce((prev, curr) => prev + curr)
+        const mappedStepWeights = Object.entries(this.args.weightedIntervals.value).flatMap(([str, num]) => new Array(num).fill(parseInt(str)))
 
         for (let i = 0; i < steps.length; i++) {
-            steps[i] = mappedStepWeights[this.random.randomInRange(0, stepWeightingSum - 1)] * phraseDirection * (this.random.random() <= this.args.phraseDirectionSwapChance ? -1 : 1)
+            steps[i] = mappedStepWeights[this.random.randomInRange(0, stepWeightingSum - 1)] * phraseDirection * (this.random.random() <= this.args.phraseDirectionSwapChance.value ? -1 : 1)
         }
 
         const notes = [homeNote, ...steps.map((val, idx, arr) => {
@@ -156,7 +155,7 @@ export class MusicGenerator {
         const repeatedNotes: number[] = []
 
         for (const note of notes) {
-            for (let i = 0; i < this.random.randomInRange(this.args.minPhraseNoteLengthBase, this.args.maxPhraseNoteLengthBase); i++) {
+            for (let i = 0; i < this.random.randomInRange(this.args.minPhraseNoteLengthBase.value, this.args.maxPhraseNoteLengthBase.value); i++) {
                 const remainder = note % scale.noteValues.length
                 repeatedNotes.push(scale.noteValues[remainder >= 0 ? remainder : scale.noteValues.length + remainder] + 60 + Math.floor(note / scale.noteValues.length) % 2 * 12)
             }
@@ -166,119 +165,29 @@ export class MusicGenerator {
         return repeatedNotes
     }
 
-    avantGardePickProgression(scale: Scale, chordsInProgression: number) {
-        const progression = []
-        const possibleChords = this.appliedChordsInScale(scale)
-
-        // LoggerInstance.log(`${scale.toString()} has ${possibleChords.length} chords`)
-
-        if (possibleChords.length == 0) return []
-
-        let used: number[] = []
-
-        const loopTil = (this.args.loop ? chordsInProgression - 1 : chordsInProgression)
-        for (let i = 0; i < loopTil; i++) {
-            let appliedChord
-            if (i === loopTil - 1 || i === 0) {
-                let found = false
-                let rand = this.random.randomInRange(0, possibleChords.length - used.length - 1)
-                let k = 0
-                while (!found && k < this.args.progressionTimeout) {
-                    const possibleChordDissonance = netDissonance(...new Voicing(possibleChords[rand]).notes)
-                    if (possibleChordDissonance <= (i === 0 ? this.args.maxStartingDissonance : this.args.maxEndingDissonance)) {
-                        found = true
-                        break
-                    }
-                    rand = this.random.randomInRange(0, possibleChords.length - used.length - 1)
-                    k++
-                }
-
-                used.push(rand)
-                appliedChord = possibleChords[rand]
-            } else {
-                const rand = this.random.randomInRange(0, possibleChords.length - used.length - 1)
-                const add = used.filter((val) => rand >= val).length
-                appliedChord = possibleChords[rand + add]
-                used.push(rand + add)
-            }
-
-            // LoggerInstance.log(new Voicing(appliedChord).notes)
-            progression.push(new Voicing(appliedChord, this.random.randomInRange(1, 3), 3))
-        }
-
-        if (this.args.loop) {
-            progression.push(progression[0])
-        }
-
-        return progression
-    }
-
     appliedChordsInScale(scale: Scale) {
         return ALL_APPLIED_CHORDS.filter((chord) => matchingScales(chord.notes).map((scale) => scale.toString()).includes(scale.toString()))
     }
 }
 
 export interface MusicGeneratorArgs {
-    minChordsInProgression: number,
-    maxChordsInProgression: number,
-    minRoot: number,
-    maxRoot: number,
-    minProgressionRootDelta: number,
-    maxProgressionRootDelta: number,
-    loop: boolean,
-    maxTotalDissonance: number,
-    maxIndividualDissonance: number,
-    minRhythmicDivisions: number,
-    maxRhythmicDivisions: number,
-    minRhythmicDivisionProportion: number,
-    maxRhythmicDivisionProportion: number,
-    excludeMinors: boolean,
-    excludeDiminished: boolean,
-    excludeAugmented: boolean,
-    persistentKey: boolean,
-    progressionTimeout: number,
-    maxEndingDissonance: number,
-    maxStartingDissonance: number,
-    useMinorDiatonics: boolean,
-    maxIndividualMelodyDissonance: number,
-    minPhraseNotes: number,
-    maxPhraseNotes: number,
-    weightedIntervals: { [interval: number]: number },
-    phraseDirectionSwapChance: number,
-    minPhraseNoteLengthBase: number,
-    maxPhraseNoteLengthBase: number
+    progressionTimeout: { value: number, title: string },
+    minPhraseNotes: { value: number, title: string },
+    maxPhraseNotes: { value: number, title: string },
+    weightedIntervals: { value: { [interval: number]: number }, title: string },
+    phraseDirectionSwapChance: { value: number, title: string },
+    minPhraseNoteLengthBase: { value: number, title: string },
+    maxPhraseNoteLengthBase: { value: number, title: string }
 }
 
 export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
-    minChordsInProgression: number = 12
-    maxChordsInProgression: number = 12
-    minRoot: number = 60
-    maxRoot: number = 60
-    minProgressionRootDelta: number = 0
-    maxProgressionRootDelta: number = 0
-    loop = true
-    maxTotalDissonance = 5
-    maxIndividualDissonance = 1.5
-    minRhythmicDivisions = 1
-    maxRhythmicDivisions = 10
-    minRhythmicDivisionProportion = 0.1
-    maxRhythmicDivisionProportion = 0.5
-    excludeMinors = false
-    excludeDiminished = false
-    excludeAugmented = false
-    persistentKey = true
-    progressionTimeout = 100000
-    maxEndingDissonance = 0
-    maxStartingDissonance = 0
-    useMinorDiatonics = true
-    maxIndividualMelodyDissonance = 5
-    minPhraseNotes = 40
-    maxPhraseNotes = 40
-    weightedIntervals = {0: 20, 1: 25, 2: 35, 3: 20, 4: 10, 5: 12, 6: 5, 7: 3}
-    phraseDirectionSwapChance = 0.4
-
-    minPhraseNoteLengthBase = 1
-    maxPhraseNoteLengthBase = 2
+    progressionTimeout = {value: 1000, title: "Maximum Operations"}
+    minPhraseNotes = {value: 40, title: "Minimum Melody Length"}
+    maxPhraseNotes = {value: 40, title: "Maximum Melody Length"}
+    phraseDirectionSwapChance = {value: 0.4, title: "Chance to Swap to/from Ascending/Descending"}
+    minPhraseNoteLengthBase = {value: 1, title: "Minimum Melody Note Length"}
+    maxPhraseNoteLengthBase = {value: 2, title: "Maximum Melody Note Length"}
+    weightedIntervals = {value: {0: 20, 1: 25, 2: 35, 3: 20, 4: 10, 5: 12, 6: 5, 7: 3}, title: "Weighted Melody Steps (in semitones)"}
 }
 
 const gen = new MusicGenerator(new DefaultMusicGeneratorArgs())

@@ -1,17 +1,13 @@
 import TestPlayAudio from "@/components/TestPlayAudio";
 import SheetComponent from "@/components/SheetComponent";
-import BPMInputField from "@/components/BPMInputField";
 import {useEffect, useState} from "react";
 import DarkModeToggle from "@/components/DarkModeToggle";
-import {DefaultMusicGeneratorArgs, MusicGenerator} from "@/src/generation/generator";
-import RegenerateButton from "@/components/RegenerateButton";
-import FillChordsButton from "@/components/FillChordsButton";
-import ArpeggiateButton from "@/components/ArpeggiateButton";
-import ScalesButton from "@/components/ScalesButton";
-import ProgressionButton from "@/components/ProgressionButton";
-import TCPButton from "@/trashcan/TCPButton";
+import {DefaultMusicGeneratorArgs, MusicGenerator, MusicGeneratorArgs} from "@/src/generation/generator";
 import Stave from "@/src/units/stave";
 import ConfigSection from "@/components/config/ConfigSection";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import RegenerateButton from "@/components/RegenerateButton";
+import {opts} from "@/src/helpers/log";
 
 export default function PlaygroundScreen() {
     const [stave, setStave] = useState<Stave>(new Stave(120))
@@ -20,17 +16,32 @@ export default function PlaygroundScreen() {
         setStave(new MusicGenerator(new DefaultMusicGeneratorArgs()).generate(120))
     }, [])
 
-    const [opt, setOpts] = useState({var: {value: false, title: "booleans"}})
+    const [generatorSettings, setGeneratorSettings] = useState(new DefaultMusicGeneratorArgs())
+    const [opt, setOpts] = useState({opts})
 
     return (<>
         <div
             className={"text-black w-full min-h-full flex flex-col-reverse md:flex-row content-center justify-between align-middle pt-7 mt-4 gap-12 md:text-normal"}>
             <div className={"flex mp-2 md:p-0 flex-col justify-between w-full relative md:max-w-[30em] text-lg"}>
                 <div
-                    className={"p-2 md:p-0 flex flex-col w-full md:max-w-[30em] align-middle gap-4"}>
-                    <TestPlayAudio stave={stave}/>
-                    <div className={"flex flex-col"}>
-                    <ConfigSection config={opt} setConfig={setOpts}>Test</ConfigSection>
+                    className={"p-2 md:p-0 flex flex-col-reverse w-full min-w-[30em] md:max-w-[50em] align-middle gap-4"}>
+                    <div className={"h-fit w-full"}>
+                        <Tabs defaultValue={"generator"} className={"flex items-center w-full justify-center"}>
+                            <TabsList className={"min-h-fit raleway-text-light"}>
+                                <TabsTrigger value={"generator"}>Generator</TabsTrigger>
+                                <TabsTrigger value={"debug"}>Debug</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value={"generator"}>
+                                <ConfigSection config={generatorSettings} setConfig={setGeneratorSettings}>Generator Settings</ConfigSection>
+                            </TabsContent>
+                            <TabsContent value={"debug"}>
+                                <ConfigSection config={opt} setConfig={(res) => setOpts({...res})}>Debug</ConfigSection>
+                            </TabsContent>
+                        </Tabs>
+                    </div>
+                    <div className={"flex flex-row justify-center gap-12 w-full pb-4"}>
+                        <TestPlayAudio stave={stave}/>
+                        <RegenerateButton setStave={setStave} opts={generatorSettings}/>
                     </div>
                     {/*<BPMInputField stave={stave} setStave={setStave}/>
                     <RegenerateButton setStave={setStave}/>

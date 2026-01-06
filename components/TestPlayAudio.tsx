@@ -77,7 +77,7 @@ export default function TestPlayAudio({stave}: { stave: Stave }) {
                     clearTimeout(interval)
                     setInterrupted(1)
                 }
-            }} className={"bg-blue-400 text-sm w-8 h-8 flex justify-center"}>{interrupted == 2 ?
+            }} className={"bg-accent rounded text-sm w-8 h-8 flex justify-center fill-foreground"}>{interrupted == 2 ?
                 <img className={"object-fill h-6 my-auto"} src={"/pause.svg"}/> :
                 <img src={"/play.svg"} className={"object-fill h-6 my-auto"}/>}</button>
         </>
