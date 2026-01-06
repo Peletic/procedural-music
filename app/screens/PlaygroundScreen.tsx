@@ -8,6 +8,7 @@ import ConfigSection from "@/components/config/ConfigSection";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import RegenerateButton from "@/components/RegenerateButton";
 import {opts} from "@/src/helpers/log";
+import ReseedButton from "@/components/ReseedButton";
 
 export default function PlaygroundScreen() {
     const [stave, setStave] = useState<Stave>(new Stave(120))
@@ -16,7 +17,7 @@ export default function PlaygroundScreen() {
         setStave(new MusicGenerator(new DefaultMusicGeneratorArgs()).generate(120))
     }, [])
 
-    const [generatorSettings, setGeneratorSettings] = useState(new DefaultMusicGeneratorArgs())
+    const [generatorSettings, setGeneratorSettings] = useState<MusicGeneratorArgs>(new DefaultMusicGeneratorArgs())
     const [opt, setOpts] = useState({opts})
 
     return (<>
@@ -42,6 +43,7 @@ export default function PlaygroundScreen() {
                     <div className={"flex flex-row justify-center gap-12 w-auto pb-4"}>
                         <TestPlayAudio stave={stave}/>
                         <RegenerateButton setStave={setStave} opts={generatorSettings}/>
+                        <ReseedButton cfg={generatorSettings} setCfg={setGeneratorSettings}/>
                     </div>
                     {/*<BPMInputField stave={stave} setStave={setStave}/>
                     <RegenerateButton setStave={setStave}/>

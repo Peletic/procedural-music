@@ -33,8 +33,8 @@ const LoggerInstance = new Logger("generator")
 export class MusicGenerator {
     random: RandomNumberGenerator
 
-    constructor(public args: MusicGeneratorArgs, public seed?: string) {
-        this.random = new RandomNumberGenerator(this.seed)
+    constructor(public args: MusicGeneratorArgs) {
+        this.random = new RandomNumberGenerator(args.seed.value)
     }
 
     generate(bpm: number) {
@@ -177,7 +177,8 @@ export interface MusicGeneratorArgs {
     weightedIntervals: { value: { [interval: number]: number }, title: string },
     phraseDirectionSwapChance: { value: number, title: string },
     minPhraseNoteLengthBase: { value: number, title: string },
-    maxPhraseNoteLengthBase: { value: number, title: string }
+    maxPhraseNoteLengthBase: { value: number, title: string },
+    seed: { value: string, title: string}
 }
 
 export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
@@ -187,7 +188,13 @@ export class DefaultMusicGeneratorArgs implements MusicGeneratorArgs {
     phraseDirectionSwapChance = {value: 0.4, title: "Chance to Swap to/from Ascending/Descending"}
     minPhraseNoteLengthBase = {value: 1, title: "Minimum Melody Note Length"}
     maxPhraseNoteLengthBase = {value: 2, title: "Maximum Melody Note Length"}
+    seed : {value : string, title: string}
     weightedIntervals = {value: {0: 20, 1: 25, 2: 35, 3: 20, 4: 10, 5: 12, 6: 5, 7: 3}, title: "Weighted Melody Steps (in semitones)"}
+
+    constructor() {
+        this.seed = { value: RandomNumberGenerator.createSeed(), title: "Random Number Generator Seed" }
+    }
+
 }
 
 const gen = new MusicGenerator(new DefaultMusicGeneratorArgs())

@@ -16,7 +16,7 @@ export default function ConfigSection({config, setConfig, children} : {config: {
                         setConfig(newCfg)
                     }, [state])
 
-                    return (<ConfigField key={`${val}:${key}`} entry={state} setEntry={setState} title={val.title}/>)
+                    return (<ConfigField key={`${val}:${key}`} entry={config[key].value} setEntry={setState} title={val.title}/>)
                 })
             }
         </div>
