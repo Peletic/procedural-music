@@ -116,6 +116,14 @@
     --radius-4xl: calc(var(--radius) + 16px);
 }
 
+svg {
+    max-height: 100%;
+}
+
+img {
+    width: 100%;
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;

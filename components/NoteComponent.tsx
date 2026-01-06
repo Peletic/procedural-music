@@ -5,8 +5,8 @@ import {NUMBER_WHOLE_STEP, WholeStep} from "@/src/units/tone";
 const F_BASE_VERTICAL_OFFSET_MAP: { [p: string]: number } = {
     "quarter_note": 1.4,
     "half_note": 1.4,
-    "dotted_quarter_note": 1.4,
-    "dotted_half_note": 1.4,
+    "dotted_quarter_note": 1.35,
+    "dotted_half_note": 1.35,
     "eighth_note": 1.4,
     "sixteenth_note": 1.2,
     "thirty_second_note": 1.4,
@@ -47,7 +47,7 @@ export default function NoteComponent({note, pos}: { note: Note, pos: ElementPos
     // 12 x 3
 
     const scale = 64
-    const idx =  (Position.of(pos).nth-1) / Math.pow(2, Position.of(pos).level - 1) * 64
+    const idx = (Position.of(pos).nth - 1) / Math.pow(2, Position.of(pos).level - 1) * 64
     const baseOffset = 1.2
 
     const offsetScalar = (12 - 0.75) / scale;
@@ -60,15 +60,14 @@ export default function NoteComponent({note, pos}: { note: Note, pos: ElementPos
 
     const addt: { [p: string]: any } = {}
     addt.height = "41.91px"
+    addt.width = "14.665px"
+
     if (note.duration.denominator == 1) {
         addt.height = "10.4px"
-    } else if (note.duration.dotted) {
-        addt.height = "52px"
-        //addt.width = "1.4em"
-        addt["objectFit"] = "cover"
-    } else {
-        //addt.height = "2.6em"
-        //addt.width = "0.91em"
+        addt.width = "15.5324675325px"
+    } else if (note.duration.numerator.toString().includes(".5")) {
+        addt.height = "42.91px"
+        addt.width = "22.3px"
         addt["objectFit"] = "fill"
     }
 
@@ -109,13 +108,18 @@ export default function NoteComponent({note, pos}: { note: Note, pos: ElementPos
                 marginTop: `${sharpVerticalOffset * 16}px`
             }
         }/>
-        <img src={`/${svgName}`} id={`${idx}::64`} style={
-            {
-                marginLeft: `${offset*16}px`,
-                marginTop: `${topMargin*16}px`,
-                position: "absolute",
-                ...addt
-            }
-        }/>
+        <div style={{
+            marginLeft: `${offset * 16}px`,
+            marginTop: `${topMargin * 16}px`,
+            position: "absolute",
+            ...addt
+        }}>
+            <img src={`/${svgName}`} id={`${idx}::64`} style={
+                {
+
+                    ...addt
+                }
+            }/>
+        </div>
     </>)
 }
