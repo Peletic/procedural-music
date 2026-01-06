@@ -8,7 +8,7 @@ export default function NumberConfigField({value, setValue, title}: {
     setValue: Dispatch<number>,
     title?: string
 }) {
-    return (<div className={"flex flex-col gap-2 align-middle border p-2 max-w-[15em] w-full h-20"}>
+    return (<div className={"flex flex-col gap-2 align-middle border p-2 max-w-[15em] w-auto h-20"}>
         {
             title ?
             <Label className={"font-light text-xs"}>{title}</Label> : undefined

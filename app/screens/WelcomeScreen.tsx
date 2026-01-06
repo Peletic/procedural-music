@@ -13,7 +13,7 @@ export default function WelcomeScreen({setState}: { setState: Dispatch<SetStateA
         <button onClick={onBeginClick}
                 className={"text-center justify-center content-center flex flex-col hover:border rounded-sm border-foreground/70 bg-foreground/10 gap-2 mx-20"}>
             <img src={"perspective-piano.png"} alt={"pixel art of a piano"} className={"mx-2"}/>
-            <p className={"raleway-text-regular w-full bg-foreground/30 text-sm p-0.5"}>Begin</p>
+            <p className={"raleway-text-regular w-auto bg-foreground/30 text-sm p-0.5"}>Begin</p>
         </button>
     </div>)
 }

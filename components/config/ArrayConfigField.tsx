@@ -4,7 +4,7 @@ import ConfigField from "@/components/config/ConfigField";
 
 
 export default function ArrayConfigField({value, setValue, title} : {value: any[], setValue: Dispatch<any[]>, title?: string}) {
-    return (<div className={"flex flex-col justify-items-center w-full"}>
+    return (<div className={"flex flex-col justify-items-center w-auto"}>
         <Label className={"font-light"}>{title}</Label>
         { value.map((val, idx) => {
             const [state, setState] = useState(val)
