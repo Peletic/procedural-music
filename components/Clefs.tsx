@@ -1,6 +1,6 @@
 export default function Clefs({}) {
     return (<div className={"h-[7.3em] flex flex-col justify-between border-l-2 border-black"}>
-    <img className={"absolute h-[7.3em] left-4.5"} src={"/staff-start.svg"}/>
+    <img className={"absolute h-[7.3em] left-4"} src={"/staff-start.svg"}/>
         <div className={"h-[3em] w-[3.1em]"}>
             <img className={"absolute border-black object-fill"} style={{width: `${3.1}em`, height: `${3}em`}}
                  src={"staff.svg"}/>
